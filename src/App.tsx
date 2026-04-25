@@ -8,12 +8,16 @@ const FILTERS = [
   "E-mail",
   "Wijkkrant",
   "Briefje",
+  "Brief",
   "Werk",
   "School",
   "Buurt",
   "Dokter",
   "Winkel",
   "Vrienden",
+  "Cursus",
+  "Familie",
+  "Transport",
 ];
 
 const STORAGE_KEYS = {
@@ -103,12 +107,51 @@ function downloadFile(filename: string, content: string, mimeType: string) {
   URL.revokeObjectURL(url);
 }
 
-function getShortTask(ticket: Ticket): string {
-  return ticket.shortTask ?? ticket.task ?? "";
-}
+function getTemplateByType(type: Ticket["type"]): string {
+  if (type === "Wijkkrant") {
+    return `Beste buren,
 
-function getFullTask(ticket: Ticket): string {
-  return ticket.fullTask ?? ticket.shortTask ?? ticket.task ?? "";
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over ...
+Ik vind het leuk want ...
+
+Met vriendelijke groet,
+Mykola`;
+  }
+  if (type === "Formulier") {
+    return `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com`;
+  }
+  if (type === "Briefje") {
+    return `Hallo,
+
+Ik schrijf ... want ...
+Kun je ...?
+
+Groet,
+Mykola`;
+  }
+  if (type === "Brief") {
+    return `Beste [naam],
+
+Ik schrijf ... want ...
+Kunnen wij praten?
+
+Met vriendelijke groet,
+Mykola`;
+  }
+  return `Beste heer/mevrouw,
+
+Mijn naam is Mykola.
+Ik schrijf u want ...
+Kun je mij helpen?
+
+Met vriendelijke groet,
+Mykola`;
 }
 
 export default function App() {
@@ -196,21 +239,10 @@ export default function App() {
   const filteredTickets = useMemo(() => {
     const q = search.toLowerCase().trim();
     return tickets.filter((ticket) => {
-      const haystack =
-        `${ticket.id} ${ticket.title} ${ticket.type} ${getShortTask(ticket)} ${getFullTask(ticket)} ${ticket.keywords.join(" ")}`.toLowerCase();
+      const haystack = `${ticket.id} ${ticket.title} ${ticket.type} ${ticket.fullTask} ${ticket.keywords.join(" ")}`.toLowerCase();
       const matchesSearch = !q || haystack.includes(q);
       const matchesFilters =
-        activeFilters.length === 0 ||
-        activeFilters.some((filter) => {
-          if (filter === ticket.type) return true;
-          if (filter === "Werk") return containsAny(haystack, ["werk", "collega", "baas", "restaurant"]);
-          if (filter === "School") return containsAny(haystack, ["school", "docent", "toets", "cursus", "taalschool"]);
-          if (filter === "Buurt") return containsAny(haystack, ["buurt", "buren", "wijk"]);
-          if (filter === "Dokter") return containsAny(haystack, ["ziek", "fysiotherapeut", "dokter"]);
-          if (filter === "Winkel") return containsAny(haystack, ["bestelling", "producten", "abonnement", "winkel"]);
-          if (filter === "Vrienden") return containsAny(haystack, ["vriend", "vrienden", "karim", "hassan", "diego"]);
-          return false;
-        });
+        activeFilters.length === 0 || activeFilters.some((filter) => ticket.category.includes(filter) || ticket.type === filter);
       return matchesSearch && matchesFilters;
     });
   }, [search, activeFilters]);
@@ -220,22 +252,6 @@ export default function App() {
   const progressDone = Object.values(knownMap).filter(Boolean).length;
   const displayName = userName.trim() || "Mykola";
   const personalizeText = (text: string) => text.replace(/\bMykola\b/g, displayName);
-  const fullTicketText = useMemo(() => {
-    const lines = [
-      `Білет #${currentTicket.id}: ${currentTicket.title}`,
-      `Тип: ${currentTicket.type}`,
-      "",
-      "Повний текст білета:",
-      getFullTask(currentTicket),
-      "",
-      "Що обов'язково написати:",
-      ...currentTicket.points.map((point, index) => `${index + 1}. ${point}`),
-      "",
-      `Ключові слова: ${currentTicket.keywords.join(", ")}`,
-    ];
-    return lines.join("\n");
-  }, [currentTicket]);
-
   const toggleFilter = (filter: string) => {
     setActiveFilters((prev) => (prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]));
   };
@@ -285,8 +301,7 @@ export default function App() {
         id: ticket.id,
         title: ticket.title,
         type: ticket.type,
-        shortTask: getShortTask(ticket),
-        fullTask: getFullTask(ticket),
+        fullTask: ticket.fullTask,
         answer: answers[ticket.id] ?? "",
         known: Boolean(knownMap[ticket.id]),
       }));
@@ -305,8 +320,7 @@ export default function App() {
         const userAnswer = answers[ticket.id] ?? "";
         return [
           `#${ticket.id} ${ticket.title} [${ticket.type}]`,
-          `Short task: ${getShortTask(ticket)}`,
-          `Full task: ${getFullTask(ticket)}`,
+          `Full task: ${ticket.fullTask}`,
           "My answer:",
           userAnswer,
           "",
@@ -679,13 +693,13 @@ export default function App() {
                 <h3 className="font-semibold">Повний текст білета</h3>
                   <button
                     className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
-                    onClick={() => navigator.clipboard.writeText(fullTicketText)}
+                    onClick={() => navigator.clipboard.writeText(currentTicket.fullTask)}
                   >
                     Скопіювати білет
                   </button>
                 </div>
-                <pre className="whitespace-pre-wrap rounded-lg border border-slate-200 bg-slate-50 p-3 font-mono text-sm dark:border-slate-700 dark:bg-slate-800">
-                  {getFullTask(currentTicket)}
+                <pre className="whitespace-pre-wrap rounded-lg border border-slate-200 bg-slate-50 p-4 text-base leading-relaxed dark:border-slate-700 dark:bg-slate-800">
+                  {currentTicket.fullTask}
                 </pre>
                 <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm dark:border-slate-700 dark:bg-slate-800">
                   <p className="font-semibold">Що обов'язково написати:</p>
@@ -696,9 +710,6 @@ export default function App() {
                   </ul>
                   <p className="mt-2">
                     <span className="font-semibold">Ключові слова:</span> {currentTicket.keywords.join(", ")}
-                  </p>
-                  <p className="mt-2">
-                    <span className="font-semibold">Короткий опис:</span> {getShortTask(currentTicket)}
                   </p>
                 </div>
               </article>
@@ -744,7 +755,7 @@ export default function App() {
                     </div>
                     {!collapseHelpPanels && (
                       <pre className="whitespace-pre-wrap text-sm">
-                        {hideTemplate ? "Шаблон прихований" : personalizeText(currentTicket.template)}
+                        {hideTemplate ? "Шаблон прихований" : personalizeText(getTemplateByType(currentTicket.type))}
                       </pre>
                     )}
                   </article>

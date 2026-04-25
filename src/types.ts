@@ -1,20 +1,17 @@
 export type TicketType =
-  | "Formulier"
   | "E-mail"
+  | "Formulier"
   | "Wijkkrant"
   | "Briefje"
-  | "Brief"
-  | "Bericht";
+  | "Brief";
 
 export interface Ticket {
   id: number;
   title: string;
   type: TicketType;
-  shortTask?: string;
-  fullTask?: string;
-  task?: string;
+  category: string[];
+  fullTask: string;
   points: string[];
   keywords: string[];
   simpleAnswer: string;
-  template: string;
 }

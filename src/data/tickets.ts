@@ -1,603 +1,13242 @@
 import type { Ticket } from "../types";
 
-const emailTemplate = `Beste ...,
-
-Ik schrijf ... want ...
-Ik wil ...
-Kun je mij helpen?
-
-Met vriendelijke groet,
-Mykola`;
-
-const wijkkrantTemplate = `Beste buren,
-
-Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik wil jullie vertellen over ...
-Ik vind het leuk want ...
-
-Met vriendelijke groet,
-Mykola`;
-
-const formulierTemplate = `Naam: Mykola Miskov
-Adres: Hoofdstraat 10
-Postcode en woonplaats: 1234 AB Amsterdam
-...`;
-
-const briefjeTemplate = `Hallo,
-
-Ik schrijf ... want ...
-Kun je ...?
-
-Met vriendelijke groet,
-Mykola`;
-
 export const tickets: Ticket[] = [
-  { id: 1, title: "Laptop lenen", type: "E-mail", task: "Laptop is kapot, vraag Lisa laptop te lenen, schrijf wanneer je teruggeeft.", points: ["Probleem noemen", "Laptop lenen vragen", "Teruggeven moment"], keywords: ["laptop", "kapot", "lenen", "morgen", "terug"], simpleAnswer: `Beste Lisa,
+  {
+    id: 1,
+    title: `Ticket 1`,
+    type: "Wijkkrant",
+    category: ["Vrienden", "Wijkkrant"],
+    fullTask: `4
 
-Mijn laptop is kapot.
-Ik moet iets voor school doen.
-Mag ik jouw laptop lenen?
-Ik geef de laptop morgen terug.
+письмо
 
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 2, title: "Natuur", type: "Wijkkrant", task: "Schrijf over natuur in de buurt.", points: ["Intro met Mykola", "Vertel over natuur", "Waarom leuk"], keywords: ["natuur", "park", "groen", "koffie", "wandel"], simpleAnswer: `Beste buren,
+в
+
+местную
+
+газету
+
+про
+
+природу.
+
+Какую
+
+любите
+
+почему
+
+любите
+
+и
+
+что
+
+вы
+
+там
+
+делаете.
+
+Vriendelijke
+
+groet!
+   1.  Письмо  в  газету  over  uw  woning.  Hoe  ziet  uw  keuken  eruit?  Сколько
+комнат?
+
+Сколько
+
+человек
+
+живет?`,
+    points: [],
+    keywords: [`местную`, `газету`, `природу`, `какую`, `любите`, `почему`, `делаете`, `vriendelijke`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik wil jullie vertellen over de natuur.
-Ik vind het park mooi want het is groen.
-Ik drink koffie en wandel in het park.
-
-Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 3, title: "Ziek op werk", type: "E-mail", task: "Meld je ziek bij je baas.", points: ["Ziek melden", "Niet werken vandaag", "Vervanging vragen"], keywords: ["ziek", "werken", "vandaag", "iemand", "bel"], simpleAnswer: `Beste baas,
-
-Ik schrijf u want ik ben ziek.
-Ik kan vandaag niet werken.
-Kan iemand anders vandaag werken?
-Ik bel u later.
-
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 4, title: "Nieuw huis feest", type: "E-mail", task: "Nodig Amir uit voor nieuw huis feest.", points: ["Nieuw huis", "Tijd en plaats", "Iets meenemen vragen"], keywords: ["nieuw huis", "feest", "zaterdag", "18 uur", "koffie"], simpleAnswer: `Beste Amir,
-
-Ik heb een nieuw huis.
-Ik wil een feestje geven.
-Het feest is zaterdag om 18 uur bij mij thuis.
-Kun je koffie meenemen?
-
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 5, title: "Dier", type: "Wijkkrant", task: "Schrijf over je favoriete dier.", points: ["Dier noemen", "Waarom leuk", "Wat je doet"], keywords: ["dier", "hond", "lief", "wandel"], simpleAnswer: `Beste buren,
-
-Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik wil jullie vertellen over mijn favoriete dier.
-Ik vind een hond leuk want hij is lief.
-Ik wandel graag met een hond.
-
-Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 6, title: "Woning", type: "Wijkkrant", task: "Beschrijf je woning.", points: ["Woning omschrijven", "Kamers noemen", "Met wie je woont"], keywords: ["woning", "keuken", "kamers", "partner"], simpleAnswer: `Beste buren,
-
-Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik wil jullie vertellen over mijn woning.
-Mijn keuken is groot en mooi.
-Ik heb twee kamers.
-Ik woon met mijn partner.
-
-Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 7, title: "Collega Omar", type: "E-mail", task: "Mail Omar over afspraak en ophalen.", points: ["Samen werken", "Afspraak plek", "Tijd ophalen"], keywords: ["Omar", "morgen", "Almere", "9 uur", "werkkleren"], simpleAnswer: `Beste Omar,
-
-Ik schrijf je want wij werken morgen samen.
-Wij hebben een afspraak in Almere.
-Ik haal je om 9 uur op.
-Kun je werkkleren meenemen?
-
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 8, title: "Oppas gezocht", type: "E-mail", shortTask: "Vraag vrienden om oppas", fullTask: `U heeft kinderen, maar u moet soms weg van huis.
-U zoekt een oppas. U kent niemand.
-U schrijft een e-mail aan uw vrienden.
-● Schrijf waarom u een oppas zoekt.
-● Schrijf wanneer u een oppas nodig hebt.
-● Vraag of uw vrienden een goede oppas kennen.
-Schrijf een e-mail. Gebruik hele zinnen.`, points: ["Oppas nodig", "Wanneer", "Vragen of ze iemand kennen"], keywords: ["oppas", "kind", "zaterdag", "vrienden"], simpleAnswer: `Beste vrienden,
-
-Ik zoek een oppas voor mijn kind.
-Ik heb zaterdag een oppas nodig.
-Kennen jullie een goede oppas?
-
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 9, title: "Auto kapot", type: "E-mail", task: "Mail collega over kapotte auto.", points: ["Probleem auto", "Hulp vragen", "Alternatief noemen"], keywords: ["auto", "kapot", "helpen", "fiets"], simpleAnswer: `Beste collega,
-
-Ik schrijf je want mijn auto is kapot.
-Ik moet spullen naar het werk brengen.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
 Kun je mij helpen?
-Ik kan morgen met de fiets komen.
 
 Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 10, title: "Park", type: "Wijkkrant", task: "Schrijf over park in je buurt.", points: ["Park beschrijven", "Wat je ziet", "Wat je doet"], keywords: ["park", "buurt", "bomen", "bloemen", "koffie"], simpleAnswer: `Beste buren,
+Mykola`,
+  },
+  {
+    id: 2,
+    title: `Ticket 2`,
+    type: "E-mail",
+    category: ["E-mail"],
+    fullTask: `4
+
+у
+
+тебя
+
+дети.
+
+Ты
+
+ищешь
+
+няню(
+oppasen),
+
+но
+
+никого
+
+не
+
+знаешь.
+
+Ты
+
+пишешь
+
+письмо
+
+друзьям.
+
+Объясняешь
+
+почему
+
+тебе
+
+нужна
+
+няня
+
+(нужно
+
+придумать
+
+причину
+
+и
+
+когда).
+
+И
+
+спросить
+
+,
+
+знаю
+
+ли
+
+они
+
+хорошую
+
+няню.`,
+    points: [],
+    keywords: [`тебя`, `дети`, `ищешь`, `няню`, `oppasen`, `никого`, `знаешь`, `пишешь`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 3,
+    title: `Ticket 3`,
+    type: "Wijkkrant",
+    category: ["Wijkkrant"],
+    fullTask: `1.
+
+Заповнити
+
+формуляр,
+
+де
+
+описується
+
+ситуація,
+
+що
+
+я
+
+купила
+
+fotoboeken:
+ -  чому  я  вирішила  це  зробити?  -  чому  я  обрала  цей  ресурс?  -  як  мені  ціни?
+
+-  що  я  можу  їм  побажати  на  майбутнє?  Ніби  все  норм,  але  там  був  минулий  час,  намагалась  використати
+конструкцію:
+
+Ik
+
+heb…gemaakt
+
+(
+
+активне
+
+дієслово
+
+у
+
+минулому
+
+часі
+
+з
+
+тексту).
+ 2.  Ситуація  з  роботою,  машиною  і  речами,  які  треба  відвезти,  а
+машина
+
+зламана.
+
+Я
+
+його
+
+зустрічала
+
+у
+
+Ваших
+
+прикладах,
+
+але
+
+ігнорувала
+
+😅
+ Але  все  мінімально  написала  про  машину  kapot  і  kun  je  Ivan  bellen.
+Ivan
+
+kan
+
+morgen
+
+(активне
+
+слово
+
+з
+
+тексту)
+
+bringen
+
+(як
+
+виявилося,
+
+неправильно
+
+використала
+
+дієслово).
+ 3.  Розказати  сусідам  у  газеті  про  парк:  -  що  за  парк;  -  чим  подобається;  -  що  роблю  там.  В  цьому  тексті,  думаю,  все  ок.  4.  Теж  зустрічала  у  Вас  цей  текст  і  теж  проігнорувала.  Але  все  ок.
+Потрібно
+
+взяти
+
+лептоп
+
+в
+
+університеті,
+
+написати
+
+причину
+
+і
+
+коли
+
+поверну.
+
+Не
+
+пам’ятаю
+
+точно,
+
+але
+
+думаю,
+
+я
+
+знову
+
+там
+
+використала
+
+німецьке
+
+дієслово
+
+🫤
+
+Як
+
+треба
+
+—
+
+німецьку
+
+не
+
+згадаю
+
+,
+
+а
+
+як
+
+не
+
+треба,
+
+так
+
+обов’язково
+
+напишу.
+ В  цілому,  я  думаю,  все  має  бути  нормально,  сподіваюсь,  все  ок  з
+почерком.
+   Здравствуйте.  Сегодня  сдавал  экзамен  по  письму.  Было  3  письма  и  1  формуляр.   1.  Ситуация:  ты  пропустил  экзамен.  Пишешь  учителю  email  Должен  написать  почему  ты  пишешь  email  Причину  пропуска  (придумать  самому)   Попросить  о  другой  попытке.  2.  Ситуация:  Пишешь  письмо  в  газету  Должен  написать  какой  тип  музыки  тебе  нравится.  Написать  почему  тебе  нравится  этот  тип  музыки.  И  кто  исполняет  такую  музыку.`,
+    points: [`чому  я  вирішила  це  зробити?  -  чому  я  обрала  цей  ресурс?  -  як  мені  ціни?`, `що  я  можу  їм  побажати  на  майбутнє?  Ніби  все  норм,  але  там  був  минулий  час,  намагалась  використати`],
+    keywords: [`заповнити`, `описується`, `ситуація`, `купила`, `fotoboeken`, `чому`, `вирішила`, `зробити`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik wil jullie vertellen over een park in mijn buurt.
-Het park is groot en mooi.
-Ik zie bomen en bloemen.
-Ik drink koffie in het park.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: чому  я  вирішила  це  зробити?  -  чому  я  обрала  цей  ре.
+Ik schrijf over: що  я  можу  їм  побажати  на  майбутнє?  Ніби  все  норм,  .
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 11, title: "Gemiste toets", type: "E-mail", task: "Mail docent over gemiste toets.", points: ["Toets gemist uitleggen", "Reden ziek", "Nieuwe dag vragen"], keywords: ["toets", "ziek", "andere dag"], simpleAnswer: `Beste docent,
+Mykola`,
+  },
+  {
+    id: 4,
+    title: `Ситуация: ты потерял ключи (sleutels) на работе . Пишешь`,
+    type: "E-mail",
+    category: ["E-mail", "Familie", "School"],
+    fullTask: `3.  Ситуация:  ты  потерял  ключи  (sleutels)   на  работе  .  Пишешь
+email
 
-Ik schrijf u want ik was niet bij de toets.
-Ik was ziek.
-Kan ik de toets op een andere dag maken?
+коллегам
+ Должен  написать  что  произошло.   Попросить  коллег,  в  случае  если  они  найдут  ключи  отдать  их
+тебе
+ Написать  как  они  могу  это  сделать
+breng
+
+me
+
+mijn
+
+sleutels
+
+bel
+
+me
+
+en
+
+ik
+
+kom
+
+mijn
+
+sleutels
+
+halen/
+
+nemen/pakken
+
+stuur
+
+me
+
+de
+
+sleutels
+
+met
+
+post
+
+nl/
+
+Uber
+
+bel
+
+mijn
+
+vrouw/
+
+man
+
+en
+
+ze/hij
+
+doet
+
+alles
+ 4.  Формуляр.  Ситуация:  заполнить  аппликация  к  новому  домашнему
+доктору.
+
+Есть`,
+    points: [],
+    keywords: [`ситуация`, `потерял`, `ключи`, `sleutels`, `работе`, `пишешь`, `email`, `коллегам`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
 
 Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 12, title: "Muziek", type: "Wijkkrant", task: "Schrijf over muziek.", points: ["Soort muziek", "Waarom leuk", "Favoriete zanger"], keywords: ["muziek", "popmuziek", "mooi", "zanger"], simpleAnswer: `Beste buren,
+Mykola`,
+  },
+  {
+    id: 5,
+    title: `Ticket 5`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Werk", "Wijkkrant"],
+    fullTask: `2
+
+картинки
+
+-
+
+сломанная
+
+нога,
+
+простуда.
+
+ Стандартное  начало  (Имя,  место  жительства  и  тд)  Должен  написать  доктору,  что  у  тебя  что  то  произошло  со
+здоровьем
+
+(либо
+
+то,
+
+что
+
+нарисовано
+
+на
+
+картинках,
+
+либо
+
+придумать
+
+свое)
+   -  У  Твой  друг  пишет  тебе  email  с  вопросом  "hoe  gaat  het  met  jou?".
+Ответить
+
+ему,
+
+как
+
+у
+
+тебя
+
+дела.
+
+Рассказать,
+
+что
+
+ты
+
+делал
+
+на
+
+этих
+
+выходных.
+
+Задать
+
+вопрос.
+
+ik
+
+was
+
+in
+
+een
+
+cafe
+
+en
+
+ik
+
+ga
+
+elk
+
+weekend
+
+naar
+
+het
+
+cafe
+
+met
+
+Anna.
+
+We
+
+eten
+
+pizza
+
+en
+
+…
+
+Ik
+
+heb
+
+in
+
+het
+
+weekend
+
+moeten
+
+werken
+
+  У  тебя  на  работе  выдают  велосипеды  (на  выбор  три  картинки
+велосипедов:
+
+городской,
+
+шоссейный
+
+и
+
+с
+
+коробкой
+
+впереди).
+
+Заполнить
+
+анкету:
+
+Имя,
+
+адрес,
+
+рост,
+
+цвет
+
+велосипеда
+
+(текстом),
+
+тип
+
+велосипеда
+
+(A/B/C).
+
+Написать,
+
+почему
+
+именно
+
+такой.
+ -  Ты  хочешь  сдать  два  экзамена  по  английскому  и  поэтому  пишешь
+email
+
+в
+
+школу.
+
+Написать,
+
+что
+
+ты
+
+хочешь
+
+сдать
+
+у
+
+них
+
+два
+
+экзамена
+
+по
+
+английскому.
+
+Выбрать
+
+экзамены
+
+из
+
+представленных
+
+(картинками
+
+указаны
+
+аудирование,
+
+чтение,
+
+письмо
+
+и
+
+что-то
+
+похожее
+
+на
+
+географию).
+
+Задать
+
+два
+
+вопроса.
+ Kan  ik  met  ideal  betalen?  Hoeveel  kost….?
+
+-  Ты  пишешь  письмо  в  газету.  Ты  хочешь  сделать  свой  buurt  mooier
+en
+
+leuker.
+
+Написать
+
+минимум`,
+    points: [`У  Твой  друг  пишет  тебе  email  с  вопросом  "hoe  gaat  het  met  jou?".`, `Ты  хочешь  сдать  два  экзамена  по  английскому  и  поэтому  пишешь`, `Ты  пишешь  письмо  в  газету.  Ты  хочешь  сделать  свой  buurt  mooier`],
+    keywords: [`картинки`, `сломанная`, `нога`, `простуда`, `стандартное`, `начало`, `место`, `жительства`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik wil jullie vertellen over muziek.
-Ik vind popmuziek leuk want het is mooi.
-Mijn favoriete zanger is Tom.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: У  Твой  друг  пишет  тебе  email  с  вопросом  "hoe  gaat  .
+Ik schrijf over: Ты  хочешь  сдать  два  экзамена  по  английскому  и  поэтом.
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 13, title: "Sleutels kwijt", type: "E-mail", task: "Mail collega's over sleutels.", points: ["Sleutels kwijt", "Bellen vragen", "Ophalen melden"], keywords: ["sleutels", "kwijt", "bellen", "vinden"], simpleAnswer: `Beste collega’s,
+Mykola`,
+  },
+  {
+    id: 6,
+    title: `Uw buurman Piet maakt in de`,
+    type: "Formulier",
+    category: ["Buurt", "Cursus", "Familie", "Formulier", "Werk"],
+    fullTask: `1.  Uw  buurman  Piet  maakt  in  de
+avond
 
-Ik ben mijn sleutels kwijt.
-Kun je mij bellen als je mijn sleutels vindt?
-Ik kom de sleutels ophalen.
+veel
 
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 14, title: "Fiets kiezen", type: "Formulier", task: "Vul formulier in voor fiets.", points: ["Persoonsgegevens", "Type en kleur", "Waarom"], keywords: ["fiets", "kleur", "type", "waarom"], simpleAnswer: `Voornaam: Mykola
+lawaai.
+
+U
+
+hebt
+
+daar
+
+last
+
+van.
+
+U
+
+gaat
+
+met
+
+hem
+
+praten.
+ Peit  is  niet  thuis.  Schrijf  een  brief
+naar
+
+hem.
+
+ 2.  Formulier  U  werkt  in  een  fabric  XXX.  Uw  baas  wilt  u  naar  een  cursus  gaan.  Vul  in  de  formulier  (naam/achernaam,  adres…..).  Kies  wanneer  u  wilt  de  cursus  hebt.  Schrijf  waar  u  werkt.  Schrijf  op  wat  uw  werkervaring.  3.  Wijkkrant  U  wilt  een  feest  hebben.  Schrijf  naar  uw  buren  4.  Email  naar  een  administratie  van  kookcursus.  U  kunt  niet  gaan.  1)  Schrijf  waarom  u  kunt  niet  gaan  2)  Schrijf  dat  u  de  volgende  cursus  wilt  meedoen
+
+.  Написать,  что  ты  делаешь  в  течение  дня  в  спортивной  школе.
+Даны`,
+    points: [],
+    keywords: [`buurman`, `piet`, `maakt`, `avond`, `veel`, `lawaai`, `hebt`, `daar`],
+    simpleAnswer: `Voornaam: Mykola
 Achternaam: Miskov
 Adres: Hoofdstraat 10
 Postcode en woonplaats: 1234 AB Amsterdam
-Lengte: 180 cm
-Kleur: zwart
-Type fiets: A
-Waarom: Ik kies deze fiets want hij is mooi.`, template: formulierTemplate },
-  { id: 15, title: "Engelse examens", type: "E-mail", task: "Vraag informatie over examens.", points: ["Welke examens", "Wanneer", "Kosten"], keywords: ["examens", "Engels", "wanneer", "kost"], simpleAnswer: `Beste heer/mevrouw,
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 7,
+    title: `Ticket 7`,
+    type: "Wijkkrant",
+    category: ["Dokter", "Familie", "Transport", "Werk", "Wijkkrant"],
+    fullTask: `3
 
-Mijn naam is Mykola.
-Ik wil twee examens Engels doen.
-Ik wil lezen en schrijven doen.
-Wanneer zijn de examens?
-Wat kost het?
+картинки.
 
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 16, title: "Buurt mooier maken", type: "Wijkkrant", task: "Schrijf over buurt schoonmaken.", points: ["Probleem buurt", "Plan", "Hulp vragen"], keywords: ["buurt", "schoon", "schoonmaken", "helpen"], simpleAnswer: `Beste buren,
+  Первая:  учебный  класс,  все  за  партами  9-11  uur   Вторая:  ребята  на  велотренажерах  11-13  Третья:  все  за  компьютерами  13-15    2.  Было  заполнить  формуляр  В  спортивную  школу  и  задать  2
+вопроса,
+
+выбрав
+
+вид
+
+спорта
+
+  3.  Тебе  завтра  на  работу  надо  привезти  коробки  pakjes.  Ты
+используешь
+
+свою
+
+машину.
+
+Но
+
+у
+
+тебя
+
+проблема.
+
+ Дальше  картинка,  что  машина  сломана    Напиши  босу,  что  ты  должен  сделать  завтра  на  работе   Напиши,  что  случилось  с  машиной.  Дальше  не  была  уверена,  что
+хотели
+
+ Stel  ….  Oplossing   Но  я  подумала,  что  надо  как-то  решить    Я  переписала,  что  мне  надо  доставить  коробки  и  что  у  меня
+проблема
+
+maar
+
+ik
+
+heb
+
+een
+
+probleem.
+
+Mijn
+
+auto
+
+is
+
+kapot.
+ Jane  kan  morgen  pakjes  bringen.  Kan  je  haar  vragen?   4.  Письмо  в  газету   Напишите  о  buurman  of  buurvrouw   Которого  вы  находите  aardig   Aardig  я  не  знала,  но  решила,  что  это  или  особенный  или  странный    Потом  увидела,  что  дружелюбный,  но  мне  все  равно  подошло  под
+ответ
+
+  Вопросы:  как  зовут,  что  делает,  почему  считаешь  aardig   Начало  как  всегда,  потом  написала
+
+Haar  nana  is  Jane.  Zij  is  dokter.  Ik  vind  haar  aardig  want  zij  werkt  en
+helpt
+
+mensen
+
+elke
+
+dag.
+   У  вас  есть  карточки  на  футбольный  матч.  Вы  пойти  не  можете.
+Предложите
+
+из
+
+Хассану.
+
+Напишите
+
+что
+
+у
+
+вас
+
+есть
+
+карточки
+
+и
+
+на
+
+когда.
+
+Напиши
+
+почему
+
+не
+
+можете
+
+пойти.
+
+Предложите
+
+их
+
+хассану.
+
+Спросите
+
+хочет
+
+ли
+
+он
+
+их
+
+иметь.
+
+  В  вашей  школе  отмечают  праздники.  Доцент  спросил  с  какими
+праздниками
+
+вы
+
+хотите
+
+помочь.
+
+Нужно
+
+заполнить
+
+формуляр
+
+с
+
+своими
+
+данными.
+
+Выбрать
+
+из`,
+    points: [],
+    keywords: [`картинки`, `первая`, `учебный`, `класс`, `партами`, `9-11`, `вторая`, `ребята`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik wil mijn buurt mooier maken.
-De buurt is niet schoon.
-Ik wil de buurt schoonmaken.
-Willen jullie helpen?
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 17, title: "Geluid buurman", type: "Brief", task: "Schrijf brief over lawaai.", points: ["Lawaai benoemen", "Last zeggen", "Praten vragen"], keywords: ["lawaai", "avond", "last", "praten"], simpleAnswer: `Beste Piet,
+Mykola`,
+  },
+  {
+    id: 8,
+    title: `Ticket 8`,
+    type: "Wijkkrant",
+    category: ["Familie", "Wijkkrant"],
+    fullTask: `2
 
-Ik schrijf u want er is veel lawaai in de avond.
-Ik heb daar last van.
-Kunnen wij samen praten?
+продукта
 
-Met vriendelijke groet,
-Mykola`, template: briefjeTemplate },
-  { id: 18, title: "Feest in de buurt", type: "Wijkkrant", task: "Organiseer buurtfeest.", points: ["Feest noemen", "Plaats en tijd", "Wat meenemen"], keywords: ["feest", "buurt", "zaterdag", "park", "eten"], simpleAnswer: `Beste buren,
+которые
 
-Mijn naam is Mykola.
-Ik wil een feest in de buurt organiseren.
-Het feest is zaterdag in het park.
-Jullie kunnen eten meenemen.
+вы
 
-Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 19, title: "Kookcursus afzeggen", type: "E-mail", task: "Meld af voor kookcursus.", points: ["Niet kunnen komen", "Reden", "Volgende keer"], keywords: ["kookcursus", "ziek", "volgende cursus"], simpleAnswer: `Beste heer/mevrouw,
+не
 
-Ik kan niet naar de kookcursus komen.
-Ik ben ziek.
-Ik wil graag bij de volgende cursus zijn.
+получили
 
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 20, title: "Voetbalkaartjes", type: "E-mail", task: "Vraag Hassan over kaartjes.", points: ["Je kan niet gaan", "Reden", "Aanbieden kaartjes"], keywords: ["kaartjes", "wedstrijd", "zaterdag", "werken"], simpleAnswer: `Beste Hassan,
+и
 
-Ik heb kaartjes voor een voetbalwedstrijd.
-De wedstrijd is zaterdag.
-Ik kan niet gaan want ik moet werken.
-Wil je de kaartjes hebben?
+когда
 
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 21, title: "Bestelling incompleet", type: "E-mail", task: "Klaag over ontbrekende producten.", points: ["Bestelling noemen", "Wat ontbreekt", "Oplossing vragen"], keywords: ["besteld", "kaas", "brood", "morgen", "ontvangen"], simpleAnswer: `Beste heer/mevrouw,
+они
 
-Ik heb producten besteld.
-Ik heb geen kaas en geen brood gekregen.
-Ik wil deze producten morgen ontvangen.
+должны
 
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 22, title: "Koken thuis", type: "Wijkkrant", task: "Schrijf over koken thuis.", points: ["Wie kookt", "Wat kookt", "Wanneer"], keywords: ["partner", "kebab", "thuis", "elke dag", "10 uur"], simpleAnswer: `Beste buren,
+быть
+
+доставлены.
+
+  Напишите  в  газету  письмо  о  том  кто  в  доме  у  вас  готовит.  Напишите
+кто
+
+готовит,
+
+что
+
+любит
+
+готовить
+
+и
+
+когда
+
+это
+
+делает.
+
+ 1.  Напиши  лист  у  газету  і  розкажи  своїм  сусідам  про  своє  житло.  -  Треба  було  написати  скільки  кімнат,  я  написав  twee  slaapkamers  en
+keuken...
+ -  Треба  було  описати  кухню,  я  не  докінця  зрозумів  що  саме,  але
+написав,
+
+що
+
+mijn
+
+keuken
+
+is
+
+groot
+ -  Треба  було  описати  з  ким  я  живу,  я  написав  що  живу  met  mijn  vrouw  2.  Треба  було  написати  листа  до  колеги  Омара.  Взагалі,  там  було
+написано
+
+що
+
+я
+
+працюю
+
+кимось,
+
+я
+
+не
+
+зрозумів
+
+ким
+
+конкретно.
+
+Завтра
+
+я
+
+маю
+
+працювати
+
+у
+
+іншому
+
+місті
+
+разом
+
+з
+
+Омаром
+
+і
+
+хочу
+
+зустріти
+
+його
+
+на
+
+машині.
+
+Треба
+
+було
+
+написати
+
+йому
+
+у
+
+якому
+
+місті
+
+ми
+
+працюємо,
+
+де
+
+і
+
+о
+
+котрій
+
+годині
+
+зустрінемось
+
+та
+
+що
+
+Омар
+
+має
+
+взяти
+
+з
+
+собою.
+ Я  написав  що  ми  будемо  працювати  у  Almere  stad  і  маємо  зустрітись
+in
+
+Almere
+
+Centraal
+
+om
+
+9.00
+
+uur...
+
+далі
+
+я
+
+написав
+
+щосиь
+
+типу
+
+Kun
+
+je
+
+kleren
+
+nemen.`,
+    points: [`Треба  було  описати  кухню,  я  не  докінця  зрозумів  що  саме,  але`, `Треба  було  описати  з  ким  я  живу,  я  написав  що  живу  met  mijn  vrouw  2.  Треба  було  написати  листа  до  колеги  Омара.  Взагалі,  там  було`],
+    keywords: [`продукта`, `которые`, `получили`, `когда`, `должны`, `быть`, `доставлены`, `напишите`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Mijn partner kookt bij mij thuis.
-Zij maakt graag kebab.
-Zij kookt elke dag om 10 uur.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Треба  було  описати  кухню,  я  не  докінця  зрозумів  що  .
+Ik schrijf over: Треба  було  описати  з  ким  я  живу,  я  написав  що  живу.
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 23, title: "Zieke klasgenoot", type: "E-mail", task: "Stuur klasgenoot info en beterschap.", points: ["Vraag hoe het gaat", "Les info", "Huiswerk"], keywords: ["Nederlandse les", "huiswerk", "pagina 10", "beterschap"], simpleAnswer: `Beste Karim,
+Mykola`,
+  },
+  {
+    id: 9,
+    title: `Був формуляр, щось про курс здорової їжі, все просто доволі, в`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Dokter", "Familie", "School", "Vrienden", "Werk", "Wijkkrant", "Winkel"],
+    fullTask: `3.  Був  формуляр,  щось  про  курс  здорової  їжі,  все  просто  доволі,  в
+кінці
 
-Hoe gaat het met je?
-Vandaag hadden wij Nederlandse les.
-Het huiswerk is pagina 10.
+було
+
+два
+
+запитання:
+
+як
+
+я
+
+хочу
+
+вчити
+
+курс
+
+та
+
+чому
+
+я
+
+хочу
+
+його
+
+вчити.
+
+В
+
+загальному
+
+я
+
+відповів
+
+Ik
+
+wil
+
+gezond
+
+koken
+
+voor
+
+mijn
+
+vrouw
+ 4.  Для  мене  це  провал,  бо  я  ні  тексту  не  зрозумів  нормально  ні
+нічого
+
+номрально
+
+не
+
+написав,
+
+тобто
+
+я
+
+написав,
+
+але
+
+якщо
+
+чесно
+
+що
+
+попало.
+
+Там
+
+було
+
+щось
+
+про
+
+те,
+
+що
+
+треба
+
+забрати
+
+чи
+
+відвести
+
+кудись
+
+дітей,
+
+я
+
+не
+
+можу
+
+і
+
+треба
+
+попросити
+
+друзів
+
+і
+
+тд.
+     1.  Ваша  школа  организовала  поездку  schoolreijs,  maar  u  kunt  niet
+mee
+
+(но
+
+вы
+
+не
+
+можете
+
+поехать).
+
+ -  Напишите  в  школу  о  том,  что  вы  не  можете  поехать.  -  Напишите,  что  вы  думаете  о  том,  что  вы  не  можете  поехать.  -  Напишите  почему  вы  не  можете  поехать.  2.  Вы  пишете  письмо  в  wijkkrant.  Напишите  какую  работу  вы  делаете
+с
+
+удовольствием
+
+(werk
+
+dat
+
+je
+
+graag
+
+doet).
+
+ -  Напишите  почему  вы  делаете  эту  работу  с  удовольствием   -  Напишите  где  вы  делаете  эту  работу   -  Hoeveel  uur  (сколько  часов)  вы  планируете  тратить  на  эту  работу.
+ 3.  Ваш  босс  ищет  нового  продавца  в  telefoonwinkel.  У  вас  есть  друг
+Joost,
+
+который
+
+хочет
+
+работать
+
+продавцом
+
+(Joost
+
+wilt
+
+verkoper
+
+worden).
+
+ -  Напишите  своему  начальнику  про  вашего  друга,  который  хочет
+работать
+
+в
+
+магазине.
+ -  Почему  вы  считаете,  что  Joost  is  een  goede  verkoper  (хороший
+продавец).
+vriendelijk
+
+ -  Напишите  своему  начальнику  как  он  может  связаться  с  Joost:  по
+телефону
+
+и
+
+по
+
+имейлу.
+
+Телефон
+
+и
+
+имейл
+
+придумайте
+
+сами.
+
+ 4.  Вы  переехали  в  другой  город  и  ищите  нового  домашнего  доктора
+(huisarts).
+
+Заполните
+
+анкету.
+
+Помимо
+
+стандартных
+
+строк:
+
+имя,
+
+где
+
+живешь,
+
+телефон,
+
+имейл,
+
+были
+
+следующие
+
+вопросы:
+
+ -  Вы  учитесь:  да/нет           Zo  ja,  то  на  кого  -  Вы  работаете:  да/нет
+
+         Zo  ja,  то  кем  docent/ontwerper/   dokter/  kok/model/manager/  grote
+baas
+
+:)
+
+ -  Принимаете  ли  вы  какие-нибудь  лекарства?  Да/Нет  -  Были  ли  вы  за  последний  год  в  какой-то  другой  стране  (ander  land):
+Да/Нет
+ -  Есть  ли  у  вас  какие-то  проблемы  со  здоровьем:  Да/Нет   Везде  где  «да»  нужно  дать  пояснения.      Анкета: klacht  Ты  приболел  и  заполняешь  анкету  к  доктору.  У  тебя  болит  спина,  ты
+думаешь,
+
+что
+
+это
+
+потому
+
+что
+
+ты
+
+работаешь
+
+в
+
+магазине
+
+и
+
+должен
+
+стоят
+
+там
+
+весь
+
+день.
+ -  Имя  фамилия  телефон  -  На  что  жалуешься   -  Как  долго  уже  болеешь?  -  Писал  ли  ты  жалобу  в  магазин  (да/нет)?  Если  да,  то  почему  писал.   -  Когда  планируешь  закончить  болеть  0_о   Последние  два  поля  заполняет  врач  (имя  врача  и  дата  вроде)   Письмо  1  Ты  ходишь  на  курсы.  Сегодня  был  урок  голландского.  Твой
+одноклассник
+
+Карим
+
+заболел
+
+и
+
+ты
+
+пишешь
+
+ему
+
+имейл.
+
+ -  Надо  спросить  как  у  него  дела.   -  Написать  какая  домашка.   -  Пожелать  выздоравливать.
 Beterschap!
+  Письмо  2  Пишешь  имейл  подруге,  тебе  куда-то  надо  на  велосипеде,  но  твой
+велосипед
 
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 24, title: "Fiets lenen", type: "E-mail", task: "Vraag vriendin fiets te lenen.", points: ["Fiets kapot", "Waarom nodig", "Teruggeven"], keywords: ["fiets", "kapot", "stad", "lenen", "morgen"], simpleAnswer: `Beste vriendin,
+сломался.
+ -  Почему  пишешь?  -  Куда  едешь? Ik  moet   naar  de  kroeg  /  stamkroeg   -  Когда  отдашь?
 
-Mijn fiets is kapot.
-Ik moet naar de stad.
-Mag ik jouw fiets lenen?
-Ik geef de fiets morgen terug.
+      Не  уверен,  что  все  правильно  понял,  но:  1.  Напишите  письмо  в  школу  голландского  языка,  о  том  что  вам
+нужен
 
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 25, title: "Geboorte baby", type: "Wijkkrant", task: "Schrijf over traditie met baby's.", points: ["Onderwerp baby's", "Wat jullie doen", "Hoe anderen het weten"], keywords: ["baby", "land", "eten", "Instagram"], simpleAnswer: `Beste buren,
+преподаватель.
+ Почему  пишете.  Что  хотите  делать  с  учителем.  Где  хотите  заниматься.   2.  Анкета  в  музыкальную  школу.  Все  свои  данные  По  каким  дням  хотите  заниматься,  когда  хотите  начать  Hebt  u...  что-то  там.  Ответил  Ja))   3.  Потеряли  ключи(  sleutels)  на  работе.  Пишете  коллегам.  Почему  пишете.  Что  надо  сделать  с  ключами.
+breng
+
+me
+
+de
+
+sleutels.
+
+Mijn
+
+adres
+
+is…..
+
+  4.  Где  вы  жили  раньше  и  где  живете  теперь.  И  что  предпочитаете:  город  (  de  stad)  или  деревню(  het  dorp).  ik  woonde  vroeger   Ik  kom  uit  Polen,  uit  Opole.    1.  Вы  хотите  подарить  подарок  доценту,  картинка  цветы  и  книга.  Вы
+пишите
+
+письмо
+
+одногруппникам
+
+о
+
+своём
+
+желании,
+
+просите
+
+их
+
+дать
+
+денег
+
+на
+
+подарок.
+
+И
+
+просите
+
+сдать
+
+деньги
+
+до
+
+какой
+
+то
+
+даты.
+
+ 2.  Анкета  участника  праздника  на  улице`,
+    points: [`Напишите  в  школу  о  том,  что  вы  не  можете  поехать.  -  Напишите,  что  вы  думаете  о  том,  что  вы  не  можете  поехать.  -  Напишите  почему  вы  не  можете  поехать.  2.  Вы  пишете  письмо  в  wijkkrant.  Напишите  какую  работу  вы  делаете`, `Напишите  почему  вы  делаете  эту  работу  с  удовольствием   -  Напишите  где  вы  делаете  эту  работу   -  Hoeveel  uur  (сколько  часов)  вы  планируете  тратить  на  эту  работу.`, `Напишите  своему  начальнику  про  вашего  друга,  который  хочет`, `Почему  вы  считаете,  что  Joost  is  een  goede  verkoper  (хороший`, `Напишите  своему  начальнику  как  он  может  связаться  с  Joost:  по`, `Вы  учитесь:  да/нет           Zo  ja,  то  на  кого  -  Вы  работаете:  да/нет`],
+    keywords: [`щось`, `курс`, `здорової`, `просто`, `доволі`, `кінці`, `було`, `запитання`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik wil jullie vertellen over baby’s in mijn land.
-Wij koken veel eten.
-Dat is speciaal.
-Andere mensen weten het via Instagram.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Напишите  в  школу  о  том,  что  вы  не  можете  поехать.  .
+Ik schrijf over: Напишите  почему  вы  делаете  эту  работу  с  удовольствием.
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 26, title: "Docent nodig", type: "E-mail", task: "Vraag taalschool om docent.", points: ["Je leert Nederlands", "Wat wil je oefenen", "Waar leren"], keywords: ["taalschool", "docent", "spreken", "schrijven", "thuis"], simpleAnswer: `Beste taalschool,
+Mykola`,
+  },
+  {
+    id: 10,
+    title: `Вы убирались в конторе . Но не все сделали. Пишите письмо`,
+    type: "Wijkkrant",
+    category: ["Wijkkrant"],
+    fullTask: `3.  Вы  убирались  в  конторе  .  Но  не  все  сделали.  Пишите  письмо
+коллеге
 
-Ik leer Nederlands.
-Ik wil een docent.
-Ik wil spreken en schrijven oefenen.
-Ik wil thuis leren.
+что
 
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 27, title: "Nieuw in Nederland", type: "Wijkkrant", task: "Vertel over nieuw in Nederland.", points: ["Sinds wanneer", "Gevoel", "Mening"], keywords: ["2021", "Nederland", "goed", "mooi"], simpleAnswer: `Beste buren,
+вы
+
+не
+
+сделали,
+
+почему,
+
+извиняетесь
+
+.
+
+И
+
+просите
+
+коллегу
+
+доделать.
+ 4.  Письмо  в  газету.  Откуда  и  когда  вы  приехали,  как  себя  чувствуете,
+что
+
+вам
+
+нравиться.`,
+    points: [],
+    keywords: [`убирались`, `конторе`, `сделали`, `пишите`, `коллеге`, `почему`, `извиняетесь`, `просите`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik ben in 2021 naar Nederland gekomen.
-Ik voel mij goed.
-Ik vind Nederland mooi.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 28, title: "Kat gevonden", type: "Bericht", task: "Plaats bericht over gevonden kat.", points: ["Waar en hoe lang", "Beschrijving kat", "Contact"], keywords: ["kat", "twee dagen", "zwart", "klein", "bel"], simpleAnswer: `Hallo,
+Mykola`,
+  },
+  {
+    id: 11,
+    title: `Ticket 11`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Werk", "Wijkkrant"],
+    fullTask: `2021
 
-Er zit al twee dagen een kat bij mijn huis.
-De kat is zwart en klein.
-Van wie is deze kat?
-Bel mij alstublieft.
+Вроде
 
-Mykola`, template: briefjeTemplate },
-  { id: 29, title: "Favoriete app", type: "Wijkkrant", task: "Schrijf over favoriete app.", points: ["App noemen", "Waarom", "Hoe vaak"], keywords: ["TikTok", "video’s", "elke dag"], simpleAnswer: `Beste buren,
+все
+
+не
+
+очень
+
+сложно,
+
+но
+
+кто
+
+знает
+
+как
+
+я
+
+справился,
+
+держу
+
+за
+
+себя
+
+кулаки
+
+и
+
+надеюсь
+
+проскочить.
+
+     1.  У  вашего  дома  два  дня  сидит  кот.  Чей,  вы  не  знаете,  но  хотите
+узнать.
+
+Напишите
+
+объявление
+
+в
+
+супермаркет:
+
+ *  что  случилось   *  как  выглядит  кот  (2  приметы  по  картинке)   *  что  вы  хотите.   2.  ROC  проводит  день  открытых  дверей.  Заполните  формуляр.
+Базовые
+
+вещи:
+
+имя,
+
+дата
+
+рождения,
+
+адрес,
+
+e-mail.
+
+ *  какая  профессия  вам  интересна  больше  всего  (4  картинки  с
+названиями)
+
+ *  почему  вам  это  интересно   *  зачем  хотите  прийти  на  день  открытых  дверей.   3.  Напишите  заметку  в  местную  газету  о  своём  любимом  web  сайте
+или
+
+приложении.
+
+Что
+
+это
+
+за
+
+приложение,
+
+почему
+
+оно
+
+вам
+
+нравится,
+
+когда
+
+вы
+
+его
+
+используете.
+
+ 4.  3  картинки:  человек  с  коробками  -  вчера,  болит  спина  -  сейчас,
+физиотерапевт
+
+-
+
+сегодня
+
+после
+
+обеда.
+
+ Напишите  письмо  начальнику:  что  случилось  вчера,  что  у  вас  болит
+и
+
+что
+
+планируете
+
+делать
+
+после
+
+обеда
+
+сегодня.
+
+ Я  совсем  не  знала  как  написать  тяжёлые  коробки  тягать.  Написала:
+gisteren
+
+heb
+
+ik
+
+verhuisd
+
+zonder
+
+hulp.
+
+Теперь
+
+понимаю,
+
+надо
+
+было
+
+написать
+
+ben
+
+ik
+
+…
+
+ну
+
+ладно
+
+ik
+
+heb
+
+veel
+
+moeten
+
+werken
+
+/
+
+ik
+
+had
+
+veel
+
+werk/
+
+ik
+
+heb
+
+een
+
+nieuw
+
+huis
+
+sinds
+
+gisteren
+
+ 1.  Вы  изучаете  голландский.  Напишите,  как  вы  изучаете
+голландский,
+
+что
+
+вы
+
+находите
+
+простым
+
+и
+
+что
+
+находите
+
+сложным.
+
+Напишите,
+
+какую
+
+книгу
+
+или
+
+телевизионную
+
+программу
+
+используете.
+ 2.  Ваш  buurthuis  запускает  программу  обучения  катания  на
+велосипеде.
+
+Напишите
+
+свое
+
+имя
+
+и
+
+фамилию,
+
+адрес,
+
+индекс,
+
+отметьте
+
+пол.
+
+Скажите
+
+насколько
+
+хорошо
+
+вы
+
+катаетесь
+
+на
+
+велосипеде.
+
+Почему
+
+вы
+
+хотите
+
+учиться
+
+кататься
+
+на
+
+велосипеде?
+ 3.  Вы  хотите  пригласить  друга  что-нибудь  поделать.  Напишите  ему
+письмо:
+
+что
+
+вы
+
+хотите
+
+делать
+
+и
+
+почему,
+
+назначьте
+
+время.
+ 4.  Вы  работаете  три  дня  в  неделю.  На  следующей  неделе  вы  не
+можете
+
+работать
+
+два
+
+дня.
+
+Напишите
+
+вашему
+
+начальнику,
+
+какие
+
+два
+
+дня
+
+вы
+
+не
+
+можете,
+
+почему
+
+не
+
+можете,
+
+согласен
+
+ли
+
+он,
+
+что
+
+вы
+
+отработаете
+
+extra
+
+через
+
+две
+
+недели.
+    Письмо:  Формуляр  от  гементе.  Как  мне  мое  woonplaats,  каких  магазинов  не
+хватает
+
+в
+
+районе
+
+и
+
+какие
+
+гениальные
+
+идеи
+
+у
+
+меня
+
+есть
+
+по
+
+улучшению.
+
+Er
+
+is
+
+geen
+
+Ikea
+ Письмо  боссу.  Я  работаю  в  супермаркете  и  каждый  день  занимаюсь
+только
+
+тем,
+
+что
+
+таскаю
+
+коробки.
+
+Меня
+
+заебало
+
+таскать
+
+коробки,
+
+я
+
+человек
+
+и
+
+имею
+
+право
+
+на
+
+большее.
+
+Написать,
+
+что
+
+я
+
+не
+
+машина
+
+для
+
+таскания
+
+коробок
+
+и
+
+чем
+
+еще
+
+я
+
+бы
+
+хотела
+
+заниматься.
+
+Договориться
+
+о
+
+встрече
+
+с
+
+боссом.
+
+Начала
+
+писать,
+
+что
+
+я
+
+бы
+
+хотела
+
+работать
+
+на
+
+кассе
+
+или
+
+консультировать
+
+покупателей,
+
+но
+
+потом
+
+все
+
+зачеркнула
+
+и
+
+написала,
+
+что
+
+хочу
+
+мыть
+
+пол
+
+😂
+
+Dream
+
+big?
+
+Not
+
+today!
+
+  Письмо  другу.  В  школе  задали  обсудить  с  голландцем  его  работу.
+Объясните
+
+другу,
+
+почему
+
+выбрали
+
+его,
+
+и
+
+договоритесь
+
+о
+
+встрече.
+
+    1:  вы  ходите  на  курсы  готовки,  нужно  написать  что  вы  принесете
+покушать,
+
+на
+
+сколько
+
+это
+
+персон
+
+и
+
+есть
+
+ли
+
+в
+
+составе
+
+мясо`,
+    points: [],
+    keywords: [`2021`, `вроде`, `очень`, `сложно`, `знает`, `справился`, `держу`, `себя`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Mijn favoriete applicatie is TikTok.
-TikTok heeft korte video’s.
-Ik kijk elke dag TikTok.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 30, title: "Rugpijn baas", type: "E-mail", task: "Mail baas over rugpijn.", points: ["Wat er gebeurde", "Klacht", "Naar fysio"], keywords: ["dozen", "rugpijn", "fysiotherapeut"], simpleAnswer: `Beste baas,
+Mykola`,
+  },
+  {
+    id: 12,
+    title: `: формуляр на музыкальные курсы 3: вы делаете обувь, но по какой-то пр...`,
+    type: "Wijkkrant",
+    category: ["Cursus", "School", "Werk", "Wijkkrant"],
+    fullTask: `2:  формуляр  на  музыкальные  курсы  3:  вы  делаете  обувь,  но  по  какой-то  причине  ничего  не  сделали  за
+смену.
 
-Gisteren heb ik veel dozen getild.
-Nu heb ik rugpijn.
-Vanmiddag ga ik naar de fysiotherapeut.
+Что
+
+именно
+
+не
+
+сделали,
+
+почему,
+
+и
+
+что
+
+делать.
+
+письмо
+
+коллеге.
+ 4:  письмо  в  местную  газету  про  соседа,  в  документе  оно  было,  там
+какое-то
+
+слово
+
+на
+
+а,
+
+точно
+
+не
+
+помню
+ Написала  за  20  минут  где-то.  Из  фриков  дедуля  рядом  со  мной  все  говорил,  что  мы  на  адской
+кухне
+
+и
+
+нам
+
+всем
+
+конец,
+
+во
+
+время
+
+экзамена
+
+говорил
+
+сам
+
+с
+
+собой,
+
+но
+
+его
+
+быстро
+
+уняли
+    1.  Газета  -  описать  свой  отпуск,  где,  когда  и  с  кем.  Но  при  этом  еще
+также
+
+можно
+
+было
+
+смотреть
+
+на
+
+картинки
+
+приложенные
+
+-
+
+пловец,
+
+семья
+
+на
+
+пикнике
+
+и
+
+семья
+
+на
+
+покупка
+
+(
+
+boodschappen
+
+doen).
+
+  2.  Я  не  могу  забрать  сына  со  школы  завтра  и  прошу  Маришку  это
+сделать.
+
+Надо
+
+было
+
+написать
+
+почему
+
+не
+
+могу
+
+сам
+
+это
+
+сделать,
+
+почему
+
+пишу
+
+ей,
+
+что
+
+прошу
+
+сделать
+
+её
+
+и
+
+во
+
+сколько
+
+я
+
+вернусь
+
+домой.
+
+  3.  Заполнить  форму  на  занятия  EHBO  (?).  Был  вопрос  что  я  делаю
+по
+
+работе
+
+и
+
+второй
+
+вопрос,
+
+почему
+
+я
+
+хочу
+
+эти
+
+занятия.
+
+  4.  На  прошлой  неделе  не  прошел  курсы.  Надо  было  написать
+учителю
+
+причину,
+
+по
+
+которой
+
+меня
+
+не
+
+было,
+
+почему
+
+я
+
+пишу
+
+письмо
+
+и
+
+спросить,
+
+когда
+
+можно
+
+пройти
+
+первое
+
+занятие
+     Вопросы:  1.  Был  такой  же  как  у  вашей  ученики  про  кухонные  принадлежности.
+Так
+
+что
+
+очень
+
+удачно
+
+что
+
+мы
+
+вчера
+
+это
+
+обсудили.
+
+Мне
+
+кажется
+
+я
+
+на
+
+панике
+
+ровно
+
+то
+
+же
+
+что
+
+она
+
+ответила.
+
+ 2.  Анкета  почему  я  хочу  меньше  часов  работать.
+
+Имя  фамилия  Дата  рождения   3.  Тут  хер  знает  что  было.  Где  я  работаю  или  что  я  делаю…
+написала
+
+в
+
+магазине
+
+😅
+ 4.  Нужно  было  отменить  меньше  часов  я  хочу  работать  или  больше   5  сколько  часов  я  сейчас  работаю   6.  Сколько  часов  хочу   7.  С  какого  числа  я  хочу  чтобы  это  наступило   8.  Почему  я  поменять  часы  ik  ben  moe    Вопрос  3.  Как  из  теста.  Написать  в  газету  про  Feestdag.   Вопрос  4.  Я  хожу  на  занятия  Голландского  и  делаю  домашку.  Я  не
+понимаю
+
+что-то.
+
+Я
+
+хочу
+
+попросить
+
+моего
+
+друга
+
+помочь
+
+мне.
+
+И
+
+вопросы:
+
+напиши
+
+мейл.
+
+Что
+
+ты
+
+не
+
+можешь
+
+сделать.
+
+Назначь
+
+встречу
+   1.  Подруга  переезжает  на  новую  квартиру.  Поздравить,  сказать,  что
+хочу
+
+помочь.
+
+Спросить,
+
+когда
+
+переезжает.
+
+Написать
+
+с
+
+чем
+
+я
+
+могу
+
+помочь.
+ Не  поняла  слово  waarmee  2.  Анкета  на  языковых  курсах.  Доцент  хочет  знать,  что  хорошо,  а  что
+плохо.
+
+Написать
+
+свое
+
+мнение
+
+и
+
+почему
+
+так
+
+считаю.
+
+В
+
+перечне
+
+три
+
+позиции
+ Boek  Docent  Lokaal  Про  хорошо,  написала  книгу.  Не  поняла,  при  чем  тут  lokaal  в  списке.  В  графе  где  плохо,  не  знала,  что  написать.  Написала,  считаю,  что
+все
+
+хорошо)
+ 3.  Е-  mail  босу  Работаю  на  кухне  в  ресторане,  порвались  рабочие  брюки  🤣  Написать  про  это,  и  что  я  хочу.  4.  Заметка  в  газету,  что  я  делаю  в  свободное  время,  где  и  с  кем.
+Написала,
+
+про
+
+Украину
+
+и
+
+море,
+
+что
+
+люблю
+
+плавать
+
+с
+
+мужем
+
+и
+
+все
+
+такое.
+
+   1.  Письмо  своему  одногруппнику  про  урок  и  что  задали,  он  болеет.
+Пожелать
+
+выздоровления
+
+и
+
+написать
+
+домашнее
+
+задание.
+  2.  Анкета  -  не  работает  интернет  ,  написать  имя  адрес.  Какая
+проблема,
+
+сколько
+
+дней
+
+длится.
+  3.  Ты  работаешь  в  ресторане  ,  уборщиком  ,  не  до  конца  убрался  ,  и
+просишь
+
+коллегу
+
+завтра
+
+доделать,
+
+написать
+
+что
+
+ты
+
+болеешь,
+
+почему
+
+,
+
+что
+
+завтра
+
+сделать
+  4.  Дальше  про  фест.  Пишете  письмо  в  газету  про  фест,  что  за  фест,
+когда
+
+и
+
+было
+
+слово
+
+vond
+
+я
+
+протупила
+
+и
+
+ничего
+
+про
+
+это
+
+не
+
+написала
+
+(((
+  1  Ты  работаешь  где-то  (  длинное  слово  не  знаю  его)  .  Ты  работаешь
+до
+
+13.00.
+
+У
+
+тебя
+
+нету
+
+время
+
+убрать
+
+на
+
+столе
+
+и
+
+принести
+
+кофе
+
+meneer
+
+Имя
+
+.
+
+Твоя
+
+коллега
+
+приходит
+
+в
+
+13.00
+
+.
+
+Напиши
+
+ей
+
+письмо
+
+что
+
+ей
+
+нужно
+
+сделать
+
+.(
+
+Почему-то
+
+мне
+
+показалось
+
+это
+
+письмо
+
+очень
+
+сложным
+
+в
+
+начале
+
+.
+
+Может
+
+по
+
+тому
+
+что
+
+первое
+
+может
+
+нервничала
+
+.
+
+А
+
+переписала
+
+все
+
+что
+
+у
+
+меня
+
+нет
+
+времени
+
+и
+
+спросила
+
+Kun
+
+je
+
+helpen
+
+me?
+
+Kun
+
+je
+
+maken
+
+mijn
+
+werk?
+
+Ik
+
+ben
+
+moe!!!)
+ 2  заполнить  анкету  в  энергетическую  компанию  .   3  твой  друг  ищет  курс  по  Нидерландскому  .  Какую  школу  ты
+находишь
+
+хорошей
+
+,
+
+почему
+
+и
+
+как
+
+записаться
+
+он
+
+может
+
+?
+ 3  пишешь  в  газету  сколько  друзей  у  тебя  есть  ,  как  давно  знакомы  и
+что
+
+вы
+
+вместе
+
+делаете
+
+.
+     1.  Газета   Какую  программу  по  телевизору  вы  любите  смотреть?  Waar  gaat  het  programma  over?  Почему  вы  любите  смотреть  эту  программу?   2.  Формуляр  в  библиотеку  на  разговорную  группу  по
+Нидерландскому.
+
+  ⁃  какой  язык  родной  (написать)?   ⁃  Какой  уровень  нидерландского  (Выбрать)
+
+ ⁃  Когда  можете  заниматься  (Выбрать)   ⁃  Как  до  этого  учил  язык  (написать)?   ⁃  Почему  тебе  нужна  эта  группа  (мин  2  причины  написать)?   3.  Письмо  коллеге  Петре.    Ты  работаешь  с  9  утра  в  отеле,  но  ты  придешь  завтра  утром  позже.    ⁃  напиши  что  ты  опоздаешь  и  почему   ⁃  Попроси  schrijf  of  Petra   wil  u  uw  werk  overwerken  (  не  помню
+точную
+
+формулировку)
+  ⁃  Hoe  laat  u  op  uw  werk  bent?   4.  Письмо  друзьям,  что  ты  собираешься  dagje  uit   ⁃  Напиши  что  ты  собираешься  делать   ⁃  Где  ты  собираешься  это  делать   ⁃  Когда    ⁃  Могут  они  в  этот  день  пойти  с  тобой    1)  Письмо  учителю  о  упражнению  по  говорению  на  голландском.  О
+чем
+
+будете
+
+рассказывать.
+
+Написать
+
+несколько
+
+тем.
+
+С
+
+кем
+
+будете
+
+готовиться.
+  2)  Письмо  насяльнику.  Почему  не  придёшь  на  работу,  сколько  дней
+не
+
+придёшь.
+
+Хочешь
+
+ему
+
+позвонить,
+
+придумать
+
+зачем.
+  3)  Газета.  Соседям.  Рассказать  что  из  нидерландской  еды  нравится
+или
+
+нет
+
+(несколько
+
+вещей).
+
+Почему.
+
+Где
+
+ты
+
+это
+
+ешь.
+    1.  Напишите  в  местную  газету  про  программу  на  телевидении,
+которую
+
+с
+
+удовольствием
+
+смотрите.
+
+О
+
+чем
+
+там
+
+рассказывают,
+
+почему
+
+с
+
+удовольствием
+
+смотрите.
+ —  выдумала  программу  «Koken  met  Marie”.  Сказала  что
+рассказывает
+
+про
+
+еду,
+
+напитки
+
+и
+
+лучшие
+
+рестораны
+
+в
+
+Амстердаме.
+
+Люблю
+
+смотреть
+
+потому
+
+что
+
+готовлю
+
+каждый
+
+день.`,
+    points: [`Письмо  насяльнику.  Почему  не  придёшь  на  работу,  сколько  дней`, `Газета.  Соседям.  Рассказать  что  из  нидерландской  еды  нравится`],
+    keywords: [`музыкальные`, `курсы`, `делаете`, `обувь`, `какой-то`, `причине`, `ничего`, `сделали`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Письмо  насяльнику.  Почему  не  придёшь  на  работу,  сколь.
+Ik schrijf over: Газета.  Соседям.  Рассказать  что  из  нидерландской  еды  .
 
 Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 31, title: "Cadeau docent", type: "E-mail", task: "Mail klasgenoten over cadeau.", points: ["Cadeau idee", "Wat kopen", "Geld vragen"], keywords: ["docent", "cadeau", "bloemen", "geld", "vrijdag"], simpleAnswer: `Beste klasgenoten,
+Mykola`,
+  },
+  {
+    id: 13,
+    title: `Ticket 13`,
+    type: "Wijkkrant",
+    category: ["Transport", "Wijkkrant"],
+    fullTask: `4
 
-Ik wil onze docent een cadeau geven.
-Ik wil bloemen kopen.
-Kunnen jullie geld geven?
-Geef het geld voor vrijdag.
+вопрос
+
+я
+
+не
+
+понял
+
+главное
+
+слово
+
+и
+
+не
+
+пойму
+
+что
+
+то
+
+написал.
+
+Там
+
+пишу
+
+друзьям
+
+что
+
+что
+
+то
+
+ищу
+
+для
+
+детей
+
+а
+
+дальше
+
+все
+
+не
+
+понятно
+
+(слово
+
+не
+
+помню)
+
+написать
+
+почему
+
+ищу
+
+(сказал
+
+это
+
+leuk)
+
+когда
+
+надо
+
+и
+
+спросить
+
+если
+
+они
+
+знают
+
+goed
+
+"слово"
+
+...kant
+    -  лист  сусідам  про  тв  програму  -  лист  колезі,  що  запізнююсь  і  попросити,  щоб  колега  взяв  собі
+частину
+
+роботи
+ -  заповнити  формуляр  про  курси  нідерландською  -  для  чого  хочеш
+на
+
+курси,
+
+яка
+
+твоя
+
+рідна
+
+мова
+ -  лист-запрошення  друзям  на  вечірку  Просто  чітерство  😂  У  мене  були  -  формуляр  для  припинення  занять  в  спортзалі  -  чому  припиняєш
+ходити
+ -  лист  начальнику  -  в  завданні  картинка  з  димом  з  авто.  Тобі  треба
+привезти
+
+на
+
+роботу
+
+якісь
+
+речі,
+
+але
+
+є
+
+проблема
+
+(авто
+
+на
+
+фото),
+
+напиши
+
+начальнику
+
+що
+
+ти
+
+маєш
+
+зробити,
+
+опиши
+
+проблему,
+
+напиши
+
+що
+
+можеш
+
+зробити
+
+ -  лист  в  газету  про  парк  в  твоєму  районі  (описати  сам  парк),  що  є  в
+парку,
+
+що
+
+ти
+
+там
+
+робиш
+
+-  лист  до  твоєї  шкоди,  де  ти  можеш  позичити  ноут  -  для  чого  хочеш
+позичити,
+
+на
+
+який
+
+термін,
+
+коли
+
+повернеш
+    1.  Заполнить  формуляр.  Хотите  отписаться  от  абонемента  в  Fit
+Vandaag.
+
+Указать
+
+свои
+
+данные.
+
+Указать
+
+с
+
+какого
+
+числа
+
+хотите
+
+отписаться.
+
+Почему?
+
+Написала
+
+mijn
+
+rug
+
+doet
+
+pijn.
+
+Как
+
+долго
+
+u
+
+bent
+
+lid?
+
+(не
+
+поняла
+
+что
+
+это,
+
+наверное,
+
+как
+
+давно
+
+в
+
+клубе?
+
+написала
+
+sinds
+
+December
+
+2022).
+
+И
+
+какое
+
+ваше
+
+mening.
+
+Написала,
+
+что
+
+мне
+
+нравится,
+
+но
+
+дорого.
+ 2.  Вы  собирались  коробочки  перевозить.  Собирались
+использовать
+
+свою
+
+машину.
+
+Но
+
+возникала
+
+проблема
+
+(смотри
+
+картинку
+
+дым
+
+из
+
+под
+
+капота).
+
+Напиши
+
+начальнику
+
+письмо:
+
+что
+
+собирался
+
+сделать
+
+(послушно
+
+списала
+
+все
+
+предложения
+
+с
+
+начала
+
+текста).
+
+Что
+
+за
+
+проблема?
+
+Mijn
+
+auto
+
+is
+
+kapot
+
+😊
+
+Stel
+
+uw
+
+oplossing.
+
+Спросила
+
+можно
+
+ли
+
+его
+
+машину
+
+использовать.
+
+Благо
+
+слово
+
+использовать
+
+было
+
+в
+
+вопросе
+
+😊
+ 3.  Письмо  в  местную  газету  о  парке  в  твоем  районе.  Вопросы  не
+все
+
+поняла.
+
+Вроде
+
+все
+
+слова
+
+знакомые,
+
+но
+
+они
+
+в
+
+каком-то
+
+странном
+
+сочетании.`,
+    points: [`лист  сусідам  про  тв  програму  -  лист  колезі,  що  запізнююсь  і  попросити,  щоб  колега  взяв  собі`, `заповнити  формуляр  про  курси  нідерландською  -  для  чого  хочеш`, `лист-запрошення  друзям  на  вечірку  Просто  чітерство  😂  У  мене  були  -  формуляр  для  припинення  занять  в  спортзалі  -  чому  припиняєш`, `лист  начальнику  -  в  завданні  картинка  з  димом  з  авто.  Тобі  треба`, `лист  в  газету  про  парк  в  твоєму  районі  (описати  сам  парк),  що  є  в`, `лист  до  твоєї  шкоди,  де  ти  можеш  позичити  ноут  -  для  чого  хочеш`],
+    keywords: [`вопрос`, `понял`, `главное`, `слово`, `пойму`, `написал`, `пишу`, `друзьям`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: лист  сусідам  про  тв  програму  -  лист  колезі,  що  запі.
+Ik schrijf over: заповнити  формуляр  про  курси  нідерландською  -  для  чог.
 
 Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 32, title: "Schoonmaken niet af", type: "E-mail", task: "Mail collega over werk niet af.", points: ["Niet af", "Reden ziek", "Morgen vragen"], keywords: ["schoongemaakt", "ziek", "morgen", "afmaken"], simpleAnswer: `Beste collega,
+Mykola`,
+  },
+  {
+    id: 14,
+    title: `Ticket 14`,
+    type: "E-mail",
+    category: ["E-mail", "Transport"],
+    fullTask: `3.
 
-Ik heb vandaag niet alles schoongemaakt.
-Ik ben ziek.
-Sorry.
-Kun je het morgen afmaken?
+Что
+
+ты
+
+там
+
+делаешь?
+
+Написала
+
+wandelen
+
+и
+
+fietsen.
+ 4.  Письмо  в  школу,  что  хотите  одолжить  ноут.  Что  хотите
+сделать?
+
+(переписала
+
+,
+
+конечно
+
+с
+
+вопроса)
+
+Зачем?
+
+ik
+
+wil
+
+informatie
+
+op
+
+het
+
+Internet
+
+zoeken
+
+😊
+
+С
+
+когда
+
+и
+
+на
+
+сколько?
+
+Вот
+
+здесь
+
+я
+
+забыла,
+
+что
+
+надо
+
+была
+
+в
+
+начале
+
+указать
+
+до
+
+когда.
+
+Поэтому
+
+написала.
+
+Kan
+
+ik
+
+morgen
+
+een
+
+laptop
+
+krijgen?
+
+Ik
+
+ga
+
+op`,
+    points: [],
+    keywords: [`делаешь`, `написала`, `wandelen`, `fietsen`, `школу`, `хотите`, `одолжить`, `ноут`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
 
 Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 33, title: "Minder uren werken", type: "Formulier", task: "Vul formulier minder uren in.", points: ["Persoonsgegevens", "Huidige uren", "Gewenste uren"], keywords: ["40 uur", "24 uur", "restaurant", "kebab", "moe"], simpleAnswer: `Naam: Mykola Miskov
-Geboortedatum: 01-01-1990
+Mykola`,
+  },
+  {
+    id: 15,
+    title: `Ticket 15`,
+    type: "Formulier",
+    category: ["Buurt", "Cursus", "Familie", "Formulier", "School", "Werk"],
+    fullTask: `22
+
+december
+
+de
+
+laptop
+
+terug
+
+brengen.
+
+   Первый  текст  был  написать  имейл  про  подготовку  текста  для
+рассказа
+
+для
+
+преподавателя.
+  Второй  формуляр  записаться  на  курс  велосипеда,  тут  просто
+
+ Третий  в  газету  про  любимую  голландскую  еду.   Четвертый  про  то,  что  боссу  надо  написать,  что  ты  не  придешь  на
+работу.
+
+Первое:
+
+напишите
+
+про
+
+свою
+
+самую
+
+любимую/
+
+красивую
+
+комнату
+
+в
+
+доме.
+
+Почему
+
+это
+
+любимая
+
+комнаты,
+
+что
+
+вы
+
+в
+
+ней
+
+делаете
+
+и
+
+какая
+
+там
+
+что
+
+-то
+
+на
+
+sp….
+
+Я
+
+думала
+
+это
+
+мебель,
+
+а
+
+это
+
+нет
+
+🙉
+,
+
+тк
+
+я
+
+написала
+
+про
+
+мебель.
+
+Вообщем
+
+не
+
+знаю,
+
+что
+
+это
+
+было..
+
+что-то
+
+на
+
+подобие
+
+spoolen….
+
+ Второе  был  email.  Вы  сдавали  на  прошлой  неделе  экзамены  по
+чтению,
+
+но
+
+(
+
+если
+
+я
+
+правильно
+
+поняла)
+
+не
+
+сдали.
+
+Напишите
+
+почему
+
+вы
+
+пишите
+
+это
+
+письмо,
+
+почему
+
+вы
+
+не
+
+сделали
+
+экзамен,
+
+спросите
+
+можете
+
+ли
+
+вы
+
+пересдать
+
+и
+
+когда
+
+ Третье  это  анкета  ,  мол  компания  АБС  ищет.  Medewerker  что  делать
+с
+
+хлебом
+
+и
+
+сервисом,
+
+как
+
+обычно::
+
+свои
+
+данные,
+
+адрес,
+
+в
+
+какие
+
+дни
+
+вы
+
+можете
+
+работать,
+
+сколько
+
+часов
+
+в
+
+неделю
+
+и,
+
+если
+
+я
+
+правильно
+
+поняла
+
+напишите
+
+свой
+
+ervaring
+
+(
+
+опыт)
+
+работы
+
+по
+
+той
+
+специальности,
+
+которую
+
+вы
+
+из
+
+трех
+
+выбрали
+
+для
+
+себя.
+   Четвертое  было  пись  в  обслуживающую  компанию  написать,  что  у
+вас
+
+в
+
+жилой
+
+комнате
+
+не
+
+работает
+
+отопление
+
+написать:
+
+с
+
+какого
+
+времени
+
+у
+
+вас
+
+проблема
+
+и
+
+придумать
+
+почему,
+
+спросить
+
+что-то
+
+про
+
+оплату
+  1.  письмо  друзьям,  с  которыми  вместе  собираетесь  на  теннисный
+матч
+
+tenniswedstrijd
+ Спросить,  почему  ты  пишешь  письмо.  Как  вы  вместе  можете
+поехать
+
+на
+
+матч?
+
+Что
+
+вы
+
+можете
+
+вместе
+
+делать
+
+после
+
+матча?
+  2.  Письмо  соседям  Какую  музыку  ты  любишь?  Почему  ты  любишь  эту  музыку?   Кто
+исполняет
+
+эту
+
+музыку?
+
+ 3.  Формуляр  по  болезни  Ты  работаешь  в  магазине  одежды.  Ты  заболел  и  нужно  заполнить
+формуляр.
+
+Ты
+
+думаешь,
+
+что
+
+боль
+
+в
+
+спине
+
+из-за
+
+того
+
+что
+
+ты
+
+стоишь
+
+в
+
+магазине
+
+целый
+
+день
+
+ Вопросы  в  формуляре:  когда  ты  заболел,  какая  у  тебя  жалоба?
+Когда
+
+сможешь
+
+вернуться
+
+к
+
+работе?
+
+Почему
+
+ты
+
+заполняешь
+
+это?
+
+(Это
+
+вопрос
+
+не
+
+совсем
+
+поняла)
+  4.  Письмо  в  школу  обучения  Английскому.  Ты  хочешь  сдать  2
+экзамена.
+ Есть  картинки:  чтение,  письмо,  говорение  и  слушание   Вопросы:  напиши  в  школу  что  ты  хочешь  сдать  2  экзамена.  Выбери
+по
+
+картинкам,
+
+какие.
+
+Задай
+
+два
+
+вопроса
+
+по
+
+поводу
+
+экзаменов
+
+   1.  письмо  друзьям,  с  которыми  вм1  .  Email  van  uw  werk  collega’s  dat  jij  heb
+werk
+
+examen
+
+heft
+
+geslaagd
+
+en
+
+dat
+
+jij
+
+geef
+
+en
+
+feestje.
+
+Wanneer
+
+waar
+
+en
+
+Datum
+ Теж  було  запросіть  їх  усіх
+есте  собираетесь  на  теннисный  матч  tenniswedstrijd  Спросить,  почему  ты  пишешь  письмо.  Как  вы  вместе  можете
+поехать
+ 2.  Газета  про  kinderboeken.  Welk  kinderboek  vind  je  mooi  waarom.  Vertellen
+over
+
+kinderverhalen
+  3.  Formulier:  jij  doet  opleiding  tot  kok.  Maar  wil  je  niet  meer.  Schrijf  waarom  niet  en
+welke
+
+andere
+
+opleiding
+
+wil
+
+je
+
+doen.
+ 4.  Email  “Buren  helpen  buren”  Met  wat  kan  je  helpen  ,  wat  doe  je  goed  en  op  welke  dagen`,
+    points: [`то`],
+    keywords: [`december`, `laptop`, `terug`, `brengen`, `первый`, `текст`, `имейл`, `подготовку`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
 Adres: Hoofdstraat 10
 Postcode en woonplaats: 1234 AB Amsterdam
 Telefoonnummer: 0612345678
 E-mail: mykola@email.com
-Waar werkt u? In een restaurant.
-Wat doet u daar? Ik maak kebab.
-Hoeveel uur werkt u nu? 40 uur.
-Hoeveel uur wilt u werken? 24 uur.
-Waarom? Ik ben moe.`, template: formulierTemplate },
-  { id: 34, title: "Feestdag", type: "Wijkkrant", task: "Schrijf over favoriete feestdag.", points: ["Feestdag noemen", "Wat je doet", "Met wie"], keywords: ["verjaardag", "koffie", "taart", "partner"], simpleAnswer: `Beste buren,
+то: ...`,
+  },
+  {
+    id: 16,
+    title: `Ticket 16`,
+    type: "E-mail",
+    category: ["E-mail"],
+    fullTask: `1)
 
-Mijn naam is Mykola. Ik kom uit Oekraïne.
-Mijn favoriete feestdag is mijn verjaardag.
-Ik drink koffie en eet taart.
-Ik vier mijn verjaardag met mijn partner.
+письмо
+
+доценту
+ у  тебя  на  следующей  неделе  шпрекен  экзамен,  тебе  надо  сказать  о  чем  ты  будешь
+рассказывать
+
+(2
+
+вещи)
+
+и
+
+что
+
+ты
+
+будешь
+
+к
+
+этому
+
+экзамену
+
+непонятное
+
+слово.
+
+Написал
+
+что
+
+буду
+
+рассказывать
+
+про
+
+свою
+
+собаку
+
+и
+
+работу,
+
+а
+
+к
+
+экзамену
+
+учу
+
+новые
+
+слова,
+
+решил
+
+может
+
+спрашивалось
+
+как
+
+я
+
+готовлюсь
+
+или
+
+тип
+
+того
+  2)  заполнить  форму  что  хочешь  на  районе  учиться  кататься  на  веле  на  курсах  от
+района
+
+и
+
+зачем.
+
+Написал
+
+что
+
+хочу
+
+на
+
+работу
+
+на
+
+веле
+
+ездить`,
+    points: [`заполнить  форму  что  хочешь  на  районе  учиться  кататься  на  веле  на  курсах  от`],
+    keywords: [`доценту`, `тебя`, `следующей`, `неделе`, `шпрекен`, `экзамен`, `тебе`, `сказать`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: заполнить  форму  что  хочешь  на  районе  учиться  кататься.
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 35, title: "Vrije tijd", type: "Wijkkrant", task: "Schrijf over vrije tijd.", points: ["Activiteit", "Waar", "Met wie"], keywords: ["vrije tijd", "TikTok", "thuis", "partner"], simpleAnswer: `Beste buren,
+Mykola`,
+  },
+  {
+    id: 17,
+    title: `письмо соседям про лучшую или худшую голландскую еду, почему и где ее`,
+    type: "Wijkkrant",
+    category: ["Cursus", "Wijkkrant"],
+    fullTask: `3)  письмо  соседям  про  лучшую  или  худшую  голландскую  еду,  почему  и  где  ее
+можно
+
+есть.
+
+Написал
+
+что
+
+люблю
+
+стамппот
+
+в
+
+парке
+
+есть,
+
+потому
+
+что
+
+в
+
+отличие
+
+от
+
+стамппота
+
+дома
+
+там
+
+есть
+
+андивий
+  4)  письмо  на  работу  что  не  можешь  работать,  как  долго  и  почему.  И  что  позвонишь
+чуваку,
+
+придумать
+
+зачем.
+
+Написал
+
+что
+
+у
+
+меня
+
+до
+
+некст
+
+недели
+
+ковид,
+
+я
+
+позвоню
+
+рассказать
+
+про
+
+свою
+
+работу,
+
+дай
+
+номер
+
+телефона
+
+  1)  заполнить  анкету  -  потеряла  телефон  в  автобусе.  оставить  имя,  адрес,  модель  и
+цвет
+
+телефона)
+
+и
+
+написать
+
+когда
+
+и
+
+где
+
+именно
+
+в
+
+автобусе
+
+сидела
+
+-
+
+написала
+
+ik
+
+zat
+
+naast
+
+de
+
+eerste
+
+ingang
+
+  2)  письмо  другу  про  курс  по  вязанию  (cursus  breien),  на  который  я  хожу.   ну  и
+вопросы
+
+типа
+
+почему
+
+нравится
+
+курс,
+
+что
+
+ты
+
+там
+
+научилась,
+
+где
+
+и
+
+когда
+
+проходят)
+
+ -  тут  я  точно  не  была  уверена,  что  слово  breien  значит,  но  там  картинка  была  с
+чем-то
+
+вязанным))
+
+поэтому
+
+написала,
+
+что
+
+-
+
+ik
+
+leer
+
+mooie
+
+dingen
+
+maken,
+
+ik
+
+heb
+
+een
+ rode  jurk  zelf  gemaakt  или  что-то  такое    3)  письмо  в  газету  про  свой  дом  -  какой  дом,  нравится  ли  он  мне  и  почему,  с  кем
+там
+
+живу
+
+и
+
+сколько
+
+спален
+
+  4)  письмо  коллеге  -  работаешь  в  ресторане  уборщиком,  и  не  успела  что-то  сделать
+(не
+
+помню
+
+слово,
+
+но
+
+кажется
+
+помыть
+
+пол
+
+или
+
+что-то
+
+такое).
+
+написать
+
+коллеге
+
+об
+
+этом
+
+и
+
+почему,
+
+и
+
+попросить
+
+чтоб
+
+он
+
+завтра
+
+за
+
+меня
+
+это
+
+сделал
+
+ 1.  Написать  другу  по  парте  ,  с  которым  ты  ходишь  на  inburgeringscursus,  что  ты  бы
+хотела
+
+с
+
+ним
+
+oefening
+
+после
+
+курса.
+
+Напиши
+
+когда,
+
+где
+
+и
+
+в
+
+котором
+
+часу.
+
+  2.  Написать  в  газету,  какой   твой  любимый  телефон.  Почему  он  лучше  всех,  что
+можно
+
+с
+
+ним
+
+делать
+
+и
+
+что
+
+ты
+
+делаешь
+
+больше
+
+всего.`,
+    points: [`письмо  соседям  про  лучшую  или  худшую  голландскую  еду,  почему  и  где  ее`, `письмо  на  работу  что  не  можешь  работать,  как  долго  и  почему.  И  что  позвонишь`, `заполнить  анкету  -  потеряла  телефон  в  автобусе.  оставить  имя,  адрес,  модель  и`, `письмо  другу  про  курс  по  вязанию  (cursus  breien),  на  который  я  хожу.   ну  и`, `тут  я  точно  не  была  уверена,  что  слово  breien  значит,  но  там  картинка  была  с`, `письмо  коллеге  -  работаешь  в  ресторане  уборщиком,  и  не  успела  что-то  сделать`],
+    keywords: [`соседям`, `лучшую`, `худшую`, `голландскую`, `почему`, `можно`, `есть`, `написал`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-In mijn vrije tijd kijk ik TikTok.
-Ik doe dat thuis.
-Ik doe dat met mijn partner.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: письмо  соседям  про  лучшую  или  худшую  голландскую  еду,.
+Ik schrijf over: письмо  на  работу  что  не  можешь  работать,  как  долго  .
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 36, title: "Internetstoring", type: "Formulier", task: "Vul storing formulier in.", points: ["Persoonsgegevens", "Probleem", "Hoe lang"], keywords: ["internet", "werkt niet", "twee dagen"], simpleAnswer: `Naam: Mykola Miskov
+Mykola`,
+  },
+  {
+    id: 18,
+    title: `Заполнить формуляр на работу уборщицей. Данные плюс написать, сколько`,
+    type: "Wijkkrant",
+    category: ["Wijkkrant"],
+    fullTask: `3.  Заполнить  формуляр  на  работу  уборщицей.  Данные  плюс  написать,  сколько
+дней
+
+хочешь
+
+работать,
+
+как
+
+ты
+
+будешь
+
+добираться,
+
+сколько
+
+км,
+
+хочешь
+
+ли
+
+ты
+
+работать
+
+днем
+
+или
+
+вечером
+
+и
+
+почему.
+ 4.  Твой  велик  сломался  и  ты  во  вторник  не  можешь  поехать  вместе  с  другом  на
+курсы.
+
+Напиши
+
+как
+
+ты
+
+туда
+
+доберешься,
+
+и
+
+что
+
+чувствуешь
+
+при
+
+этом.
+
+ви
+
+хочете
+
+изменить
+
+расписание
+
+уроков
+
+по
+
+плаванью.
+
+не
+
+сразу
+
+понял
+
+шо
+
+veranderen
+
+єто
+
+поменять.
+
+но
+
+написал
+
+шо
+
+просто
+
+текущее
+
+расписание
+
+не
+
+хорошо
+
+для
+
+меня
+
+и
+
+когда
+
+можно
+
+поменять?
+  второе  было  письмо  в  газету  о  том  где  бы  вы  лучше  жили  в  городе  или  селе.
+напишите
+
+так
+
+же
+
+где
+
+живете
+
+сейчас.
+  формуляр  обычный,  чем  можете  помочь  с  каким  то  праздником.  ара  армен  всегда
+готов
+
+делать
+
+барбекю.
+  последнее,  ви  хотите  купить  велосипед  сыну.  спросите  минимум  две  вещи  и
+попросите
+
+скидку.
+
+спросил
+
+насколько
+
+стар
+
+вел
+
+и
+
+ремонтировали
+
+ли
+
+они
+
+его.
+
+ Пока  помню  вопросы  1.  Потерял  телефон  в  автобусе  и  пишешь  заявку.   Кто  ты,данные,адрес  итд.   Что  потерял,какая  марка  и  цвет.  Когда  и  в  каком  автобусе.  Обстоятельства  (где
+сидел)
+  2.хочешь  пойти  на  курсы  стрижки.  Пишешь,  что  хочешь,почему  хочешь,задать  два
+вопроса
+  3.  Письмо  в  газету.   О  своем  доме.  Какой  он,  с  кем  живешь,  что  в  нем  нравится  или
+нет,сколько
+
+спален`,
+    points: [],
+    keywords: [`заполнить`, `работу`, `уборщицей`, `данные`, `плюс`, `сколько`, `дней`, `хочешь`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 19,
+    title: `Письмо коллеге. Работаешь в ресторане, не помыл пол сегодня. Пишешь об`,
+    type: "Wijkkrant",
+    category: ["Cursus", "Wijkkrant"],
+    fullTask: `4.  Письмо  коллеге.  Работаешь  в  ресторане,  не  помыл  пол  сегодня.  Пишешь  об
+этом
+
+коллеге,
+
+объясняешь
+
+почему
+
+не
+
+помыл,спрашиваешь
+
+не
+
+хочет
+
+ли
+
+он
+
+сделать
+
+это
+ 1.  Написать  другу  по  парте  ,  с  которым  ты  ходишь  на  inburgeringscursus,  что  ты  бы
+хотела
+
+с
+
+ним
+
+oefening
+
+после
+
+курса.
+
+Напиши
+
+когда,
+
+где
+
+и
+
+в
+
+котором
+
+часу.
+
+  2.  Написать  в  газету,  какой   твой  любимый  телефон.  Почему  он  лучше  всех,  что
+можно
+
+с
+
+ним
+
+делать
+
+и
+
+что
+
+ты
+
+делаешь
+
+больше
+
+всего.
+
+ 3.  Заполнить  формуляр  на  работу  уборщицей.  Данные  плюс  написать,  сколько
+дней
+
+хочешь
+
+работать,
+
+как
+
+ты
+
+будешь
+
+добираться,
+
+сколько
+
+км,
+
+хочешь
+
+ли
+
+ты
+
+работать
+
+днем
+
+или
+
+вечером
+
+и
+
+почему.
+ 4.  Твой  велик  сломался  и  ты  во  вторник  не  можешь  поехать  вместе  с  другом  на
+курсы.
+
+Напиши
+
+как
+
+ты
+
+туда
+
+доберешься,
+
+и
+
+что
+
+чувствуешь
+
+при
+
+этом.`,
+    points: [],
+    keywords: [`коллеге`, `работаешь`, `ресторане`, `помыл`, `сегодня`, `пишешь`, `этом`, `объясняешь`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 20,
+    title: `Ticket 20`,
+    type: "Wijkkrant",
+    category: ["Wijkkrant"],
+    fullTask: `1
+
+Стаття
+
+про
+
+моє
+
+день
+
+народження:
+
+як
+
+святкую,
+
+що
+
+готую,
+
+з
+
+ким
+
+святкую
+
+(
+
+Юля
+
+моя
+
+відзначилась
+
+у
+
+всьому
+
+😂
+)
+  2  Анкета,  що  я  хочу  працювати  менше  годин  (  скільки  годин,  з  якого  періоду  й  чому)  тут  я
+написала
+
+про
+
+свого
+
+пса,
+
+який
+
+стресує,
+
+що
+
+я
+
+багато
+
+працюю
+
+й
+
+не
+
+проводжу
+
+з
+
+ним
+
+час
+  3  Щось  зламалось  у  моєму  авто,  треба  у  гараж  (  що  зламалось,  коли  привезу  в  гараж)
+
+ Первое  было  письмо  Вам  предлагают  пойти  на  футбол,  написать  почему  вы  не  хотите  и
+предложить
+
+альтернативу.
+ Статья  в  газету  почему  мне  нравится/не  нравится  погода  в  Нидерландах  и  в  какой  стране  я
+часто
+
+бываю
+
+и
+
+какая
+
+там
+
+погода.
+ Формуляр  про  то,  что  я  хочу  закончить  работу.  Имя,  с  какое  сейчас  число,  с  какого  числа
+прекращаю
+
+работать,
+
+сколько
+
+работаю
+
+в
+
+компании,
+
+отзыв
+
+про
+
+боса,
+
+пожелания
+
+что
+
+улучшить
+
+в
+
+компании.
+ Письмо  ученику,  который  заболел.  Спросить  как  дела,  какой  урок  был,  дать  домашнее  задание,
+пожелать
+
+выздоровления.`,
+    points: [],
+    keywords: [`стаття`, `день`, `народження`, `святкую`, `готую`, `відзначилась`, `всьому`, `анкета`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 21,
+    title: `Ticket 21`,
+    type: "Wijkkrant",
+    category: ["Wijkkrant"],
+    fullTask: `1.
+
+Вы
+
+потеряли
+
+телефон
+
+в
+
+автобусе.
+
+Заполнить
+
+анкету.
+
+И
+
+вот
+
+там
+
+было
+
+три
+
+строчки
+
+про
+
+телефон.
+
+Цвет,
+
+марка
+
+и
+
+что
+
+то
+
+еще.
+
+Слово
+
+было
+
+на
+
+v.
+
+Я
+
+подумала
+
+что
+
+детали
+
+описания,
+
+написала
+
+модель.
+
+И
+
+написать
+
+какой
+
+автобус
+
+и
+
+когда.
+ 2.  Вы  хотите  пойти  на  курсы  парикмахера.  Почему  и  придумать  вопросы  про  курс.  3.  Письмо  в  газету.  Рассказать  про  свой  дом.  Какой  у  вас  дом,  с  кем  живете,  красивый  или  нет  и
+почему.
+ 4.  Вы  работаете  официантом.  Не  успели  доделать  работу.  Сказать  почему.  Написать  письмо
+коллеге
+
+и
+
+попросить
+
+его
+
+что
+
+то
+
+сделать`,
+    points: [],
+    keywords: [`потеряли`, `телефон`, `автобусе`, `заполнить`, `анкету`, `было`, `строчки`, `цвет`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 22,
+    title: `Ticket 22`,
+    type: "E-mail",
+    category: ["E-mail", "School", "Werk"],
+    fullTask: `1.
+
+Напиши
+
+другу,
+
+что
+
+не
+
+можешь
+
+пойтПервое:
+
+я
+
+не
+
+могу
+
+прийти
+
+на
+
+занятие,
+
+хочу
+
+с
+
+ахмедом
+
+позаниматься
+
+дома.
+
+ Потом  письмо  соседям  про  любимую  марку  телефона,  почему  он  хороший  и  что  я  им  делаю.   Меня  взяли  на  работу  уборщиком,  заполнить  анкету.  Единственное  смутило  в  какое  время
+суток
+
+вы
+
+хотите
+
+работать
+
+и
+
+почему.
+
+Ik
+
+werk
+
+liever
+
+overdag
+
+als
+
+ik
+
+kan
+
+alles
+
+better
+
+controleren.
+
+ И  последнее  у  меня  сломался  велосипед,  как  я  теперь  буду  добираться  на  урок  и  что  я  по
+этому
+
+поводу
+
+думаю
+ и  на  концерт.  Почему.  Предложи  новый  афспрак.  Что  вы  будете  делать?  (Ik  heb  covid)  2.  Напиши  боссу,  что  ты  переезжаешь  +  когда  +  адрес?  (Easy)  3.  Заполни  анкету  на  языковой  экзамен  и  скажи,  ты  работаешь  или  учишься.  На  кого  работаешь
+и
+
+почему?
+ (Easy)  4.  На  какой  маркет  ты  ходишь  в  городе?  Что  ты  там  находишь?  Когда  и  что  покупаешь?  Когда
+не
+
+покупаешь?
+
+ (Я  сказал  что  ik  vind  kebab  lekker,  dus  ik  koop  kebab  doordeweek)`,
+    points: [],
+    keywords: [`напиши`, `другу`, `можешь`, `пойтпервое`, `могу`, `прийти`, `занятие`, `хочу`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 23,
+    title: `Ticket 23`,
+    type: "Wijkkrant",
+    category: ["School", "Transport", "Wijkkrant"],
+    fullTask: `1.
+
+Простыми
+
+словами:
+
+лютая
+
+срань
+ Письмо  но  с  картинкой.  Написано  ты  ходишь  (или  сам  проводишь  там  по  контексту  непонятно  дальше)  на  курсы  видимо
+рисования.
+
+И
+
+вот
+
+там
+
+что-то
+
+происходит
+
+и
+
+ты
+
+увидел
+
+картину
+
+которую
+
+хочешь
+
+купить.
+
+Пишешь
+
+челу,
+
+который
+
+ее
+
+нарисовал
+ Напиши:   Зачем  пишешь  Как  картина  выглядит  Почему  ты  находишь  ее  красивой  Насколько  она  дорогая  (видимо  надо  повозмущаться)  Написал  она  о  природе,  дорогая,  цена  1000  евро  Тут  было  слово  eruitziet.   2.  Изи  Анкета  с  базовой  инфой  дальше  два  вопроса:  как  хорошо  умеешь  кататься  на  велосипеде,
+почему
+
+хочешь
+
+на
+
+курсы
+ 3.  Письмо  в  газету.  Нидерландская  еда.  Я  его  уже  писал,  но  я  не  знаю  насколько  правильно.  Я  писал  о  пиве  и  что  оно  холодное.  Напишите  какая  Нидерландская  еда  вкусная  или  нет  Почему  вы  так  считаете  Где  вы  ее  употребляете  4.  Вы  не  можете  ходить  на  работу  Пишете  боссу  Напишите  Почему  не  можете  До  когда  не  можете  И  тут  было  что  то  странное  и  длинное  но  по  вопросительным  мне  показалось,  что  «когда  вы
+планируете
+
+ему
+
+позвонить».
+ 1.  Анкета   Ты  купил  какую  то  фотокнигу.
+
+Начало  стандартное  (имя,  адрес,  город,  емейл)  и  5  доп  вопросов:  1.  Почему  ты  ее  купил  2.  Почему  ты  решил  заказать  именно  с  этого  сайта?  3.  Что  думаешь  о  цене  4.  Что  думаешь  о  качестве   5.  Что  можно  улучшить?   (Написала,  что  хочу  отдать  это  моему  партнеру.  Сайт  красивый  и  интересный.  Цена  не  дорогая.
+Качество
+
+хорошее.
+
+Alles
+
+is
+
+goed
+
+на
+
+последний
+
+вопрос)
+ 2.  Ты  должен  завтра  отвезти  на  тачке  какие  то  посылки  по  работе.  Но  у  тебя  проблема
+(картинка,
+
+где
+
+машина
+
+сломалась).
+
+Ты
+
+пишешь
+
+своему
+
+босу.
+
+ -  напиши,  что  ты  должен  завтра  сделать  по  работе.   -  напиши,  что  у  тебя  проблема  и  какая.  И  по-моему  еще  спросили  где  ты  находишься  (но  не
+факт,
+
+хех)
+ -  придумай  решение   (Я  написала,  что  машина  капот,  машина  в  Амстердаме  на  такой  то  улице.  Спросила  может  ли
+он
+
+помочь,
+
+может
+
+ли
+
+починить?
+
+И
+
+пусть
+
+позвонит
+
+моему
+
+партнеру
+
+a.u.b)
+
+ 3.  Типичное  письмо  в  газету  про  сад  около  дома   -  каким  ты  находишь  сад  -  что  в  нем   -  что  ты  там  делаешь   (Написала,  что  он  красивый.  Что  там  цветы  и  деревья.  И  что  я  часто  гуляю  с  собакой  и
+читаю
+
+книгу
+
+иногда)
+
+ 4.  Ты  хочешь  одолжить  у  школы  ноут.  Напиши  почему  и  насколько.   (Написала,  что  мой  капот  и  старый.  И  я  хочу  одолжить  tot  april  2)
+
+ 1.Позови  друга  на  матч?  Что  вы  можете  вместе  делать  после  матча?   2.  Письмо  соседям  Какую  музыку  ты  любишь?  Почему  ты  любишь  эту  музыку?   Кто  исполняет  эту  музыку?   3.  Формуляр  по  болезни  Ты  работаешь  в  магазине  одежды.  Ты  заболел  и  нужно  заполнить  формуляр.  Ты
+думаешь,
+
+что
+
+боль
+
+в
+
+спине
+
+из-за
+
+того
+
+что
+
+ты
+
+стоишь
+
+в
+
+магазине
+
+целый
+
+день
+
+ Вопросы  в  формуляре:  когда  ты  заболел,  какая  у  тебя  жалоба?  Когда  сможешь
+вернуться
+
+к
+
+работе?
+
+Почему
+
+ты
+
+заполняешь
+
+это?
+
+(Это
+
+вопрос
+
+не
+
+совсем
+
+поняла)
+  4.  Письмо  в  школу  обучения  Английскому.  Ты  хочешь  сдать  2  экзамена.  Есть  картинки:  чтение,  письмо,  говорение  и  слушание   Вопросы:  напиши  в  школу  что
+
+    Письмо  в  газету  про  телепрограмму.  Забыл  как  будет  еда  поэтому  выбрал  “fietsen
+met
+
+Tom”
+ 2.     письмо  коллеге  -  буду  позже  на  работе  в  отеле  -  прошу  подменить.   3.     самое  непонятное  -  тут  формуляр  с  картинками.  Женщина  собирает  стул,  руки
+кладут
+
+ламинат,
+
+мужчина
+
+подвешивает
+
+лампу.
+
+Видимо
+
+уроки
+
+труда
+
+для
+
+взрослых.
+
+Надо
+
+было
+
+написать
+
+ожидания
+
+и
+
+вопросы.
+
+Что-то
+
+написал.
+
+Ik
+
+wil
+
+neuwe
+
+dingen
+
+maken.  Ik  wil  oude  dingen  fixen  (не  знал  как  чинить)  На  вопрос  какие  ожидания
+спросил
+
+могу
+
+ли
+
+оплатить
+
+ideal
+  4.     собираю  друзей  на  dagje  uit.  Видимо  это  выход  в  свет.  Написал  что  идем
+смотреть
+
+F1
+
+rijs
+
+спросил
+
+все
+
+ли
+
+могут.`,
+    points: [`напиши,  что  ты  должен  завтра  сделать  по  работе.   -  напиши,  что  у  тебя  проблема  и  какая.  И  по-моему  еще  спросили  где  ты  находишься  (но  не`, `придумай  решение   (Я  написала,  что  машина  капот,  машина  в  Амстердаме  на  такой  то  улице.  Спросила  может  ли`],
+    keywords: [`простыми`, `словами`, `лютая`, `срань`, `картинкой`, `написано`, `ходишь`, `проводишь`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: напиши,  что  ты  должен  завтра  сделать  по  работе.   -  .
+Ik schrijf over: придумай  решение   (Я  написала,  что  машина  капот,  маши.
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 24,
+    title: `Ticket 24`,
+    type: "Wijkkrant",
+    category: ["Wijkkrant"],
+    fullTask: `1.
+
+Надо
+
+было
+
+написать
+
+письмо
+
+в
+
+газету
+
+о
+
+любимой
+
+комнате.
+
+Рассказать
+
+что
+
+там
+
+делаю
+
+и
+
+что
+
+там
+
+есть.
+
+Я
+
+написала
+
+про
+
+кухню
+
+и
+
+вспомнила
+
+только
+
+стол
+
+и
+
+стул
+
+😂
+ 2.     письмо  Доценту  что  я  не  сделала  задание.  Надо  было  придумать  почему  и
+спросить
+
+можно
+
+ли
+
+сделать
+
+в
+
+другой
+
+раз
+ 3.     формуляр  на  поиск  работы  в  супермаркете.  Я  не  поняла  какие  там  вакансии
+даже.
+
+ 4.     письмо  соседке.  С  картинками.  Там  мой  сын  разбил  ее  горшок.  Надо  было
+придумать
+
+почему.
+
+И
+
+найти
+
+решение`,
+    points: [],
+    keywords: [`было`, `газету`, `любимой`, `комнате`, `рассказать`, `делаю`, `есть`, `написала`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 25,
+    title: `Ticket 25`,
+    type: "Wijkkrant",
+    category: ["Wijkkrant"],
+    fullTask: `10
+
+минут.
+
+ 3.  Ты  едешь  в  другой  город,  и  тебе  нужна  машина  коллеги  Изабеллы.  Напиши  куда  едешь,
+зачем
+
+нужна
+
+машина
+
+и
+
+когда
+
+она
+
+нужна.
+
+ 4.  Письмо  в  газету,  что  делают  люди  в  твоей  стране  при  рождении  ребёнка.  Такое  у  нас  было`,
+    points: [],
+    keywords: [`минут`, `едешь`, `другой`, `город`, `тебе`, `нужна`, `машина`, `коллеги`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 26,
+    title: `Ticket 26`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Cursus", "Familie", "School", "Transport", "Vrienden", "Werk", "Wijkkrant", "Winkel"],
+    fullTask: `19
+
+uur.
+
+Hij
+
+moet
+
+dan
+
+beginnen
+
+met
+
+werken.
+
+U
+
+schrijft
+
+een
+
+briefje
+
+voor
+
+hem.
+
+In
+
+het
+
+briefje
+
+schrijft
+
+u
+
+dat
+
+u
+
+naar
+
+huis
+
+bent
+
+gegaan
+
+zonder
+
+het
+
+werk
+
+af
+
+te
+
+maken.
+
+U
+
+vraagt
+
+aan
+
+Henk
+
+of
+
+hij
+
+twee
+
+dingen
+
+voor
+
+u
+
+kan
+
+doen.
+
+U
+
+moet
+
+zelf
+
+deze
+
+twee
+
+dingen
+
+verzinnen.
+  U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  voor  deze  krant
+schrijven.
+
+U
+
+schrijft
+
+in
+
+de
+
+wijkkrant
+
+naar
+
+welk
+
+land
+
+u
+
+het
+
+liefst
+
+op
+
+vakantie
+
+wil
+
+gaan.
+
+Schrijf
+
+minimaal
+
+drie
+
+zinnen
+
+op.
+
+Denk
+
+aan:
+
+Naar
+
+welk
+
+land
+
+wilt
+
+u
+
+het
+
+liefst
+
+op
+
+vakantie
+
+gaan?
+
+Wat
+
+wilt
+
+u
+
+gaan
+
+doen
+
+in
+
+uw
+
+vakantie?
+
+Met
+
+wie
+
+gaat
+
+u
+
+op
+
+reis?
+
+Schrijf
+
+in
+
+hele
+
+zinnen.
+  U  wilt  op  uw  verjaardag  uw  collega’s  trakteren  op  een  taart.  U  wilt  de  taart  zelf
+bakken.
+
+Een
+
+vriend
+
+van
+
+u
+
+kan
+
+heel
+
+lekkere
+
+taarten
+
+bakken.
+
+Schrijf
+
+hem
+
+een
+
+brief
+
+Vraag
+
+hem
+
+of
+
+hij
+
+aan
+
+u
+
+het
+
+recept
+
+van
+
+zijn
+
+taart
+
+wil
+
+sturen.
+
+Vertel
+
+uw
+
+vriend
+
+ook
+
+waarom
+
+u
+
+de
+
+taart
+
+wilt
+
+maken.
+  U  zoekt  een  cursus  om  uw  inburgeringsexamen  voor  te  bereiden.  U  schrijft  een  e-mail
+aan
+
+de
+
+school
+
+van
+
+Ad
+
+Appel.
+
+U
+
+wilt
+
+informatie
+
+over
+
+de
+
+cursus.
+
+U
+
+moet
+
+zelf
+
+twee
+
+vragen
+
+verzinnen.
+
+Ook
+
+moet
+
+u
+
+in
+
+de
+
+mail
+
+informatie
+
+over
+
+uzelf
+
+schrijven.
+  Uw  vriend  Diego  zoekt  werk.  Hij  heeft  in  zijn  land  gewerkt  als  vrachtwagenchauffeur.
+Maar
+
+in
+
+Nederland
+
+kan
+
+hij
+
+geen
+
+werk
+
+vinden.
+
+Hij
+
+heeft
+
+aan
+
+u
+
+gevraagd
+
+wat
+
+hij
+
+het
+
+beste
+
+kan
+
+doen.
+
+-Schrijf
+
+een
+
+e-mail
+
+aan
+
+uw
+
+vriend.
+
+ -Geef  hem  advies.   -Schrijf  Diego  ook  waarom  u  hem  dat  advies  geeft.
+    U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  voor  deze  krant
+schrijven.
+
+U
+
+schrijft
+
+in
+
+de
+
+wijkkrant
+
+iets
+
+over
+
+een
+
+interessante
+
+persoon
+
+die
+
+u
+
+goed
+
+kent.
+
+Misschien
+
+is
+
+het
+
+een
+
+familielid
+
+van
+
+u,
+
+of
+
+een
+
+goede
+
+vriend
+
+of
+
+vriendin.
+
+Schrijf
+
+minimaal
+
+drie
+
+zinnen
+
+op.
+
+Denk
+
+aan:
+
+Over
+
+wie
+
+schrijft
+
+u
+
+iets?
+
+Waarom
+
+is
+
+deze
+
+persoon
+
+interessant?
+
+Waar
+
+woont
+
+deze
+
+interessante
+
+persoon?
+
+Schrijf
+
+in
+
+hele
+
+zinnen.
+  U  hebt  een  abonnement  voor  uw  telefoon  bij  de  KPN.  U  schrijft  de  KPN  dat  u  het
+abonnement
+
+bij
+
+KPN
+
+wilt
+
+stoppen.
+
+Vertel  wie  u  bent.
+Schrijf
+
+dat
+
+u
+
+bij
+
+een
+
+ander
+
+telefoonbedrijf
+
+een
+
+abonnement
+
+gaat
+
+afsluiten.
+
+Vertel
+
+ook
+
+waarom
+
+u
+
+dat
+
+doet.
+  U  gaat  vanavond  met  uw  partner  naar  een  heerlijk  restaurant  in  de  stad.  U  heeft  een
+klein
+
+kind.
+
+Uw
+
+buurmeisje
+
+komt
+
+oppassen
+
+op
+
+uw
+
+kind.
+
+ Schrijf  een  briefje  voor  uw  buurmeisje  met  instructies.
+Vraag
+
+haar
+
+om
+
+op
+
+twee
+
+dingen
+
+te
+
+letten
+
+als
+
+u
+
+vanavond
+
+weg
+
+bent.
+  U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  voor  deze  krant
+schrijven.
+
+U
+
+schrijft
+
+over
+
+kinderen
+
+die
+
+in
+
+uw
+
+straat
+
+fietsen.
+
+Schrijf
+
+minimaal
+
+drie
+
+zinnen
+
+op.
+
+Denk
+
+aan:
+
+Op
+
+welke
+
+tijd
+
+van
+
+de
+
+dag
+
+fietsen
+
+de
+
+kinderen
+
+in
+
+uw
+
+straat?
+
+Waar
+
+wonen
+
+deze
+
+kinderen?
+
+Waar
+
+fietsen
+
+de
+
+kinderen
+
+naartoe?
+
+Schrijf
+
+in
+
+hele
+
+zinnen.
+
+ U  hebt  bij  de  firma  EXPERT  een  stofzuiger  gekocht  via  internet.  Als  de  stofzuiger  bij
+u
+
+thuis
+
+komt,
+
+pakt
+
+u
+
+de
+
+doos
+
+uit.
+
+U
+
+ziet
+
+dat
+
+er
+
+een
+
+probleem
+
+is.
+
+U
+
+wilt
+
+de
+
+stofzuiger
+
+terugsturen
+
+naar
+
+EXPERT.
+
+-U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+EXPERT.
+ -  U  vertelt  wat  het  probleem  is.   -U  vraagt  hoe  u  de  stofzuiger  het  beste  kunt  terugsturen  en  u  vraagt  een  oplossing
+voor
+
+het
+
+probleem.
+
+ Sommige  dingen  moet  u  zelf  verzinnen   U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  voor  deze  krant
+schrijven.
+
+U
+
+bent
+
+verhuisd
+
+en
+
+u
+
+woont
+
+nu
+
+in
+
+een
+
+nieuwe
+
+wijk.
+
+U
+
+schrijft
+
+in
+
+de
+
+wijkkrant
+
+iets
+
+over
+
+uzelf.
+
+Zo
+
+weten
+
+uw
+
+buurtbewoners
+
+beter
+
+wie
+
+u
+
+bent.
+
+Schrijf
+
+minimaal
+
+drie
+
+zinnen
+
+op.
+
+Denk
+
+aan:
+
+Wat
+
+is
+
+uw
+
+naam,
+
+waar
+
+komt
+
+u
+
+vandaan?
+
+Wie
+
+zijn
+
+uw
+
+buren?
+
+Met
+
+wie
+
+woont
+
+u
+
+in
+
+uw
+
+nieuwe
+
+huis?
+
+Schrijf
+
+in
+
+hele
+
+zinnen.
+  U  heeft  zich  ingeschreven  voor  een  computercursus.  De  cursus  begint  volgende  week
+maandagavond.
+
+U
+
+gaat
+
+wel
+
+meedoen
+
+aan
+
+de
+
+cursus,
+
+maar
+
+de
+
+eerste
+
+avond
+
+kunt
+
+u
+
+niet
+
+komen,
+
+want
+
+u
+
+heeft
+
+iets
+
+anders
+
+te
+
+doen.
+
+U
+
+schrijft
+
+een
+
+brief
+
+aan
+
+de
+
+school
+
+die
+
+de
+
+cursus
+
+organiseert.
+
+In
+
+de
+
+brief
+
+schrijft
+
+u,
+
+waarom
+
+u
+
+niet
+
+kunt
+
+komen
+
+op
+
+deze
+
+maandagavond.
+
+U
+
+vraagt
+
+verder
+
+of
+
+u
+
+deze
+
+eerste
+
+les
+
+kunt
+
+inhalen.
+
+Tenslotte
+
+schrijft
+
+u
+
+dat
+
+u
+
+op
+
+de
+
+andere
+
+maandagen
+
+wel
+
+kunt
+
+komen.
+  U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  voor  deze  krant  schrijven.  U  schrijft  over  uw  favoriete  website  of  applicatie.  Schrijf  minimaal  drie  zinnen  op.  Denk  aan:  Wat  is  uw  favoriete  website  of  applicatie?  Waarom  vindt  u  deze  website  of  applicatie  leuk?  Wanneer  gebruikt  u  deze  website  of  applicatie?  Schrijf  in  hele  zinnen.
+
+Aardig  buur  U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  voor  deze  krant
+schrijven.
+ U  schrijft  over  uw  buurman  of  buurvrouw.  Schrijf  minimaal  drie  zinnen  op.  Denk  aan:  Wie  is  uw  buurman  of  buurvrouw?  Waarom  vindt  u  deze  persoon  aardig?  Wat  doet  u  samen  met  uw  buurman  of  buurvrouw?  Schrijf  in  hele  zinnen.
+ Feestdag  U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  voor  deze  krant
+schrijven.
+ U  schrijft  over  een  feestdag  die  u  graag  viert.  Schrijf  minimaal  drie  zinnen  op.  Denk
+aan:
+ Welke  feestdag  viert  u  graag?  Wat  doet  u  op  deze  dag?  Met  wie  viert  u  deze  feestdag?  Schrijf  in  hele  zinnen.    Mijn  vrienden  U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  voor  deze  krant
+schrijven.
+ U  schrijft  over  uw  vrienden.  Schrijf  minimaal  drie  zinnen  op.  Denk  aan:  Hoeveel  vrienden  heeft  u?  Hoe  lang  kent  u  uw  vrienden?  Wat  doet  u  samen  met  uw  vrienden?  Schrijf  in  hele  zinnen
+ U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  voor  deze  krant
+schrijven.
+ U  schrijft  over  Nederlandse  gerechten  die  u  lekker  of  niet  lekker  vindt.  Schrijf
+minimaal
+
+drie
+
+zinnen
+
+op.
+
+Denk
+
+aan:
+ •  Welke  Nederlandse  gerechten  vindt  u  lekker  of  niet  lekker?  •  Waarom  vindt  u  dat?  •  Waar  eet  u  deze  gerechten  meestal?  Schrijf  in  hele  zinnen.
+ Het  park  in  mijn  buurt  U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  voor  deze  krant
+schrijven.
+
+U  schrijft  over  een  park  in  uw  buurt.  Schrijf  minimaal  drie  zinnen  op.  Denk  aan:  Hoe  ziet  het  park  eruit?  Wat  is  er  in  het  park?  Wat  doet  u  in  het  park?  Schrijf  in  hele  zinnen.   Kinderboeken  U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  voor  deze  krant
+schrijven.
+ U  schrijft  over  kinderboeken.  Schrijf  minimaal  drie  zinnen  op.  Denk  aan:  Welk  kinderboek  vindt  u  mooi?  Waarom  vindt  u  dit  boek  mooi?  Wat  voor  soort  kinderverhalen  leest  u  graag?  Schrijf  in  hele  zinnen.
+ Mijn  huis  U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  voor  deze  krant
+schrijven.
+ U  schrijft  over  uw  huis.  Schrijf  minimaal  drie  zinnen  op.  Denk  aan:  -Wat  voor  huis  heeft  u?  -  Vindt  u  uw  huis  leuk?  Waarom?  -  Met  wie  woont  u  daar  en  hoeveel  slaapkamers  zijn  er?  Schrijf  in  hele  zinnen.   Je  werkt  elke  dag  van  8:00  tot  16:00.  Vandaag  ben  je  op  tijd  van  huis  vertrokken,
+maar
+
+er
+
+is
+
+een
+
+probleem
+
+met
+
+het
+
+openbaar
+
+vervoer.
+
+De
+
+bus
+
+rijdt
+
+niet
+
+en
+
+je
+
+moet
+
+nu
+
+met
+
+de
+
+fiets
+
+komen.
+
+Daardoor
+
+kom
+
+je
+
+zeker`,
+    points: [`Schrijf`, `Geef  hem  advies.   -Schrijf  Diego  ook  waarom  u  hem  dat  advies  geeft.`, `U`, `U  vertelt  wat  het  probleem  is.   -U  vraagt  hoe  u  de  stofzuiger  het  beste  kunt  terugsturen  en  u  vraagt  een  oplossing`],
+    keywords: [`moet`, `beginnen`, `werken`, `schrijft`, `briefje`, `huis`, `bent`, `gegaan`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf.
+Ik schrijf over: Geef  hem  advies.   -Schrijf  Diego  ook  waarom  u  hem  d.
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 27,
+    title: `Ticket 27`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Familie", "Transport", "Werk", "Wijkkrant"],
+    fullTask: `30
+
+minuten
+
+te
+
+laat.
+
+Je
+
+collega
+
+begint
+
+altijd
+
+samen
+
+met
+
+jou.
+
+Jullie
+
+moeten
+
+samen
+
+een
+
+presentatie
+
+voorbereiden.
+ Schrijf  nu  een  bericht  aan  je  collega.  Schrijf:
+
+dat
+
+je
+
+te
+
+laat
+
+bent
+
+en
+
+waarom.
+
+hoe
+
+laat
+
+je
+
+denkt
+
+op
+
+het
+
+werk
+
+te
+
+zijn.
+
+of
+
+je
+
+collega
+
+alvast
+
+iets
+
+wil
+
+doen
+
+voor
+
+jou.
+  U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  U  wilt  iets  schrijven  over  een  buurman  of  buurvrouw  die  u  aardig  vindt.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Hoe  heet  uw  buurman  of  buurvrouw?  Wat  doet  hij  of  zij?  Waarom  vindt  u  hem  of  haar  aardig?
+
+U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  eten  en  koken .  U  wilt  iets  schrijven  over  wie  er  bij  u  thuis  kookt.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Wie  kookt  er  bij  u  thuis?  Wat  kookt  die  persoon  graag?  Wanneer  kookt  die  persoon?
+U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  werk  dat  je  graag  doet .  U  wilt  iets  schrijven  over  werk  dat  u  met  plezier  doet.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Welke  werk  doet  u  graag?  Waarom  doet  u  dat  werk  graag?  Waar  doet  u  dat  werk?  Hoeveel  uur  per  week  wilt  u  dat  doen?
+U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.
+
+Deze
+
+week
+
+is
+
+het
+
+thema:
+
+geboorte
+
+van
+
+een
+
+baby
+.
+
+U
+
+wilt
+
+schrijven
+
+wat
+
+mensen
+
+in
+
+uw
+
+land
+
+doen
+
+als
+
+er
+
+een
+
+baby
+
+geboren
+
+wordt.
+ Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Doen  mensen  iets  speciaals?  Hoe  weten  andere  mensen  dat  er  een  baby  is  geboren?   U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  U  wilt  iets  vertellen  over  waar  u  vroeger  woonde  en  waar  u  nu  woont.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Waar  woonde  u  vroeger?  Waar  woont  u  nu?  Wat  vindt  u  beter:  de  stad  of  het  dorp?  Waarom?   U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  U  bent  nieuw  in  de  wijk  en  wilt  iets  vertellen  over  uzelf.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Waar  komt  u  vandaan?
+
+Wanneer  bent  u  gekomen?  Hoe  voelt  u  zich  hier?  Wat  vindt  u  leuk  in  de  wijk  of  in  het  land?   U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  digitale  wereld .  U  wilt  iets  schrijven  over  een  website  of  app  die  u  vaak  gebruikt.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Welke  website  of  app  gebruikt  u  graag?  Waarom  vindt  u  die  website  of  app  leuk  of  handig?  Wanneer  gebruikt  u  die  website  of  app?    U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  vakantie .  U  wilt  iets  schrijven  over  uw  vakantie.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Waar  was  u  op  vakantie?
+Wanneer  was  dat?
+Met  wie  was  u  daar?
+Wat  heeft  u  daar  gedaan?
+
+U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  televisie .  U  wilt  iets  schrijven  over  uw  favoriete  tv-programma.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Welke  programma  kijkt  u  graag?
+Waar  gaat  dat  programma  over?
+Waarom  vindt  u  dat  programma  leuk?
+
+U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.
+
+Deze  week  is  het  thema:  het  park  in  de  buurt .  U  wilt  iets  schrijven  over  het  park  bij  u  in  de  buurt.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Hoe  ziet  het  park  eruit?  Wat  vindt  u  van  het  park?  Wat  doet  u  daar?   Schrijfopdracht  –  Kinderboeken
+U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  kinderboeken .  U  wilt  iets  schrijven  over  een  kinderboek  dat  u  mooi  vindt.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Welk  kinderboek  vindt  u  mooi?  Waarom  vindt  u  dat  boek  mooi?   Waar  gaat  het  verhaal  over?    U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  mijn  huis .  U  wilt  iets  schrijven  over  uw  huis.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Wat  voor  huis  heeft  u?  (bijvoorbeeld:  appartement,  rijtjeshuis,  vrijstaand  huis)  Vindt  u  het  huis  leuk?  Waarom?  Met  wie  woont  u  daar?  Hoeveel  slaapkamers  zijn  er?   U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  telefoons .  U  wilt  iets  schrijven  over  uw  favoriete  telefoon.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Wat  is  uw  favoriete  telefoon?  Waarom  vindt  u  deze  telefoon  beter  dan  andere?  Wat  kunt  u  met  deze  telefoon  doen?  Wat  doet  u  het  meest  met  uw  telefoon?   U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  wonen  in  de  stad  of  in  het  dorp .
+
+U  wilt  iets  schrijven  over  waar  u  liever  woont.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Waar  woont  u  nu?  Wat  vindt  u  beter:  de  stad  of  het  dorp?  Waarom  vindt  u  dat  beter?   U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  verjaardag .  U  wilt  iets  schrijven  over  hoe  u  uw  verjaardag  viert.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Hoe  viert  u  uw  verjaardag?  Wat  kookt  of  bakt  u?   Met  wie  viert  u  uw  verjaardag?   U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  het  weer .  U  wilt  iets  schrijven  over  het  weer  in  Nederland  en  in  een  ander  land  waar  u  vaak
+bent.
+ Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Wat  vindt  u  van  het  weer  in  Nederland?  Waarom?  In  welk  ander  land  komt  u  vaak?   Hoe  is  het  weer  daar?
+ U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  de  markt  in  de  stad .  U  wilt  iets  schrijven  over  de  markt  waar  u  soms  naartoe  gaat.  Opdracht:  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Naar  welke  markt  gaat  u?  Wat  vindt  u  op  de  markt?  Wanneer  en  wat  koopt  u  daar?  Wanneer  koopt  u  niets?   U  krijgt  elke  week  een  wijkkrant.  Iedereen  uit  de  buurt  mag  iets  schrijven.  Deze  week  is  het  thema:  de  tuin  bij  het  huis .  U  wilt  iets  schrijven  over  uw  tuin.  Opdracht:
+
+Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.  Vertel:  Hoe  vindt  u  uw  tuin?  Wat  is  er  in  de  tuin?  Wat  doet  u  in  de  tuin?`,
+    points: [],
+    keywords: [`minuten`, `laat`, `collega`, `begint`, `altijd`, `samen`, `jullie`, `moeten`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik wil dit goed regelen.
+Kun je mij helpen?
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 28,
+    title: `Задание 2 — Formulier invullen – schadeformulier`,
+    type: "Formulier",
+    category: ["Formulier", "Transport"],
+    fullTask: `✅  Задание  2  —  Formulier  invullen  –  schadeformulier
+U  had  een  auto-ongeluk.  U  moet  een  schadeformulier  invullen  voor  de  verzekering.
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Schadeformulier
+Persoonsgegevens
+
+Voor-
+
+en
+
+achternaam:
+
+___________________________
+
+Adres:
+
+_______________________________________
+
+Postcode:
+
+_______________
+
+Woonplaats:
+
+_______________
+
+Telefoonnummer:
+
+_____________
+
+E-mail:
+
+______________________
+
+Gegevens  over  de  auto
+
+Merk:
+
+_______________________
+
+Kenteken:
+
+____________________
+
+Bouwjaar:
+
+____________________
+
+Wat  is  er  gebeurd?`,
+    points: [],
+    keywords: [`задание`, `formulier`, `invullen`, `schadeformulier`, `auto-ongeluk`, `moet`, `verzekering`, `sommige`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
 Adres: Hoofdstraat 10
 Postcode en woonplaats: 1234 AB Amsterdam
 Telefoonnummer: 0612345678
 E-mail: mykola@email.com
-Wat is het probleem? Mijn internet werkt niet.
-Hoe lang? Twee dagen.`, template: formulierTemplate },
-  { id: 37, title: "Taken overnemen", type: "E-mail", task: "Vraag collega taken over te nemen.", points: ["Tot hoe laat werken", "Geen tijd", "Concrete taken"], keywords: ["13 uur", "bureau", "koffie", "De Boer"], simpleAnswer: `Beste collega,
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 29,
+    title: `Задание 3 — E-mail aan studiegenoot`,
+    type: "E-mail",
+    category: ["E-mail", "School", "Vrienden"],
+    fullTask: `✅  Задание  3  —  E-mail  aan  studiegenoot
+U  moet  iets  voor  school  doen  op  de  computer,  maar  uw  laptop  is  kapot.
 
-Ik werk vandaag tot 13 uur.
-Ik heb geen tijd.
-Kun je mijn bureau opruimen?
-Kun je koffie brengen voor meneer De Boer?
+U
 
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 38, title: "Nederlandse cursus vriend", type: "E-mail", task: "Adviseer vriend over school.", points: ["School adviseren", "Waarom goed", "Inschrijven"], keywords: ["Nederlands", "Ad Appel", "duidelijk", "online"], simpleAnswer: `Beste vriend,
+schrijft
 
-Ik weet dat je Nederlands wilt leren.
-Ik vind Ad Appel een goede school.
-De school is goed want de lessen zijn duidelijk.
-Je kunt je online inschrijven.
+een
 
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 39, title: "Vrienden", type: "Wijkkrant", task: "Schrijf over een vriend.", points: ["Naam vriend", "Hoe lang kennen", "Wat doen"], keywords: ["Armen", "10 jaar", "koffie", "park"], simpleAnswer: `Beste buren,
+e-mail
 
-Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik heb een vriend.
-Zijn naam is Armen.
-Ik ken Armen al 10 jaar.
-Wij drinken koffie in het park.
+aan
 
-Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 40, title: "Mijn huis", type: "Wijkkrant", task: "Beschrijf je huis.", points: ["Huis beschrijven", "Waarom leuk", "Met wie wonen"], keywords: ["klein huis", "mooi", "hond", "slaapkamer"], simpleAnswer: `Beste buren,
+uw
 
-Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik heb een klein huis.
-Ik vind mijn huis leuk want het is mooi.
-Ik woon met mijn hond.
-Ik heb een slaapkamer.
+studiegenoot
 
-Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 41, title: "Werk dat ik graag doe", type: "Wijkkrant", task: "Schrijf over werk dat je graag doet.", points: ["Werk noemen", "Waarom", "Waar en hoeveel uur"], keywords: ["kebab", "restaurant", "4 uur", "lekker"], simpleAnswer: `Beste buren,
+Lisa.
 
-Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik maak graag kebab.
-Ik doe dat werk graag want kebab is lekker.
-Ik werk in een restaurant.
-Ik wil 4 uur per week werken.
+●  Schrijf  waarom  u  schrijft.
+ ●  Schrijf  wat  uw  probleem  is.
+ ●   Vraag  of  u  haar   laptop  mag  lenen.
+ ●  Schrijf  wanneer  u  de  laptop  teruggeeft.
 
-Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 42, title: "Aardige buurman", type: "Wijkkrant", task: "Schrijf over buurman.", points: ["Naam buurman", "Werk", "Waarom aardig"], keywords: ["Armen", "Albert Heijn", "aardig", "helpt"], simpleAnswer: `Beste buren,
-
-Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik wil jullie vertellen over mijn buurman.
-Zijn naam is Armen.
-Hij is verkoper bij Albert Heijn.
-Ik vind Armen aardig want hij helpt mij.
-
-Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 43, title: "Kinderboeken", type: "Wijkkrant", task: "Schrijf over kinderboeken.", points: ["Boek noemen", "Waarom mooi", "Wat lees je graag"], keywords: ["kikker", "groene kikker", "honden", "verhalen"], simpleAnswer: `Beste buren,
-
-Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik vind “De kikker” mooi.
-Ik vind dit boek mooi want het is over een kleine groene kikker.
-Ik lees graag verhalen over honden.
-
-Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 44, title: "KPN abonnement stoppen", type: "E-mail", task: "Zeg abonnement op.", points: ["Abonnement noemen", "Stoppen", "Reden goedkoper"], keywords: ["KPN", "abonnement", "stoppen", "goedkoper"], simpleAnswer: `Beste heer/mevrouw,
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  schrijft.`, `Schrijf  wat  uw  probleem  is.`, `Vraag  of  u  haar   laptop  mag  lenen.`, `Schrijf  wanneer  u  de  laptop  teruggeeft.`],
+    keywords: [`задание`, `e-mail`, `studiegenoot`, `moet`, `iets`, `school`, `doen`, `computer`],
+    simpleAnswer: `Beste heer/mevrouw,
 
 Mijn naam is Mykola.
-Ik heb een abonnement bij KPN.
-Ik wil mijn abonnement stoppen.
-Ik ga naar een ander bedrijf want het is goedkoper.
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  schrijft..
+Ik schrijf over: Schrijf  wat  uw  probleem  is..
+Ik schrijf over: Vraag  of  u  haar   laptop  mag  lenen..
 
 Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 45, title: "Te laat werk", type: "Bericht", task: "Stuur bericht dat je later bent.", points: ["Probleem bus", "Alternatief fiets", "Aankomsttijd"], keywords: ["bus", "fiets", "8:30", "werk"], simpleAnswer: `Beste collega,
+Mykola`,
+  },
+  {
+    id: 30,
+    title: `Задание 4 — Tekst voor de wijkkrant`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  Задание  4  —  Tekst  voor  de  wijkkrant
+U  leest  elke  week  een  wijkkrant.  Iedereen  mag  iets  schrijven.
 
-Vandaag ben ik op tijd van huis vertrokken.
-De bus rijdt niet.
-Ik moet met de fiets komen.
-Ik ben om 8:30 op het werk.
-Kun je alvast iets doen voor mij?
+U
 
-Met vriendelijke groet,
-Mykola`, template: briefjeTemplate },
-  { id: 46, title: "Oppassen kind", type: "Briefje", task: "Schrijf briefje voor oppas.", points: ["Waar je naartoe gaat", "Wat oppas doet", "Extra vraag"], keywords: ["oppassen", "kind", "restaurant", "deur"], simpleAnswer: `Hallo,
+schrijft
 
-Ik ga vanavond met mijn partner naar een restaurant.
-Je komt oppassen op mijn kind.
-Kun je met mijn kind spelen?
-Kun je de deur dicht doen?
+over
 
-Met vriendelijke groet,
-Mykola`, template: briefjeTemplate },
-  { id: 47, title: "Nederlandse gerechten", type: "Wijkkrant", task: "Schrijf over Nederlands eten.", points: ["Gerecht noemen", "Waarom lekker", "Waar je eet"], keywords: ["kaas", "lekker", "thuis"], simpleAnswer: `Beste buren,
+de
+
+natuur
+
+die
+
+u
+
+mooi
+
+vindt.
+
+●  Schrijf  welke  natuur  u  mooi  vindt
+ ●  Schrijf  waarom  u  dat  mooi  vindt.
+ ●  Schrijf  wat  u  daar  doet.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant`,
+    points: [`Schrijf  welke  natuur  u  mooi  vindt`, `Schrijf  waarom  u  dat  mooi  vindt.`, `Schrijf  wat  u  daar  doet.`],
+    keywords: [`задание`, `tekst`, `wijkkrant`, `leest`, `elke`, `week`, `iedereen`, `iets`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik vind kaas lekker.
-Ik vind kaas lekker want het is goed.
-Ik eet kaas thuis.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  welke  natuur  u  mooi  vindt.
+Ik schrijf over: Schrijf  waarom  u  dat  mooi  vindt..
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 48, title: "Diego werk zoeken", type: "E-mail", task: "Geef Diego advies voor werk.", points: ["Situatie Diego", "Wat hij moet doen", "Waarom advies"], keywords: ["werk", "CV", "gemeente", "vinden"], simpleAnswer: `Beste Diego,
+Mykola`,
+  },
+  {
+    id: 31,
+    title: `Ticket 31`,
+    type: "E-mail",
+    category: ["Dokter", "E-mail", "Familie", "Werk"],
+    fullTask: `✅
 
-Ik weet dat je werk zoekt.
-Je hebt gewerkt als vrachtwagenchauffeur.
-Maar je kan geen werk vinden.
-Je moet een CV maken.
-Je moet naar de gemeente gaan.
-Ik zeg dit want je kan dan werk vinden.
+1.
+
+E-mail
+
+aan
+
+uw
+
+baas
+
+U  werkt  in  een  restaurant.  U  bent  ziek  en  u  kunt  vandaag  niet  werken.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+baas.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  dat  u  ziek  bent.
+ ●  Vraag  of  iemand  anders  vandaag  kan  werken.
+ ●   Zeg  dat  u  later  belt.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  dat  u  ziek  bent.`, `Vraag  of  iemand  anders  vandaag  kan  werken.`, `Zeg  dat  u  later  belt.`],
+    keywords: [`e-mail`, `baas`, `werkt`, `restaurant`, `bent`, `ziek`, `kunt`, `vandaag`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Schrijf  dat  u  ziek  bent..
+Ik schrijf over: Vraag  of  iemand  anders  vandaag  kan  werken..
 
 Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 49, title: "Taalschool informatie", type: "E-mail", task: "Vraag info over cursus.", points: ["Info vragen", "Startdatum", "Kosten"], keywords: ["informatie", "cursus", "wanneer", "kost"], simpleAnswer: `Beste heer/mevrouw,
+Mykola`,
+  },
+  {
+    id: 32,
+    title: `Formulier invullen – inschrijving taalcursus`,
+    type: "Formulier",
+    category: ["Cursus", "Formulier", "School"],
+    fullTask: `✅  2.  Formulier  invullen  –  inschrijving  taalcursus
+U  wilt  beter  Nederlands  leren.  U  gaat  naar  een  nieuwe  taalcursus.
+
+U
+
+moet
+
+een
+
+formulier
+
+invullen.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  taalcursus
+Voor-  en  achternaam:  ______________________________
+
+Adres:
+
+__________________________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+___________________________
+
+Telefoonnummer:
+
+_________________________________
+
+E-mail:
+
+_________________________________________
+
+ Welk  niveau  wilt  u  volgen?
+
+☐
+
+A1
+
+☐
+
+A2
+
+☐
+
+B1
+
+Waarom  wilt  u  Nederlands  leren?
+
+Wanneer  kunt  u  naar  de  les  komen?
+
+☐
+
+Maandag
+
+en
+
+woensdag
+
+☐
+
+Dinsdag
+
+en
+
+donderdag
+
+☐
+
+In
+
+het
+
+weekend`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `inschrijving`, `taalcursus`, `wilt`, `beter`, `nederlands`, `leren`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 33,
+    title: `E-mail aan een vriend`,
+    type: "E-mail",
+    category: ["E-mail", "Vrienden"],
+    fullTask: `✅  3.  E-mail  aan  een  vriend
+U  hebt  een  nieuw  huis.  U  wilt  een  feestje  geven.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+vriend
+
+Amir.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Nodig  Amir  uit  voor  het  feest.
+ ●  Schrijf  wanneer  en  waar  het  feest  is.
+ ●  Vraag  of  hij  iets  mee  wil  nemen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Nodig  Amir  uit  voor  het  feest.`, `Schrijf  wanneer  en  waar  het  feest  is.`, `Vraag  of  hij  iets  mee  wil  nemen.`],
+    keywords: [`e-mail`, `vriend`, `hebt`, `nieuw`, `huis`, `wilt`, `feestje`, `geven`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Nodig  Amir  uit  voor  het  feest..
+Ik schrijf over: Schrijf  wanneer  en  waar  het  feest  is..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 34,
+    title: `Tekst voor de wijkkrant – Dieren`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  4.  Tekst  voor  de  wijkkrant  –  Dieren
+U  leest  elke  week  een  wijkkrant.  Iedereen  mag  iets  schrijven.
+
+U
+
+schrijft
+
+over
+
+een
+
+dier
+
+dat
+
+u
+
+leuk
+
+vindt.
+
+●  Schrijf  welk  dier  u  leuk  vindt.     ●  Schrijf  waarom  u  dat  dier  leuk  vindt.
+ ●  Schrijf  wat  u  met  dat  dier  doet  of  zou  willen  doen.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Schrijf  welk  dier  u  leuk  vindt.     ●  Schrijf  waarom  u  dat  dier  leuk  vindt.`, `Schrijf  wat  u  met  dat  dier  doet  of  zou  willen  doen.`],
+    keywords: [`tekst`, `wijkkrant`, `dieren`, `leest`, `elke`, `week`, `iedereen`, `iets`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  welk  dier  u  leuk  vindt.     ●  Schrijf  waarom .
+Ik schrijf over: Schrijf  wat  u  met  dat  dier  doet  of  zou  willen  doen.
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 35,
+    title: `Tekst voor de wijkkrant – Over uw woning`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  1.  Tekst  voor  de  wijkkrant  –  Over  uw  woning
+U  leest  elke  week  een  wijkkrant.  Iedereen  mag  iets  schrijven.
+
+U
+
+schrijft
+
+over
+
+uw
+
+woning
+
+(huis
+
+of
+
+appartement).
+
+●  Hoe  ziet  uw  keuken  eruit?
+ ●  Schrijf  hoeveel  kamers  u  heeft.
+ ●  Schrijf  met  hoeveel  mensen  u  daar  woont.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Hoe  ziet  uw  keuken  eruit?`, `Schrijf  hoeveel  kamers  u  heeft.`, `Schrijf  met  hoeveel  mensen  u  daar  woont.`],
+    keywords: [`tekst`, `wijkkrant`, `over`, `woning`, `leest`, `elke`, `week`, `iedereen`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Hoe  ziet  uw  keuken  eruit?.
+Ik schrijf over: Schrijf  hoeveel  kamers  u  heeft..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 36,
+    title: `E-mail aan collega Omar`,
+    type: "E-mail",
+    category: ["E-mail", "Vrienden", "Werk"],
+    fullTask: `✅  2.  E-mail  aan  collega  Omar
+U  werkt  als  monteur.  Morgen  gaat  u  samen  met  Omar  naar  een  andere  stad.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+Omar.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  in  welke  stad  jullie  een  afspraak  hebben.  (bedenk  zelf)
+ ●  Schrijf  hoe  laat  u  Omar  ophaalt.
+ ●  Schrijf  wat  Omar  mee  moet  nemen .
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  in  welke  stad  jullie  een  afspraak  hebben.  (bedenk  zelf)`, `Schrijf  hoe  laat  u  Omar  ophaalt.`, `Schrijf  wat  Omar  mee  moet  nemen .`],
+    keywords: [`e-mail`, `collega`, `omar`, `werkt`, `monteur`, `morgen`, `gaat`, `samen`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Schrijf  in  welke  stad  jullie  een  afspraak  hebben.  (b.
+Ik schrijf over: Schrijf  hoe  laat  u  Omar  ophaalt..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 37,
+    title: `Formulier invullen – kookcursus`,
+    type: "Formulier",
+    category: ["Cursus", "Formulier"],
+    fullTask: `✅  3.  Formulier  invullen  –  kookcursus
+U  wilt  een  kookcursus  volgen.  U  moet  een  formulier  invullen.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  kookcursus
+Voor-  en  achternaam:  _____________________________
+
+Adres:
+
+__________________________________________
+
+Telefoonnummer:
+
+_________________________________
+
+E-mail:
+
+_________________________________________
+
+Welk  gerecht  wilt  u  leren  koken?
+
+Waarom  wilt  u  dat  gerecht  leren  koken?
+
+Wanneer  kunt  u  naar  de  cursus  komen?
+
+☐
+
+Dinsdagavond
+
+☐
+
+Donderdagmiddag
+
+☐
+
+Zaterdag`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `kookcursus`, `wilt`, `volgen`, `moet`, `sommige`, `gegevens`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 38,
+    title: `E-mail aan vrienden – Oppas gezocht`,
+    type: "E-mail",
+    category: ["E-mail", "Familie", "Vrienden"],
+    fullTask: `✅  4.  E-mail  aan  vrienden  –  Oppas  gezocht
+U  heeft  kinderen,  maar  u  moet  soms  weg  van  huis.
+
+U
+
+zoekt
+
+een
+
+oppas-.
+
+U
+
+kent
+
+niemand.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+vrienden.
+
+●  Schrijf  waarom  u  een  oppas  zoekt.
+ ●  Schrijf  wanneer  u  een  oppas  nodig  hebt.
+ ●  Vraag  of  uw  vrienden  een  goede  oppas  kennen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  een  oppas  zoekt.`, `Schrijf  wanneer  u  een  oppas  nodig  hebt.`, `Vraag  of  uw  vrienden  een  goede  oppas  kennen.`],
+    keywords: [`e-mail`, `vrienden`, `oppas`, `gezocht`, `heeft`, `kinderen`, `moet`, `soms`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  een  oppas  zoekt..
+Ik schrijf over: Schrijf  wanneer  u  een  oppas  nodig  hebt..
+Ik schrijf over: Vraag  of  uw  vrienden  een  goede  oppas  kennen..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 39,
+    title: `Ticket 39`,
+    type: "Formulier",
+    category: ["Formulier"],
+    fullTask: `✅
+
+1.
+
+Formulier
+
+invullen
+
+–
+
+review
+
+fotoboeken
+
+U  hebt  online  fotoboeken  gekocht.  Nu  vult  u  een  formulier  in  op  de  website.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Klantenformulier  –  Uw  ervaring  met  onze  fotoboeken
+Waarom  hebt  u  fotoboeken  gemaakt?
+
+Waarom  hebt  u  onze  website  gekozen?
+
+Wat  vindt  u  van  de  prijzen?
+
+Wat  wilt  u  ons  wensen  voor  de  toekomst?`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `review`, `fotoboeken`, `hebt`, `online`, `gekocht`, `vult`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 40,
+    title: `E-mail aan collega – auto kapot`,
+    type: "E-mail",
+    category: ["E-mail", "Transport", "Werk"],
+    fullTask: `✅  2.  E-mail  aan  collega  –  auto  kapot
+U  moet  werken.  U  hebt  spullen  voor  uw  werk,  maar  uw  auto  is  kapot.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega
+
+Thomas.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  dat  uw  auto  kapot  is.
+ ●   Bedenk  een  oplossing  voor  uw  probleem.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  dat  uw  auto  kapot  is.`, `Bedenk  een  oplossing  voor  uw  probleem.`],
+    keywords: [`e-mail`, `collega`, `auto`, `kapot`, `moet`, `werken`, `hebt`, `spullen`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Schrijf  dat  uw  auto  kapot  is..
+Ik schrijf over: Bedenk  een  oplossing  voor  uw  probleem..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 41,
+    title: `Tekst voor de wijkkrant – Park`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  3.  Tekst  voor  de  wijkkrant  –  Park
+U  schrijft  een  korte  tekst  voor  de  wijkkrant  over  een  park  in  de  buurt.
+●  Schrijf  over  het  park.
+ ●  Schrijf  waarom  u  het  park  leuk  vindt.
+ ●  Schrijf  wat  u  daar  doet.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Schrijf  over  het  park.`, `Schrijf  waarom  u  het  park  leuk  vindt.`, `Schrijf  wat  u  daar  doet.`],
+    keywords: [`tekst`, `wijkkrant`, `park`, `schrijft`, `korte`, `over`, `buurt`, `leuk`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  over  het  park..
+Ik schrijf over: Schrijf  waarom  u  het  park  leuk  vindt..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 42,
+    title: `E-mail aan de docent – gemiste toets`,
+    type: "E-mail",
+    category: ["Cursus", "E-mail", "School"],
+    fullTask: `✅  1.  E-mail  aan  de  docent  –  gemiste  toets
+U  doet  een  cursus.  U  had  een  examen,  maar  u  bent  niet  gekomen.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+docent.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  waarom  u  niet  naar  het  examen  kwam.  (Bedenk  zelf  een  reden)
+
+●  Vraag  of  u  de  toets  op  een  andere  dag  kunt  maken.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  waarom  u  niet  naar  het  examen  kwam.  (Bedenk  zelf  een  reden)`, `Vraag  of  u  de  toets  op  een  andere  dag  kunt  maken.`],
+    keywords: [`e-mail`, `docent`, `gemiste`, `toets`, `doet`, `cursus`, `examen`, `bent`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Schrijf  waarom  u  niet  naar  het  examen  kwam.  (Bedenk .
+Ik schrijf over: Vraag  of  u  de  toets  op  een  andere  dag  kunt  maken..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 43,
+    title: `Tekst voor de wijkkrant – Muziek`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Dokter", "Wijkkrant"],
+    fullTask: `✅  2.  Tekst  voor  de  wijkkrant  –  Muziek
+U  schrijft  een  korte  tekst  voor  de  wijkkrant  over  muziek.
+●  Schrijf  welke  muziek  u  leuk  vindt.
+ ●  Schrijf  waarom  u  die  muziek  leuk  vindt.
+ ●  Schrijf  wie  die  muziek  maakt  .
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Schrijf  welke  muziek  u  leuk  vindt.`, `Schrijf  waarom  u  die  muziek  leuk  vindt.`, `Schrijf  wie  die  muziek  maakt  .`],
+    keywords: [`tekst`, `wijkkrant`, `muziek`, `schrijft`, `korte`, `over`, `leuk`, `vindt`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  welke  muziek  u  leuk  vindt..
+Ik schrijf over: Schrijf  waarom  u  die  muziek  leuk  vindt..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 44,
+    title: `E-mail aan collega's – sleutels kwijt`,
+    type: "E-mail",
+    category: ["E-mail", "Werk"],
+    fullTask: `✅  3.  E-mail  aan  collega's  –  sleutels  kwijt
+U  werkt  in  een  kantoor.  U  bent  uw  sleutels  kwijt.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega's.
+
+●  Schrijf  wat  er  is  gebeurd.
+ ●  Vraag  uw  collega's  om  de  sleutels  aan  u  te  geven  als  ze  die  vinden.
+ ●  Schrijf  hoe  ze  dat  kunnen  doen  (bijvoorbeeld:  waar  en  wanneer).
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  wat  er  is  gebeurd.`, `Vraag  uw  collega's  om  de  sleutels  aan  u  te  geven  als  ze  die  vinden.`, `Schrijf  hoe  ze  dat  kunnen  doen  (bijvoorbeeld:  waar  en  wanneer).`],
+    keywords: [`e-mail`, `collega`, `sleutels`, `kwijt`, `werkt`, `kantoor`, `bent`, `schrijft`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  wat  er  is  gebeurd..
+Ik schrijf over: Vraag  uw  collega's  om  de  sleutels  aan  u  te  geven  a.
+Ik schrijf over: Schrijf  hoe  ze  dat  kunnen  doen  (bijvoorbeeld:  waar  e.
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 45,
+    title: `Formulier invullen – huisarts (dokter)`,
+    type: "Formulier",
+    category: ["Dokter", "Formulier"],
+    fullTask: `✅  4.  Formulier  invullen  –  huisarts  (dokter)
+U  zoekt  een  nieuwe  huisarts.  U  vult  een  formulier  in  op  de  website  van  een  praktijk.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Kies
+
+een
+
+klacht:
+
+bijvoorbeeld
+
+een
+
+gebroken
+
+been,
+
+verkoudheid
+
+of
+
+iets
+
+anders.
+
+Inschrijfformulier  nieuwe  huisarts
+Voor-  en  achternaam:  _____________________________
+
+Adres:
+
+__________________________________________
+
+ Postcode  en  woonplaats:  ___________________________
+
+Telefoonnummer:
+
+_________________________________
+
+E-mail:
+
+_________________________________________
+
+Wat  is  uw  klacht?  (Wat  is  er  gebeurd?)
+
+Gebruikt  u  medicijnen?
+
+☐
+
+Ja
+
+☐
+
+Nee`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `huisarts`, `dokter`, `zoekt`, `nieuwe`, `vult`, `website`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 46,
+    title: `Formulier invullen – fiets kiezen op werk`,
+    type: "Formulier",
+    category: ["Formulier", "Transport", "Werk"],
+    fullTask: `✅  1.  Formulier  invullen  –  fiets  kiezen  op  werk
+Op  uw  werk  mag  u  een  fiets  kiezen.  U  ziet  drie  fietsen:
+
+A
+
+=
+
+stadsfiets
+
+–
+
+B
+
+=
+
+racefiets
+
+–
+
+C
+
+=
+
+bakfiets
+
+(met
+
+bak
+
+voorop)
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Fietsformulier  –  Werkfiets  kiezen
+Voor-  en  achternaam:  _____________________________
+
+Adres:
+
+__________________________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+___________________________
+
+Lengte:
+
+___________________
+
+cm
+
+Kleur
+
+van
+
+de
+
+fiets:
+
+____________________________
+
+Type
+
+fiets
+
+(A/B/C):
+
+_____________
+
+Waarom  kiest  u  deze  fiets?`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `fiets`, `kiezen`, `werk`, `ziet`, `drie`, `fietsen`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 47,
+    title: `E-mail aan de taalschool – examens Engels`,
+    type: "E-mail",
+    category: ["E-mail", "School"],
+    fullTask: `✅  2.  E-mail  aan  de  taalschool  –  examens  Engels
+U  wilt  bij  een  school  twee  examens  Engels  doen.
+
+Op
+
+de
+
+website
+
+ziet
+
+u
+
+deze
+
+examens:
+
+Lezen
+Luisteren
+
+Schrijven
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+de
+
+school.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  welke  twee  examens  u  wilt  doen.
+
+●  Stel  twee  vragen.  Bedenk  deze  vragen  zelf.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  welke  twee  examens  u  wilt  doen.`, `Stel  twee  vragen.  Bedenk  deze  vragen  zelf.`],
+    keywords: [`e-mail`, `taalschool`, `examens`, `engels`, `wilt`, `school`, `twee`, `doen`],
+    simpleAnswer: `Beste heer/mevrouw,
 
 Mijn naam is Mykola.
-Ik wil informatie over de cursus.
-Wanneer begint de cursus?
-Wat kost de cursus?
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Schrijf  welke  twee  examens  u  wilt  doen..
+Ik schrijf over: Stel  twee  vragen.  Bedenk  deze  vragen  zelf..
 
 Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 50, title: "Taart recept", type: "E-mail", task: "Vraag vriend om recept.", points: ["Waarom taart", "Voor wie", "Recept vragen"], keywords: ["verjaardag", "taart", "collega’s", "recept"], simpleAnswer: `Beste vriend,
+Mykola`,
+  },
+  {
+    id: 48,
+    title: `Tekst voor de wijkkrant – Mooie buurt`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  3.  Tekst  voor  de  wijkkrant  –  Mooie  buurt
+U  schrijft  voor  de  wijkkrant.  U  wilt  uw  buurt  mooier  en  leuker  maken.
+●  Schrijf  waarom  u  dat  wilt.
+ ●  Schrijf  wat  er  beter  kan  in  de  buurt.
+ ●  Schrijf  wat  u  zelf  wilt  doen  of  voorstellen.
 
-Ik wil op mijn verjaardag een taart bakken.
-Ik wil mijn collega’s trakteren.
-Je kan lekkere taarten bakken.
-Kun je mij een recept sturen?
-
-Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 51, title: "Werk niet af (Henk)", type: "Briefje", task: "Schrijf een briefje aan Henk dat werk niet af is en vraag twee dingen.", points: ["Zeg dat je naar huis bent gegaan", "Zeg dat werk niet af is", "Vraag om twee taken"], keywords: ["Henk", "werk", "niet afgemaakt", "tafel", "deur"], simpleAnswer: `Hallo Henk,
-
-Ik ben naar huis gegaan.
-Ik heb mijn werk niet afgemaakt.
-Kun je de tafel schoonmaken?
-Kun je de deur dicht doen?
-
-Groet,
-Mykola`, template: briefjeTemplate },
-  { id: 52, title: "Vakantie", type: "Wijkkrant", task: "Schrijf over je vakantie.", points: ["Waar je heen gaat", "Wat je wil doen", "Met wie je gaat"], keywords: ["vakantie", "Spanje", "zwemmen", "koffie", "partner"], simpleAnswer: `Beste buren,
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  dat  wilt.`, `Schrijf  wat  er  beter  kan  in  de  buurt.`, `Schrijf  wat  u  zelf  wilt  doen  of  voorstellen.`],
+    keywords: [`tekst`, `wijkkrant`, `mooie`, `buurt`, `schrijft`, `wilt`, `mooier`, `leuker`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik ga graag naar Spanje op vakantie.
-Ik wil zwemmen en koffie drinken.
-Ik ga met mijn partner.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  dat  wilt..
+Ik schrijf over: Schrijf  wat  er  beter  kan  in  de  buurt..
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 53, title: "Computercursus gemist", type: "E-mail", task: "Mail dat je niet naar computercursus kan komen en vraag om later.", points: ["Noem de cursus", "Zeg wanneer je niet kan", "Vraag of later kan"], keywords: ["computercursus", "maandag", "werk", "later"], simpleAnswer: `Beste heer/mevrouw,
+Mykola`,
+  },
+  {
+    id: 49,
+    title: `Brief aan uw buurman – geluidsoverlast`,
+    type: "Brief",
+    category: ["Brief", "Familie"],
+    fullTask: `✅  1.  Brief  aan  uw  buurman  –  geluidsoverlast
+Uw  buurman  Piet  maakt  's  avonds  veel  lawaai.
 
-Ik volg een computercursus.
-Ik kan maandag niet komen.
-Ik heb werk.
-Kan ik de les later volgen?
+U
+
+hebt
+
+daar
+
+last
+
+van
+
+en
+
+wilt
+
+met
+
+hem
+
+praten.
+
+Maar
+
+Piet
+
+is
+
+niet
+
+thuis.
+
+U
+
+schrijft
+
+een
+
+brief
+
+aan
+
+hem.
+
+●  Schrijf  waarom  u  schrijft.
+ ●  Schrijf  wat  het  probleem  is.
+ ●  Vraag  of  u  samen  kunt  praten.
+
+✍  Schrijf  een  brief.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  schrijft.`, `Schrijf  wat  het  probleem  is.`, `Vraag  of  u  samen  kunt  praten.`],
+    keywords: [`brief`, `buurman`, `geluidsoverlast`, `piet`, `maakt`, `avonds`, `veel`, `lawaai`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  schrijft..
+Ik schrijf over: Schrijf  wat  het  probleem  is..
 
 Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 54, title: "Nieuw in de wijk", type: "Wijkkrant", task: "Stel jezelf voor als nieuw in de wijk.", points: ["Wie je bent", "Dat je in de wijk woont", "Iets over buren"], keywords: ["nieuw", "wijk", "partner", "buren"], simpleAnswer: `Beste buren,
+Mykola`,
+  },
+  {
+    id: 50,
+    title: `Formulier invullen – cursus via werk`,
+    type: "Formulier",
+    category: ["Cursus", "Formulier", "Werk"],
+    fullTask: `✅  2.  Formulier  invullen  –  cursus  via  werk
+U  werkt  in  een  fabriek.  Uw  baas  wil  dat  u  een  cursus  gaat  doen.
+
+U
+
+moet
+
+een
+
+formulier
+
+invullen.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  cursus
+
+Voornaam:  ____________________
+
+Achternaam:
+
+____________________
+
+Adres:
+
+_________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+____________
+
+Telefoonnummer:
+
+___________________
+
+E-mail:
+
+____________________________
+
+Wanneer  wilt  u  de  cursus  volgen?
+
+☐
+
+Maandag
+
+☐
+
+Woensdag
+
+☐
+
+Zaterdag
+
+Waar  werkt  u?
+
+Wat  is  uw  werkervaring?`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `cursus`, `werk`, `werkt`, `fabriek`, `baas`, `gaat`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 51,
+    title: `Tekst voor de wijkkrant – Feest in de buurt`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  3.  Tekst  voor  de  wijkkrant  –  Feest  in  de  buurt
+U  wilt  een  feest  organiseren  in  uw  buurt.
+
+U
+
+schrijft
+
+een
+
+korte
+
+tekst
+
+voor
+
+de
+
+wijkkrant
+
+om
+
+uw
+
+buren
+
+uit
+
+te
+
+nodigen.
+
+●  Schrijf  waarom  u  een  feest  wilt.
+ ●  Schrijf  waar  en  wanneer  het  feest  is.
+ ●  Schrijf  wat  de  buren  mee  kunnen  nemen  of  doen.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Schrijf  waarom  u  een  feest  wilt.`, `Schrijf  waar  en  wanneer  het  feest  is.`, `Schrijf  wat  de  buren  mee  kunnen  nemen  of  doen.`],
+    keywords: [`tekst`, `wijkkrant`, `feest`, `buurt`, `wilt`, `organiseren`, `schrijft`, `korte`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik woon nu in deze wijk.
-Ik woon met mijn partner.
-Mijn buren zijn aardig.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  een  feest  wilt..
+Ik schrijf over: Schrijf  waar  en  wanneer  het  feest  is..
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 55, title: "Stofzuiger kapot", type: "E-mail", task: "Mail winkel over kapotte stofzuiger.", points: ["Zeg wat je hebt gekocht", "Noem het probleem", "Vraag oplossing"], keywords: ["stofzuiger", "gekocht", "werkt niet", "terugsturen", "oplossing"], simpleAnswer: `Beste heer/mevrouw,
+Mykola`,
+  },
+  {
+    id: 52,
+    title: `E-mail aan kookcursus – Afzeggen`,
+    type: "E-mail",
+    category: ["Cursus", "E-mail"],
+    fullTask: `✅  4.  E-mail  aan  kookcursus  –  Afzeggen
+U  hebt  zich  ingeschreven  voor  een  kookcursus,  maar  u  kunt  niet  gaan.
 
-Ik heb een stofzuiger gekocht.
-Er is een probleem.
-De stofzuiger werkt niet.
-Hoe kan ik het terugsturen?
-Wat is de oplossing?
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+de
+
+administratie
+
+van
+
+de
+
+cursus.
+
+●  Schrijf  waarom  u  niet  kunt  komen.  (Bedenk  zelf  een  reden)
+
+●  Schrijf  dat  u  graag  bij  de  volgende  cursus  wilt  zijn.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  niet  kunt  komen.  (Bedenk  zelf  een  reden)`, `Schrijf  dat  u  graag  bij  de  volgende  cursus  wilt  zijn.`],
+    keywords: [`e-mail`, `kookcursus`, `afzeggen`, `hebt`, `zich`, `ingeschreven`, `kunt`, `gaan`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  niet  kunt  komen.  (Bedenk  zelf  een  .
+Ik schrijf over: Schrijf  dat  u  graag  bij  de  volgende  cursus  wilt  zij.
 
 Met vriendelijke groet,
-Mykola`, template: emailTemplate },
-  { id: 56, title: "App uitgebreid", type: "Wijkkrant", task: "Schrijf over je favoriete app.", points: ["App noemen", "Waarom je het leuk vindt", "Hoe vaak je het gebruikt"], keywords: ["app", "TikTok", "leuk", "interessant", "elke dag"], simpleAnswer: `Beste buren,
+Mykola`,
+  },
+  {
+    id: 53,
+    title: `Ticket 53`,
+    type: "E-mail",
+    category: ["E-mail", "Vrienden"],
+    fullTask: `✅
+
+1.
+
+E-mail
+
+aan
+
+Hassan
+
+–
+
+kaartjes
+
+voor
+
+de
+
+voetbalwedstrijd
+
+U  hebt  kaartjes  voor  een  voetbalwedstrijd,  maar  u  kunt  niet  gaan.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+vriend
+
+Hassan.
+
+●  Schrijf  dat  u  kaartjes  hebt  en  voor  wanneer.
+ ●  Schrijf  waarom  u  niet  kunt  gaan.
+ ●  Vraag  of  Hassan  de  kaartjes  wil  hebben.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  dat  u  kaartjes  hebt  en  voor  wanneer.`, `Schrijf  waarom  u  niet  kunt  gaan.`, `Vraag  of  Hassan  de  kaartjes  wil  hebben.`],
+    keywords: [`e-mail`, `hassan`, `kaartjes`, `voetbalwedstrijd`, `hebt`, `kunt`, `gaan`, `schrijft`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  dat  u  kaartjes  hebt  en  voor  wanneer..
+Ik schrijf over: Schrijf  waarom  u  niet  kunt  gaan..
+Ik schrijf over: Vraag  of  Hassan  de  kaartjes  wil  hebben..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 54,
+    title: `Formulier invullen – schoolfeest`,
+    type: "Formulier",
+    category: ["Dokter", "Formulier", "School"],
+    fullTask: `✅  2.  Formulier  invullen  –  schoolfeest
+Uw  school  viert  verschillende  feesten.
+
+De
+
+docent
+
+vraagt
+
+met
+
+welk
+
+feest
+
+u
+
+wilt
+
+helpen.
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Formulier  –  Hulp  bij  schoolfeest
+Voornaam:  ________________________
+
+Achternaam:
+
+_______________________
+
+Adres:
+
+____________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+____________
+
+Telefoonnummer:
+
+___________________
+
+E-mail:
+
+____________________________
+
+Welk  feest  kiest  u?
+
+☐
+
+Koningsdag
+
+☐
+
+Kerstfeest
+
+☐
+
+Sportdag
+
+☐
+
+Muziekdag
+
+Waarom  wilt  u  met  dit  feest  helpen?
+
+Wat  kunt  u  doen?`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `schoolfeest`, `school`, `viert`, `verschillende`, `feesten`, `docent`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 55,
+    title: `E-mail aan winkel – bestelling incompleet`,
+    type: "E-mail",
+    category: ["E-mail", "School", "Werk", "Winkel"],
+    fullTask: `✅  3.  E-mail  aan  winkel  –  bestelling  incompleet
+U  werkt  in  een  restaurant.  U  hebt  producten  besteld,  maar  u  hebt  niet  alles  gekregen.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+de
+
+winkel.
+
+●  Schrijf  welke  twee  producten  u  niet  hebt  gekregen.
+ ●  Schrijf  wanneer  u  ze  wilt  ontvangen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  welke  twee  producten  u  niet  hebt  gekregen.`, `Schrijf  wanneer  u  ze  wilt  ontvangen.`],
+    keywords: [`e-mail`, `winkel`, `bestelling`, `incompleet`, `werkt`, `restaurant`, `hebt`, `producten`],
+    simpleAnswer: `Beste heer/mevrouw,
+
+Mijn naam is Mykola.
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  welke  twee  producten  u  niet  hebt  gekregen..
+Ik schrijf over: Schrijf  wanneer  u  ze  wilt  ontvangen..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 56,
+    title: `Tekst voor de wijkkrant – Koken thuis`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  4.  Tekst  voor  de  wijkkrant  –  Koken  thuis
+U  schrijft  een  korte  tekst  voor  de  wijkkrant  over  koken  in  uw  huis.
+●  Schrijf  wie  in  uw  huis  kookt.
+ ●  Schrijf  wat  die  persoon  graag  kookt.
+ ●  Schrijf  wanneer  die  persoon  kookt.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Schrijf  wie  in  uw  huis  kookt.`, `Schrijf  wat  die  persoon  graag  kookt.`, `Schrijf  wanneer  die  persoon  kookt.`],
+    keywords: [`tekst`, `wijkkrant`, `koken`, `thuis`, `schrijft`, `korte`, `over`, `huis`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Mijn favoriete app is TikTok.
-Ik vind TikTok leuk want het is interessant.
-Ik gebruik het elke dag.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  wie  in  uw  huis  kookt..
+Ik schrijf over: Schrijf  wat  die  persoon  graag  kookt..
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 57, title: "Vroeger en nu wonen", type: "Wijkkrant", task: "Schrijf over vroeger en nu wonen.", points: ["Vroeger waar", "Nu waar", "Wat je beter vindt"], keywords: ["vroeger", "dorp", "nu", "stad", "beter"], simpleAnswer: `Beste buren,
+Mykola`,
+  },
+  {
+    id: 57,
+    title: `Formulier invullen – Klacht bij de dokter`,
+    type: "Formulier",
+    category: ["Dokter", "Formulier", "Werk", "Winkel"],
+    fullTask: `✅  1.  Formulier  invullen  –  Klacht  bij  de  dokter
+U  voelt  zich  niet  goed  en  u  vult  een  formulier  in  bij  de  huisarts.
+
+U
+
+hebt
+
+rugpijn.
+
+U
+
+denkt
+
+dat
+
+het
+
+komt
+
+door
+
+uw
+
+werk
+
+in
+
+de
+
+winkel,
+
+omdat
+
+u
+
+de
+
+hele
+
+dag
+
+moet
+
+staan.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Formulier  –  Klacht  bij  de  huisarts
+Voor-  en  achternaam:  ____________________________
+
+Telefoonnummer:
+
+________________________________
+
+Wat  is  uw  klacht?
+
+Hoe  lang  hebt  u  al  pijn?
+
+Hebt  u  een  klacht  bij  de  winkel  ingediend?
+
+☐
+
+Ja
+
+→
+
+Waarom?
+
+__________________________________
+
+☐
+
+Nee
+
+Wanneer  denkt  u  beter  te  zijn?
+
+(In  te  vullen  door  de  huisarts)
+
+Naam
+
+arts:
+
+____________________________
+
+Datum:
+
+_______________________________`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `klacht`, `dokter`, `voelt`, `zich`, `goed`, `vult`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 58,
+    title: `E-mail aan Karim – zieke klasgenoot`,
+    type: "E-mail",
+    category: ["Cursus", "Dokter", "E-mail", "School", "Vrienden", "Werk"],
+    fullTask: `✅  2.  E-mail  aan  Karim  –  zieke  klasgenoot
+U  volgt  een  Nederlandse  cursus.
+
+Vandaag
+
+was
+
+er
+
+een
+
+les,
+
+maar
+
+Karim
+
+was
+
+ziek.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+Karim.
+
+●  Vraag  hoe  het  met  hem  gaat.
+ ●  Schrijf  wat  het  huiswerk  is.
+ ●  Wens  hem  beterschap.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Vraag  hoe  het  met  hem  gaat.`, `Schrijf  wat  het  huiswerk  is.`, `Wens  hem  beterschap.`],
+    keywords: [`e-mail`, `karim`, `zieke`, `klasgenoot`, `volgt`, `nederlandse`, `cursus`, `vandaag`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Vraag  hoe  het  met  hem  gaat..
+Ik schrijf over: Schrijf  wat  het  huiswerk  is..
+Ik schrijf over: Wens  hem  beterschap..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 59,
+    title: `E-mail aan vriendin – fiets kapot`,
+    type: "E-mail",
+    category: ["E-mail", "Transport", "Vrienden"],
+    fullTask: `✅  3.  E-mail  aan  vriendin  –  fiets  kapot
+Uw  fiets  is  kapot.
+
+U
+
+moet
+
+naar
+
+de
+
+kroeg
+
+(stamkroeg).
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+vriendin.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  waar  u  naartoe  moet.
+ ●  Vraag  of  u  haar  fiets  mag  lenen.
+
+●  Schrijf  wanneer  u  de  fiets  teruggeeft.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  waar  u  naartoe  moet.`, `Vraag  of  u  haar  fiets  mag  lenen.`, `Schrijf  wanneer  u  de  fiets  teruggeeft.`],
+    keywords: [`e-mail`, `vriendin`, `fiets`, `kapot`, `moet`, `kroeg`, `stamkroeg`, `schrijft`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Schrijf  waar  u  naartoe  moet..
+Ik schrijf over: Vraag  of  u  haar  fiets  mag  lenen..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 60,
+    title: `Tekst voor de wijkkrant – Geboorte van een baby`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Familie", "Wijkkrant"],
+    fullTask: `✅  4.  Tekst  voor  de  wijkkrant  –  Geboorte  van  een  baby
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+wat
+
+mensen
+
+in
+
+uw
+
+land
+
+doen
+
+als
+
+er
+
+een
+
+baby
+
+geboren
+
+wordt.
+
+●  Schrijf  of  mensen  iets  speciaals  doen
+ ●  Schrijf  hoe  andere  mensen  weten  dat  er  een  baby  is  geboren.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Schrijf  of  mensen  iets  speciaals  doen`, `Schrijf  hoe  andere  mensen  weten  dat  er  een  baby  is  geboren.`],
+    keywords: [`tekst`, `wijkkrant`, `geboorte`, `baby`, `schrijft`, `korte`, `vertelt`, `mensen`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik woonde vroeger in een dorp.
-Nu woon ik in de stad.
-Ik vind de stad beter want het is leuk.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  of  mensen  iets  speciaals  doen.
+Ik schrijf over: Schrijf  hoe  andere  mensen  weten  dat  er  een  baby  is .
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 58, title: "TV programma", type: "Wijkkrant", task: "Schrijf over een tv-programma dat je graag kijkt.", points: ["Wat je kijkt", "Waarover het gaat", "Waarom je het leuk vindt"], keywords: ["tv-programma", "koken", "leuk", "interessant"], simpleAnswer: `Beste buren,
+Mykola`,
+  },
+  {
+    id: 61,
+    title: `E-mail aan taalschool – docent nodig`,
+    type: "E-mail",
+    category: ["E-mail", "School"],
+    fullTask: `✅  1.  E-mail  aan  taalschool  –  docent  nodig
+U  leert  Nederlands.
+
+U
+
+wilt
+
+een
+
+docent
+
+om
+
+u
+
+te
+
+helpen
+
+met
+
+de
+
+taal.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+de
+
+taalschool.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  wat  u  met  de  docent  wilt  doen.
+ ●  Schrijf  waar  u  wilt  leren.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  wat  u  met  de  docent  wilt  doen.`, `Schrijf  waar  u  wilt  leren.`],
+    keywords: [`e-mail`, `taalschool`, `docent`, `nodig`, `leert`, `nederlands`, `wilt`, `helpen`],
+    simpleAnswer: `Beste heer/mevrouw,
+
+Mijn naam is Mykola.
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Schrijf  wat  u  met  de  docent  wilt  doen..
+Ik schrijf over: Schrijf  waar  u  wilt  leren..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 62,
+    title: `Formulier invullen – Muziekschool`,
+    type: "Formulier",
+    category: ["Cursus", "Dokter", "Formulier", "School"],
+    fullTask: `✅  2.  Formulier  invullen  –  Muziekschool
+U  wilt  zich  inschrijven  bij  een  muziekschool.
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  muziekschool
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Adres:
+
+______________________________
+
+ Postcode  en  woonplaats:  _______________
+
+Telefoonnummer:
+
+_____________________
+
+E-mail:
+
+______________________________
+
+Welke  dag(en)  wilt  u  les  hebben?
+
+☐
+
+Maandag
+
+☐
+
+Dinsdag
+
+☐
+
+Woensdag
+
+☐
+
+Donderdag
+
+☐
+
+Vrijdag
+
+☐
+
+Zaterdag
+
+Wanneer  wilt  u  beginnen  met  de  lessen?
+
+Hebt  u  al  muzieklessen  gevolgd?
+
+☐
+
+Ja
+
+→
+
+Welke?
+
+_________________________
+
+☐
+
+Nee`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `muziekschool`, `wilt`, `zich`, `inschrijven`, `vult`, `sommige`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 63,
+    title: `E-mail aan collega's – sleutels kwijt`,
+    type: "E-mail",
+    category: ["E-mail", "Werk"],
+    fullTask: `✅  3.  E-mail  aan  collega's  –  sleutels  kwijt
+U  werkt  in  een  kantoor.
+
+U
+
+bent
+
+uw
+
+sleutels
+
+kwijt.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega's.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  dat  u  uw  sleutels  bent  verloren.
+ ●  Schrijf  hoe  uw  collega's  de  sleutels  aan  u  kunnen  geven.  Bedenk  het  zelf  ●  ✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  dat  u  uw  sleutels  bent  verloren.`, `Schrijf  hoe  uw  collega's  de  sleutels  aan  u  kunnen  geven.  Bedenk  het  zelf  ●  ✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`],
+    keywords: [`e-mail`, `collega`, `sleutels`, `kwijt`, `werkt`, `kantoor`, `bent`, `schrijft`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Schrijf  dat  u  uw  sleutels  bent  verloren..
+Ik schrijf over: Schrijf  hoe  uw  collega's  de  sleutels  aan  u  kunnen  g.
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 64,
+    title: `Tekst voor de wijkkrant – Wonen`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  4.  Tekst  voor  de  wijkkrant  –  Wonen
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+waar
+
+u
+
+vroeger
+
+woonde
+
+en
+
+waar
+
+u
+
+nu
+
+woont.
+
+●  Schrijf  waar  u  vroeger  woonde.
+ ●  Schrijf  waar  u  nu  woont.
+
+●  Schrijf  wat  u  leuker  vindt:  de  stad  of  het  dorp,  en  waarom.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Schrijf  waar  u  vroeger  woonde.`, `Schrijf  waar  u  nu  woont.`, `Schrijf  wat  u  leuker  vindt:  de  stad  of  het  dorp,  en  waarom.`],
+    keywords: [`tekst`, `wijkkrant`, `wonen`, `schrijft`, `korte`, `vertelt`, `waar`, `vroeger`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik kijk graag een tv-programma.
-Het gaat over koken.
-Ik vind het leuk want het is interessant.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waar  u  vroeger  woonde..
+Ik schrijf over: Schrijf  waar  u  nu  woont..
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 59, title: "Weer", type: "Wijkkrant", task: "Schrijf over het weer in Nederland en Spanje.", points: ["Weer in Nederland", "Wat je vaak doet", "Vergelijk met Spanje"], keywords: ["weer", "Nederland", "koud", "Spanje", "warm"], simpleAnswer: `Beste buren,
+Mykola`,
+  },
+  {
+    id: 65,
+    title: `E-mail aan klasgenoten – cadeau voor docent`,
+    type: "E-mail",
+    category: ["E-mail", "School"],
+    fullTask: `✅  1.  E-mail  aan  klasgenoten  –  cadeau  voor  docent
+U  wilt  uw  docent  een  cadeau  geven.
+
+U
+
+denkt
+
+aan
+
+bloemen
+
+of
+
+een
+
+boek.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+klasgenoten.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  wat  u  wilt  kopen.
+ ●  Vraag  of  uw  klasgenoten  geld  willen  geven  voor  het  cadeau.
+ ●  Schrijf  tot  welke  datum  ze  het  geld  kunnen  geven.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  wat  u  wilt  kopen.`, `Vraag  of  uw  klasgenoten  geld  willen  geven  voor  het  cadeau.`, `Schrijf  tot  welke  datum  ze  het  geld  kunnen  geven.`],
+    keywords: [`e-mail`, `klasgenoten`, `cadeau`, `docent`, `wilt`, `geven`, `denkt`, `bloemen`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Schrijf  wat  u  wilt  kopen..
+Ik schrijf over: Vraag  of  uw  klasgenoten  geld  willen  geven  voor  het  .
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 66,
+    title: `Formulier invullen – straatfeest (feest op straat)`,
+    type: "Formulier",
+    category: ["Formulier"],
+    fullTask: `✅  2.  Formulier  invullen  –  straatfeest  (feest  op  straat)
+U  wilt  meedoen  aan  een  feest  op  straat.
+
+U
+
+moet
+
+een
+
+formulier
+
+invullen.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  straatfeest
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Adres:
+
+______________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+_______________
+
+Telefoonnummer:
+
+_____________________
+
+E-mail:
+
+______________________________
+
+Met  hoeveel  personen  komt  u?
+
+Wat  wilt  u  doen  tijdens  het  feest?  (bijv.  zingen,  koken,  helpen  met  versieren)
+
+Wanneer  kunt  u  helpen  met  voorbereiden?`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `straatfeest`, `feest`, `straat`, `wilt`, `meedoen`, `moet`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 67,
+    title: `E-mail aan collega – schoonmaken niet af`,
+    type: "E-mail",
+    category: ["E-mail", "School", "Werk"],
+    fullTask: `✅  3.  E-mail  aan  collega  –  schoonmaken  niet  af
+U  werkte  in  het  kantoor  en  u  moest  schoonmaken.
+
+Maar
+
+u
+
+hebt
+
+niet
+
+alles
+
+gedaan.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega.
+
+●  Schrijf  wat  u  niet  hebt  gedaan.
+ ●  Schrijf  waarom  u  dat  niet  hebt  gedaan.
+ ●  Bies  uw  excuses  aan.
+ ●  Vraag  uw  collega  om  het  af  te  maken.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  wat  u  niet  hebt  gedaan.`, `Schrijf  waarom  u  dat  niet  hebt  gedaan.`, `Bies  uw  excuses  aan.`, `Vraag  uw  collega  om  het  af  te  maken.`],
+    keywords: [`e-mail`, `collega`, `schoonmaken`, `werkte`, `kantoor`, `moest`, `hebt`, `alles`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  wat  u  niet  hebt  gedaan..
+Ik schrijf over: Schrijf  waarom  u  dat  niet  hebt  gedaan..
+Ik schrijf over: Bies  uw  excuses  aan..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 68,
+    title: `Tekst voor de wijkkrant – Nieuw in Nederland`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Transport", "Wijkkrant"],
+    fullTask: `✅  4.  Tekst  voor  de  wijkkrant  –  Nieuw  in  Nederland
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+over
+
+uzelf.
+
+●  Schrijf  waar  u  vandaan  komt.
+ ●  Schrijf  wanneer  u  naar  Nederland  bent  gekomen.
+ ●  Schrijf  hoe  u  zich  voelt  en  wat  u  leuk  vindt  in  Nederland.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:
+
+1.  Bericht  ophangen  in  de  supermarkt  –  kat  gevonden
+Er  zit  al  twee  dagen  een  kat  bij  uw  huis.
+
+U
+
+weet
+
+niet
+
+van
+
+wie
+
+de
+
+kat
+
+is.
+
+U
+
+schrijft
+
+een
+
+briefje
+
+voor
+
+het
+
+prikbord
+
+in
+
+de
+
+supermarkt.
+
+●  Schrijf  wat  er  gebeurd  is.
+ ●  Beschrijf  de  kat  (minimaal  twee  kenmerken).Bedenk  het  zelf.
+ ●  Schrijf  wat  u  wilt.
+
+✍  Schrijf  een  kort  bericht.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waar  u  vandaan  komt.`, `Schrijf  wanneer  u  naar  Nederland  bent  gekomen.`, `Schrijf  hoe  u  zich  voelt  en  wat  u  leuk  vindt  in  Nederland.`, `Schrijf  wat  er  gebeurd  is.`, `Beschrijf  de  kat  (minimaal  twee  kenmerken).Bedenk  het  zelf.`, `Schrijf  wat  u  wilt.`],
+    keywords: [`tekst`, `wijkkrant`, `nieuw`, `nederland`, `schrijft`, `korte`, `vertelt`, `over`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Het weer in Nederland is koud.
-Ik ga vaak naar Spanje.
-Daar is het warm.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waar  u  vandaan  komt..
+Ik schrijf over: Schrijf  wanneer  u  naar  Nederland  bent  gekomen..
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 60, title: "Markt", type: "Wijkkrant", task: "Schrijf over naar de markt gaan.", points: ["Zeg dat je naar de markt gaat", "Wat je koopt", "Wanneer je gaat"], keywords: ["markt", "fruit", "koffie", "weekend"], simpleAnswer: `Beste buren,
+Mykola`,
+  },
+  {
+    id: 69,
+    title: `Formulier invullen – ROC Open Dag`,
+    type: "Formulier",
+    category: ["Cursus", "Formulier", "Werk"],
+    fullTask: `✅  2.  Formulier  invullen  –  ROC  Open  Dag
+Het  ROC  organiseert  een  open  dag.
+
+U
+
+wilt
+
+komen
+
+en
+
+u
+
+vult
+
+het
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  Open  Dag  ROC
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Geboortedatum:
+
+______________________
+
+Adres:
+
+______________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+_______________
+
+E-mail:
+
+______________________________
+
+Welke  opleiding  vindt  u  interessant?
+
+☐
+
+Verpleegkundige
+
+☐
+
+Kapper
+
+☐
+
+ICT-medewerker
+
+☐
+
+Bakker
+
+Waarom  vindt  u  deze  opleiding  interessant?
+
+Waarom  wilt  u  naar  de  open  dag  komen?`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `open`, `organiseert`, `wilt`, `komen`, `vult`, `sommige`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 70,
+    title: `Tekst voor de wijkkrant – Favoriete website/app`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  3.  Tekst  voor  de  wijkkrant  –  Favoriete  website/app
+U  schrijft  voor  de  wijkkrant  over  uw  favoriete  website  of  app.
+●  Schrijf  welke  app  of  website  u  graag  gebruikt.
+ ●  Schrijf  waarom  u  die  leuk  vindt.
+
+●  Schrijf  wanneer  u  die  app  of  website  gebruikt.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  welke  app  of  website  u  graag  gebruikt.`, `Schrijf  waarom  u  die  leuk  vindt.`, `Schrijf  wanneer  u  die  app  of  website  gebruikt.`],
+    keywords: [`tekst`, `wijkkrant`, `favoriete`, `website`, `schrijft`, `over`, `graag`, `gebruikt`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik ga naar de markt.
-Ik koop fruit en koffie.
-Ik ga in het weekend.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  welke  app  of  website  u  graag  gebruikt..
+Ik schrijf over: Schrijf  waarom  u  die  leuk  vindt..
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 61, title: "Tuin", type: "Wijkkrant", task: "Schrijf over je tuin.", points: ["Zeg dat je een tuin hebt", "Beschrijf de tuin", "Wat je daar doet"], keywords: ["tuin", "mooi", "groen", "koffie"], simpleAnswer: `Beste buren,
+Mykola`,
+  },
+  {
+    id: 71,
+    title: `E-mail aan uw baas – rugpijn na tillen`,
+    type: "E-mail",
+    category: ["Dokter", "E-mail", "Werk"],
+    fullTask: `✅  4.  E-mail  aan  uw  baas  –  rugpijn  na  tillen
+U  had  gisteren  dozen  getild  op  uw  werk.
+
+Nu
+
+hebt
+
+u
+
+rugpijn.
+
+Vanmiddag
+
+gaat
+
+u
+
+naar
+
+de
+
+fysiotherapeut.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+baas.
+
+●  Schrijf  wat  er  gisteren  is  gebeurd.
+ ●  Schrijf  dat  u  nu  pijn  hebt.
+ ●  Schrijf  wat  u  vandaag  na  de  lunch  gaat  doen.`,
+    points: [`Schrijf  wat  er  gisteren  is  gebeurd.`, `Schrijf  dat  u  nu  pijn  hebt.`, `Schrijf  wat  u  vandaag  na  de  lunch  gaat  doen.`],
+    keywords: [`e-mail`, `baas`, `rugpijn`, `tillen`, `gisteren`, `dozen`, `getild`, `werk`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  wat  er  gisteren  is  gebeurd..
+Ik schrijf over: Schrijf  dat  u  nu  pijn  hebt..
+Ik schrijf over: Schrijf  wat  u  vandaag  na  de  lunch  gaat  doen..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 72,
+    title: `Ticket 72`,
+    type: "E-mail",
+    category: ["Cursus", "E-mail"],
+    fullTask: `✅
+
+1.
+
+E-mail
+
+–
+
+kookcursus
+
+(eten
+
+meenemen)
+
+U  volgt  een  kookcursus.
+
+Er
+
+is
+
+een
+
+gezamenlijke
+
+avond
+
+en
+
+iedereen
+
+moet
+
+iets
+
+te
+
+eten
+
+meenemen.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+de
+
+organisator.
+
+●  Schrijf  wat  u  meeneemt  om  te  eten.
+ ●  Schrijf  voor  hoeveel  personen  het  is.
+ ●  Schrijf  of  er  vlees  in  zit.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  wat  u  meeneemt  om  te  eten.`, `Schrijf  voor  hoeveel  personen  het  is.`, `Schrijf  of  er  vlees  in  zit.`],
+    keywords: [`e-mail`, `kookcursus`, `eten`, `meenemen`, `volgt`, `gezamenlijke`, `avond`, `iedereen`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  wat  u  meeneemt  om  te  eten..
+Ik schrijf over: Schrijf  voor  hoeveel  personen  het  is..
+Ik schrijf over: Schrijf  of  er  vlees  in  zit..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 73,
+    title: `Formulier invullen – Muziekschool`,
+    type: "Formulier",
+    category: ["Cursus", "Dokter", "Formulier", "School"],
+    fullTask: `✅  2.  Formulier  invullen  –  Muziekschool
+U  wilt  muzieklessen  volgen.
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  Muziekschool
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Adres:
+
+______________________________
+
+ Postcode  en  woonplaats:  _______________
+
+Telefoonnummer:
+
+_____________________
+
+E-mail:
+
+______________________________
+
+Welk  instrument  wilt  u  leren?
+
+☐
+
+Gitaar
+
+☐
+
+Piano
+
+☐
+
+Drums
+
+☐
+
+Zang
+
+Wanneer  kunt  u  les  nemen?
+
+Waarom  wilt  u  muziek  leren?`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `muziekschool`, `wilt`, `muzieklessen`, `volgen`, `vult`, `sommige`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 74,
+    title: `E-mail aan collega – geen werk gedaan`,
+    type: "E-mail",
+    category: ["E-mail", "Werk"],
+    fullTask: `✅  3.  E-mail  aan  collega  –  geen  werk  gedaan
+U  werkt  in  een  schoenmakerij.
+
+Vandaag
+
+hebt
+
+u
+
+geen
+
+schoenen
+
+kunnen
+
+maken
+
+of
+
+repareren.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega.
+
+●  Schrijf  wat  u  niet  hebt  gedaan.
+ ●  Schrijf  waarom  u  dat  niet  hebt  gedaan.
+ ●  Schrijf  wat  uw  collega  nu  moet  doen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  wat  u  niet  hebt  gedaan.`, `Schrijf  waarom  u  dat  niet  hebt  gedaan.`, `Schrijf  wat  uw  collega  nu  moet  doen.`],
+    keywords: [`e-mail`, `collega`, `geen`, `werk`, `gedaan`, `werkt`, `schoenmakerij`, `vandaag`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  wat  u  niet  hebt  gedaan..
+Ik schrijf over: Schrijf  waarom  u  dat  niet  hebt  gedaan..
+Ik schrijf over: Schrijf  wat  uw  collega  nu  moet  doen..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 75,
+    title: `Tekst voor de wijkkrant – aardige buurman`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Familie", "Wijkkrant"],
+    fullTask: `✅  4.  Tekst  voor  de  wijkkrant  –  aardige  buurman
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+iets
+
+over
+
+uw
+
+buurman.
+
+●  Schrijf  dat  uw  buurman  aardig  is.
+ ●  Schrijf  waarom  hij  aardig  is.
+ ●  Schrijf  wat  u  samen  met  hem  doet.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Schrijf  dat  uw  buurman  aardig  is.`, `Schrijf  waarom  hij  aardig  is.`, `Schrijf  wat  u  samen  met  hem  doet.`],
+    keywords: [`tekst`, `wijkkrant`, `aardige`, `buurman`, `schrijft`, `korte`, `vertelt`, `iets`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik heb een tuin.
-De tuin is mooi en groen.
-Ik drink koffie in de tuin.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  dat  uw  buurman  aardig  is..
+Ik schrijf over: Schrijf  waarom  hij  aardig  is..
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
-  { id: 62, title: "Verjaardag (розширений)", type: "Wijkkrant", task: "Schrijf over je verjaardag.", points: ["Zeg dat je verjaardag viert", "Wat je eet en drinkt", "Met wie je viert"], keywords: ["verjaardag", "taart", "koffie", "partner"], simpleAnswer: `Beste buren,
+Mykola`,
+  },
+  {
+    id: 76,
+    title: `Tekst voor de wijkkrant – Vakantie`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  1.  Tekst  voor  de  wijkkrant  –  Vakantie
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+over
+
+uw
+
+vakantie.
+
+●  Schrijf  waar  u  op  vakantie  was.
+ ●  Schrijf  wanneer  u  daar  was.
+ ●  Schrijf  met  wie  u  was.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waar  u  op  vakantie  was.`, `Schrijf  wanneer  u  daar  was.`, `Schrijf  met  wie  u  was.`],
+    keywords: [`tekst`, `wijkkrant`, `vakantie`, `schrijft`, `korte`, `vertelt`, `over`, `waar`],
+    simpleAnswer: `Beste buren,
 
 Mijn naam is Mykola. Ik kom uit Oekraïne.
-Ik vier mijn verjaardag.
-Ik eet taart en drink koffie.
-Ik vier met mijn partner.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waar  u  op  vakantie  was..
+Ik schrijf over: Schrijf  wanneer  u  daar  was..
 
 Met vriendelijke groet,
-Mykola`, template: wijkkrantTemplate },
+Mykola`,
+  },
+  {
+    id: 77,
+    title: `E-mail aan Mariska – zoon ophalen`,
+    type: "E-mail",
+    category: ["E-mail", "Familie", "School", "Transport"],
+    fullTask: `✅  2.  E-mail  aan  Mariska  –  zoon  ophalen
+U  kunt  morgen  uw  zoon  niet  van  school  halen.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+Mariska.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  waarom  u  uw  zoon  niet  zelf  kunt  ophalen.
+ ●  Vraag  of  Mariska  uw  zoon  kan  ophalen.
+ ●  Schrijf  hoe  laat  u  thuis  bent.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  waarom  u  uw  zoon  niet  zelf  kunt  ophalen.`, `Vraag  of  Mariska  uw  zoon  kan  ophalen.`, `Schrijf  hoe  laat  u  thuis  bent.`],
+    keywords: [`e-mail`, `mariska`, `zoon`, `ophalen`, `kunt`, `morgen`, `school`, `halen`],
+    simpleAnswer: `Beste heer/mevrouw,
+
+Mijn naam is Mykola.
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Schrijf  waarom  u  uw  zoon  niet  zelf  kunt  ophalen..
+Ik schrijf over: Vraag  of  Mariska  uw  zoon  kan  ophalen..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 78,
+    title: `Formulier invullen – EHBO-cursus`,
+    type: "Formulier",
+    category: ["Cursus", "Formulier", "Werk"],
+    fullTask: `✅  3.  Formulier  invullen  –  EHBO-cursus
+U  wilt  een  EHBO-cursus  volgen.
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  EHBO
+
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Adres:
+
+______________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+_______________
+
+Telefoonnummer:
+
+_____________________
+
+E-mail:
+
+______________________________
+
+Wat  voor  werk  doet  u?
+
+Waarom  wilt  u  een  EHBO-cursus  volgen?`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `ehbo-cursus`, `wilt`, `volgen`, `vult`, `sommige`, `gegevens`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 79,
+    title: `E-mail aan docent – cursus gemist`,
+    type: "E-mail",
+    category: ["Cursus", "E-mail", "School"],
+    fullTask: `✅  4.  E-mail  aan  docent  –  cursus  gemist
+U  had  vorige  week  uw  eerste  les,  maar  u  bent  niet  gekomen.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+docent.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  waarom  u  niet  bij  de  les  was.
+ ●  Vraag  wanneer  u  de  eerste  les  kunt  volgen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  waarom  u  niet  bij  de  les  was.`, `Vraag  wanneer  u  de  eerste  les  kunt  volgen.`],
+    keywords: [`e-mail`, `docent`, `cursus`, `gemist`, `vorige`, `week`, `eerste`, `bent`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Schrijf  waarom  u  niet  bij  de  les  was..
+Ik schrijf over: Vraag  wanneer  u  de  eerste  les  kunt  volgen..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 80,
+    title: `E-mail aan Amir – keukenspullen`,
+    type: "E-mail",
+    category: ["E-mail", "Vrienden"],
+    fullTask: `✅  1.  E-mail  aan  Amir  –  keukenspullen
+Uw  vriend  Amir  heeft  u  een  doos  met  keukenspullen  gegeven.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+hem.
+
+●  Bedank  Amir  voor  de  doos.
+ ●  Schrijf  welke  dingen  u  gebruikt.
+ ●  Schrijf  waarom  u  die  dingen  gebruikt.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Bedank  Amir  voor  de  doos.`, `Schrijf  welke  dingen  u  gebruikt.`, `Schrijf  waarom  u  die  dingen  gebruikt.`],
+    keywords: [`e-mail`, `amir`, `keukenspullen`, `vriend`, `heeft`, `doos`, `gegeven`, `schrijft`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Bedank  Amir  voor  de  doos..
+Ik schrijf over: Schrijf  welke  dingen  u  gebruikt..
+Ik schrijf over: Schrijf  waarom  u  die  dingen  gebruikt..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 81,
+    title: `Formulier invullen – minder uren werken`,
+    type: "Formulier",
+    category: ["Formulier", "Werk"],
+    fullTask: `✅  2.  Formulier  invullen  –  minder  uren  werken
+U  wilt  minder  uren  werken.
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Formulier  –  Minder  uren  werken
+Voor-  en  achternaam:  ____________________________
+
+Geboortedatum:
+
+_________________________________
+
+Adres:
+
+_________________________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+_________________________
+
+Telefoonnummer:
+
+________________________________
+
+E-mail:
+
+________________________________________
+
+Waar  werkt  u?
+
+Wat  doet  u  daar?
+
+Hoeveel  uur  werkt  u  nu  per  week?
+
+Hoeveel  uur  wilt  u  werken?
+
+Vanaf  welke  datum  wilt  u  dit  veranderen?
+
+Waarom  wilt  u  minder  (of  meer)  werken?`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `minder`, `uren`, `werken`, `wilt`, `vult`, `sommige`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 82,
+    title: `Tekst voor de wijkkrant – Feestdag`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  3.  Tekst  voor  de  wijkkrant  –  Feestdag
+U  schrijft  voor  de  wijkkrant  over  een  feestdag.
+●  Schrijf  over  welke  feestdag  het  gaat.
+ ●  Schrijf  wat  mensen  op  die  dag  doen.
+ ●  Schrijf  waarom  u  die  dag  leuk  vindt.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Schrijf  over  welke  feestdag  het  gaat.`, `Schrijf  wat  mensen  op  die  dag  doen.`, `Schrijf  waarom  u  die  dag  leuk  vindt.`],
+    keywords: [`tekst`, `wijkkrant`, `feestdag`, `schrijft`, `over`, `gaat`, `mensen`, `doen`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  over  welke  feestdag  het  gaat..
+Ik schrijf over: Schrijf  wat  mensen  op  die  dag  doen..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 83,
+    title: `E-mail aan vriend – hulp met huiswerk`,
+    type: "E-mail",
+    category: ["E-mail", "Vrienden", "Werk"],
+    fullTask: `✅  4.  E-mail  aan  vriend  –  hulp  met  huiswerk
+U  leert  Nederlands  en  u  hebt  huiswerk.
+
+Maar
+
+u
+
+begrijpt
+
+iets
+
+niet.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+vriend.
+
+●  Schrijf  wat  u  niet  kunt  doen.
+ ●  Vraag  of  hij  u  kan  helpen.
+ ●  Stel  een  moment  voor  om  samen  te  oefenen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  wat  u  niet  kunt  doen.`, `Vraag  of  hij  u  kan  helpen.`, `Stel  een  moment  voor  om  samen  te  oefenen.`],
+    keywords: [`e-mail`, `vriend`, `hulp`, `huiswerk`, `leert`, `nederlands`, `hebt`, `begrijpt`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  wat  u  niet  kunt  doen..
+Ik schrijf over: Vraag  of  hij  u  kan  helpen..
+Ik schrijf over: Stel  een  moment  voor  om  samen  te  oefenen..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 84,
+    title: `E-mail aan vriendin – nieuwe woning`,
+    type: "E-mail",
+    category: ["E-mail", "Vrienden"],
+    fullTask: `✅  1.  E-mail  aan  vriendin  –  nieuwe  woning
+Uw  vriendin  heeft  een  nieuwe  woning.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+haar.
+
+●  Feliciteer  uw  vriendin  met  de  nieuwe  woning.
+ ●  Schrijf  dat  u  wilt  helpen.
+ ●  Vraag  wanneer  ze  gaat  verhuizen.
+ ●  Schrijf  waarmee  u  kunt  helpen`,
+    points: [`Feliciteer  uw  vriendin  met  de  nieuwe  woning.`, `Schrijf  dat  u  wilt  helpen.`, `Vraag  wanneer  ze  gaat  verhuizen.`, `Schrijf  waarmee  u  kunt  helpen`],
+    keywords: [`e-mail`, `vriendin`, `nieuwe`, `woning`, `heeft`, `schrijft`, `haar`, `feliciteer`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Feliciteer  uw  vriendin  met  de  nieuwe  woning..
+Ik schrijf over: Schrijf  dat  u  wilt  helpen..
+Ik schrijf over: Vraag  wanneer  ze  gaat  verhuizen..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 85,
+    title: `Formulier invullen – taalcursus evaluatie`,
+    type: "Formulier",
+    category: ["Cursus", "Formulier", "School"],
+    fullTask: `✅  2.  Formulier  invullen  –  taalcursus  evaluatie
+U  volgt  een  taalcursus.
+
+Uw
+
+docent
+
+wil
+
+weten
+
+wat
+
+goed
+
+is
+
+en
+
+wat
+
+niet
+
+goed
+
+is.
+
+U
+
+vult
+
+het
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Evaluatieformulier  taalcursus
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Niveau:
+
+☐
+
+A1
+
+☐
+
+A2
+
+☐
+
+B1
+
+Wat  vindt  u  goed  aan  de  cursus?  En  waarom?
+
+☐
+
+Boek
+
+–
+
+__________________________________________
+
+☐
+
+Docent
+
+–
+
+_________________________________________
+
+☐
+
+Lokaal
+
+–
+
+_________________________________________
+
+Wat  vindt  u  niet  goed?  En  waarom?
+
+☐
+
+Boek
+
+–
+
+__________________________________________
+
+ ☐  Docent  –  _________________________________________
+
+☐
+
+Lokaal
+
+–
+
+_________________________________________`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `taalcursus`, `evaluatie`, `volgt`, `docent`, `weten`, `goed`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 86,
+    title: `E-mail aan baas – kapotte broek`,
+    type: "E-mail",
+    category: ["E-mail", "Werk"],
+    fullTask: `✅  3.  E-mail  aan  baas  –  kapotte  broek
+U  werkt  in  de  keuken  van  een  restaurant.
+
+Uw
+
+werkbroek
+
+is
+
+kapot.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+baas.
+
+●  Schrijf  wat  er  gebeurd  is.
+ ●  Schrijf  wat  u  wilt  (bijv.  nieuwe  broek  of  reparatie).
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  wat  er  gebeurd  is.`, `Schrijf  wat  u  wilt  (bijv.  nieuwe  broek  of  reparatie).`],
+    keywords: [`e-mail`, `baas`, `kapotte`, `broek`, `werkt`, `keuken`, `restaurant`, `werkbroek`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  wat  er  gebeurd  is..
+Ik schrijf over: Schrijf  wat  u  wilt  (bijv.  nieuwe  broek  of  reparatie).
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 87,
+    title: `Tekst voor de wijkkrant – vrije tijd`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  4.  Tekst  voor  de  wijkkrant  –  vrije  tijd
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+over
+
+uw
+
+vrije
+
+tijd.
+
+●  Schrijf  wat  u  in  uw  vrije  tijd  doet.
+ ●  Schrijf  waar  u  dat  doet.
+ ●  Schrijf  met  wie  u  dat  doet.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  wat  u  in  uw  vrije  tijd  doet.`, `Schrijf  waar  u  dat  doet.`, `Schrijf  met  wie  u  dat  doet.`],
+    keywords: [`tekst`, `wijkkrant`, `vrije`, `tijd`, `schrijft`, `korte`, `vertelt`, `over`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  wat  u  in  uw  vrije  tijd  doet..
+Ik schrijf over: Schrijf  waar  u  dat  doet..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 88,
+    title: `E-mail aan klasgenoot – ziek en huiswerk`,
+    type: "E-mail",
+    category: ["Dokter", "E-mail", "School", "Werk"],
+    fullTask: `✅  1.  E-mail  aan  klasgenoot  –  ziek  en  huiswerk
+Uw  klasgenoot  is  ziek  en  was  niet  op  de  les.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+hem.
+
+●   Vraag  hoe  het  met  hem  gaat.
+ ●  Schrijf  wat  jullie  in  de  les  hebben  gedaan.
+ ●  Schrijf  wat  het  huiswerk  is.
+ ●  Wens  beterschap.`,
+    points: [`Vraag  hoe  het  met  hem  gaat.`, `Schrijf  wat  jullie  in  de  les  hebben  gedaan.`, `Schrijf  wat  het  huiswerk  is.`, `Wens  beterschap.`],
+    keywords: [`e-mail`, `klasgenoot`, `ziek`, `huiswerk`, `schrijft`, `vraag`, `gaat`, `jullie`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Vraag  hoe  het  met  hem  gaat..
+Ik schrijf over: Schrijf  wat  jullie  in  de  les  hebben  gedaan..
+Ik schrijf over: Schrijf  wat  het  huiswerk  is..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 89,
+    title: `Formulier invullen – internetstoring`,
+    type: "Formulier",
+    category: ["Formulier", "Werk"],
+    fullTask: `✅  2.  Formulier  invullen  –  internetstoring
+Uw  internet  werkt  niet.
+
+U
+
+vult
+
+een
+
+formulier
+
+in
+
+op
+
+de
+
+website
+
+van
+
+het
+
+internetbedrijf.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Formulier  –  Probleem  met  internet
+Voor-  en  achternaam:  ___________________________
+
+Adres:
+
+________________________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+_________________________
+
+Telefoonnummer:
+
+_______________________________
+
+E-mail:
+
+_______________________________________
+
+Wat  is  het  probleem?
+
+Hoe  lang  hebt  u  dit  probleem  al?`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `internetstoring`, `internet`, `werkt`, `vult`, `website`, `internetbedrijf`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 90,
+    title: `E-mail aan collega – schoonmaken niet af`,
+    type: "E-mail",
+    category: ["Dokter", "E-mail", "School", "Werk"],
+    fullTask: `✅  3.  E-mail  aan  collega  –  schoonmaken  niet  af
+U  werkt  als  schoonmaker  in  een  restaurant.
+
+U
+
+was
+
+vandaag
+
+ziek
+
+en
+
+kon
+
+niet
+
+alles
+
+schoonmaken.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega.
+
+●  Schrijf  dat  u  ziek  bent.
+ ●  Schrijf  waarom  u  ziek  bent.
+ ●  Schrijf  wat  u  niet  hebt  gedaan.
+ ●  Vraag  uw  collega  om  dat  morgen  te  doen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  dat  u  ziek  bent.`, `Schrijf  waarom  u  ziek  bent.`, `Schrijf  wat  u  niet  hebt  gedaan.`, `Vraag  uw  collega  om  dat  morgen  te  doen.`],
+    keywords: [`e-mail`, `collega`, `schoonmaken`, `werkt`, `schoonmaker`, `restaurant`, `vandaag`, `ziek`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  dat  u  ziek  bent..
+Ik schrijf over: Schrijf  waarom  u  ziek  bent..
+Ik schrijf over: Schrijf  wat  u  niet  hebt  gedaan..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 91,
+    title: `Tekst voor de wijkkrant – Feest`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Wijkkrant"],
+    fullTask: `✅  4.  Tekst  voor  de  wijkkrant  –  Feest
+U  schrijft  voor  de  wijkkrant  over  een  feest.
+
+●  Schrijf  over  welk  feest  het  gaat.
+ ●  Schrijf  wanneer  het  feest  was.
+ ●  Schrijf  wat  u  van  het  feest  vond.
+ ●  Schrijf  waarom  het  leuk  was.`,
+    points: [`Schrijf  over  welk  feest  het  gaat.`, `Schrijf  wanneer  het  feest  was.`, `Schrijf  wat  u  van  het  feest  vond.`, `Schrijf  waarom  het  leuk  was.`],
+    keywords: [`tekst`, `wijkkrant`, `feest`, `schrijft`, `over`, `welk`, `gaat`, `vond`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  over  welk  feest  het  gaat..
+Ik schrijf over: Schrijf  wanneer  het  feest  was..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 92,
+    title: `E-mail aan collega – taken overnemen`,
+    type: "E-mail",
+    category: ["E-mail", "Werk"],
+    fullTask: `✅  1.  E-mail  aan  collega  –  taken  overnemen
+U  werkt  tot  13.00  uur.
+
+U
+
+hebt
+
+geen
+
+tijd
+
+om
+
+uw
+
+bureau
+
+op
+
+te
+
+ruimen
+
+en
+
+koffie
+
+te
+
+brengen
+
+voor
+
+meneer
+
+de
+
+Boer.
+
+Uw
+
+collega
+
+komt
+
+om
+
+13.00
+
+uur.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  wat  uw  collega  moet  doen.
+ ●  Noem  de  twee  taken
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  wat  uw  collega  moet  doen.`, `Noem  de  twee  taken`],
+    keywords: [`e-mail`, `collega`, `taken`, `overnemen`, `werkt`, `hebt`, `geen`, `tijd`],
+    simpleAnswer: `Beste [naam],
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  waarom  u  mailt..
+Ik schrijf over: Schrijf  wat  uw  collega  moet  doen..
+Ik schrijf over: Noem  de  twee  taken.
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 93,
+    title: `Formulier invullen – energieleverancier`,
+    type: "Formulier",
+    category: ["Formulier", "Transport"],
+    fullTask: `✅  2.  Formulier  invullen  –  energieleverancier
+U  wilt  klant  worden  bij  een  energiebedrijf.
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Formulier  –  Nieuwe  klant  energiebedrijf
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Adres:
+
+______________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+_______________
+
+Telefoonnummer:
+
+_____________________
+
+E-mail:
+
+______________________________
+
+Wat  voor  energie  wilt  u?
+
+☐
+
+Gas
+
+☐
+
+Elektriciteit
+
+☐
+
+Gas
+
+en
+
+elektriciteit
+
+Wanneer  wilt  u  beginnen  met  het  contract?
+
+Wilt  u  automatische  betaling?
+
+☐
+
+Ja
+
+☐
+
+Nee`,
+    points: [],
+    keywords: [`formulier`, `invullen`, `energieleverancier`, `wilt`, `klant`, `worden`, `energiebedrijf`, `vult`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Ik vul dit formulier in want het is belangrijk.: ...`,
+  },
+  {
+    id: 94,
+    title: `E-mail aan vriend – Nederlandse cursus`,
+    type: "E-mail",
+    category: ["Cursus", "E-mail", "School", "Vrienden"],
+    fullTask: `✅  3.  E-mail  aan  vriend  –  Nederlandse  cursus
+Uw  vriend  wil  Nederlands  leren.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+hem.
+
+●  Schrijf  dat  uw  vriend  een  cursus  zoekt.
+ ●  Schrijf  welke  school  u  goed  vindt.
+ ●  Schrijf  waarom  u  die  school  goed  vindt.
+ ●  Schrijf  hoe  hij  zich  kan  inschrijven.
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.`,
+    points: [`Schrijf  dat  uw  vriend  een  cursus  zoekt.`, `Schrijf  welke  school  u  goed  vindt.`, `Schrijf  waarom  u  die  school  goed  vindt.`, `Schrijf  hoe  hij  zich  kan  inschrijven.`],
+    keywords: [`e-mail`, `vriend`, `nederlandse`, `cursus`, `nederlands`, `leren`, `schrijft`, `zoekt`],
+    simpleAnswer: `Beste heer/mevrouw,
+
+Mijn naam is Mykola.
+
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  dat  uw  vriend  een  cursus  zoekt..
+Ik schrijf over: Schrijf  welke  school  u  goed  vindt..
+Ik schrijf over: Schrijf  waarom  u  die  school  goed  vindt..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 95,
+    title: `Tekst voor de wijkkrant – vrienden`,
+    type: "Wijkkrant",
+    category: ["Buurt", "Vrienden", "Wijkkrant"],
+    fullTask: `✅  4.  Tekst  voor  de  wijkkrant  –  vrienden
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+over
+
+uw
+
+vrienden.
+
+●  Schrijf  hoeveel  vrienden  u  hebt.
+ ●  Schrijf  hoe  lang  u  hen  kent.
+ ●  Schrijf  wat  u  samen  doet.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Schrijf  hoeveel  vrienden  u  hebt.`, `Schrijf  hoe  lang  u  hen  kent.`, `Schrijf  wat  u  samen  doet.`],
+    keywords: [`tekst`, `wijkkrant`, `vrienden`, `schrijft`, `korte`, `vertelt`, `over`, `hoeveel`],
+    simpleAnswer: `Beste buren,
+
+Mijn naam is Mykola. Ik kom uit Oekraïne.
+Ik wil jullie vertellen over dit onderwerp.
+Ik schrijf want ik heb een situatie.
+Ik schrijf over: Schrijf  hoeveel  vrienden  u  hebt..
+Ik schrijf over: Schrijf  hoe  lang  u  hen  kent..
+
+Met vriendelijke groet,
+Mykola`,
+  },
+  {
+    id: 96,
+    title: `Ticket 96`,
+    type: "Formulier",
+    category: ["Buurt", "Cursus", "Dokter", "Familie", "Formulier", "School", "Vrienden", "Werk"],
+    fullTask: `1.
+
+E-mail
+
+aan
+
+uw
+
+baas
+
+U  werkt  in  een  restaurant.  U  bent  ziek  en  u  kunt  vandaag  niet  werken.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+baas.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  dat  u  ziek  bent.
+ ●  Vraag  of  iemand  anders  vandaag  kan  werken.
+ ●   Zeg  dat  u  later  belt.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  2.  Formulier  invullen  –  inschrijving  taalcursus
+U  wilt  beter  Nederlands  leren.  U  gaat  naar  een  nieuwe  taalcursus.
+
+U
+
+moet
+
+een
+
+formulier
+
+invullen.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  taalcursus
+Voor-  en  achternaam:  ______________________________
+
+Adres:
+
+__________________________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+___________________________
+
+Telefoonnummer:
+
+_________________________________
+
+E-mail:
+
+_________________________________________
+
+ Welk  niveau  wilt  u  volgen?
+
+☐
+
+A1
+
+☐
+
+A2
+
+☐
+
+B1
+
+Waarom  wilt  u  Nederlands  leren?
+
+Wanneer  kunt  u  naar  de  les  komen?
+
+☐
+
+Maandag
+
+en
+
+woensdag
+
+☐
+
+Dinsdag
+
+en
+
+donderdag
+
+☐
+
+In
+
+het
+
+weekend
+
+✅  3.  E-mail  aan  een  vriend
+U  hebt  een  nieuw  huis.  U  wilt  een  feestje  geven.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+vriend
+
+Amir.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Nodig  Amir  uit  voor  het  feest.
+ ●  Schrijf  wanneer  en  waar  het  feest  is.
+ ●  Vraag  of  hij  iets  mee  wil  nemen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  4.  Tekst  voor  de  wijkkrant  –  Dieren
+U  leest  elke  week  een  wijkkrant.  Iedereen  mag  iets  schrijven.
+
+U
+
+schrijft
+
+over
+
+een
+
+dier
+
+dat
+
+u
+
+leuk
+
+vindt.
+
+●  Schrijf  welk  dier  u  leuk  vindt.     ●  Schrijf  waarom  u  dat  dier  leuk  vindt.
+ ●  Schrijf  wat  u  met  dat  dier  doet  of  zou  willen  doen.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:
+
+✅  1.  Tekst  voor  de  wijkkrant  –  Over  uw  woning
+U  leest  elke  week  een  wijkkrant.  Iedereen  mag  iets  schrijven.
+
+U
+
+schrijft
+
+over
+
+uw
+
+woning
+
+(huis
+
+of
+
+appartement).
+
+●  Hoe  ziet  uw  keuken  eruit?
+ ●  Schrijf  hoeveel  kamers  u  heeft.
+ ●  Schrijf  met  hoeveel  mensen  u  daar  woont.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:
+✅  2.  E-mail  aan  collega  Omar
+U  werkt  als  monteur.  Morgen  gaat  u  samen  met  Omar  naar  een  andere  stad.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+Omar.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  in  welke  stad  jullie  een  afspraak  hebben.  (bedenk  zelf)
+ ●  Schrijf  hoe  laat  u  Omar  ophaalt.
+ ●  Schrijf  wat  Omar  mee  moet  nemen .
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  3.  Formulier  invullen  –  kookcursus
+U  wilt  een  kookcursus  volgen.  U  moet  een  formulier  invullen.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  kookcursus
+Voor-  en  achternaam:  _____________________________
+
+Adres:
+
+__________________________________________
+
+Telefoonnummer:
+
+_________________________________
+
+E-mail:
+
+_________________________________________
+
+Welk  gerecht  wilt  u  leren  koken?
+
+Waarom  wilt  u  dat  gerecht  leren  koken?
+
+Wanneer  kunt  u  naar  de  cursus  komen?
+
+☐
+
+Dinsdagavond
+
+☐
+
+Donderdagmiddag
+
+☐
+
+Zaterdag
+
+✅  4.  E-mail  aan  vrienden  –  Oppas  gezocht
+U  heeft  kinderen,  maar  u  moet  soms  weg  van  huis.
+
+U
+
+zoekt
+
+een
+
+oppas-.
+
+U
+
+kent
+
+niemand.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+vrienden.
+
+●  Schrijf  waarom  u  een  oppas  zoekt.
+ ●  Schrijf  wanneer  u  een  oppas  nodig  hebt.
+ ●  Vraag  of  uw  vrienden  een  goede  oppas  kennen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  dat  u  ziek  bent.`, `Vraag  of  iemand  anders  vandaag  kan  werken.`, `Zeg  dat  u  later  belt.`, `Schrijf  waarom  u  mailt.`, `Nodig  Amir  uit  voor  het  feest.`],
+    keywords: [`e-mail`, `baas`, `werkt`, `restaurant`, `bent`, `ziek`, `kunt`, `vandaag`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Schrijf  waarom  u  mailt.: ...
+Schrijf  dat  u  ziek  bent.: ...
+Vraag  of  iemand  anders  vandaag  kan  werken.: ...`,
+  },
+  {
+    id: 97,
+    title: `Ticket 97`,
+    type: "Formulier",
+    category: ["Buurt", "Cursus", "Dokter", "Familie", "Formulier", "School", "Transport", "Werk"],
+    fullTask: `1.
+
+Formulier
+
+invullen
+
+–
+
+review
+
+fotoboeken
+
+U  hebt  online  fotoboeken  gekocht.  Nu  vult  u  een  formulier  in  op  de  website.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Klantenformulier  –  Uw  ervaring  met  onze  fotoboeken
+Waarom  hebt  u  fotoboeken  gemaakt?
+
+Waarom  hebt  u  onze  website  gekozen?
+
+Wat  vindt  u  van  de  prijzen?
+
+Wat  wilt  u  ons  wensen  voor  de  toekomst?
+
+✅  2.  E-mail  aan  collega  –  auto  kapot
+U  moet  werken.  U  hebt  spullen  voor  uw  werk,  maar  uw  auto  is  kapot.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega
+
+Thomas.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  dat  uw  auto  kapot  is.
+ ●   Bedenk  een  oplossing  voor  uw  probleem.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  3.  Tekst  voor  de  wijkkrant  –  Park
+U  schrijft  een  korte  tekst  voor  de  wijkkrant  over  een  park  in  de  buurt.
+●  Schrijf  over  het  park.
+ ●  Schrijf  waarom  u  het  park  leuk  vindt.
+ ●  Schrijf  wat  u  daar  doet.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:
+
+✅  1.  E-mail  aan  de  docent  –  gemiste  toets
+U  doet  een  cursus.  U  had  een  examen,  maar  u  bent  niet  gekomen.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+docent.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  waarom  u  niet  naar  het  examen  kwam.  (Bedenk  zelf  een  reden)
+
+●  Vraag  of  u  de  toets  op  een  andere  dag  kunt  maken.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  2.  Tekst  voor  de  wijkkrant  –  Muziek
+U  schrijft  een  korte  tekst  voor  de  wijkkrant  over  muziek.
+●  Schrijf  welke  muziek  u  leuk  vindt.
+ ●  Schrijf  waarom  u  die  muziek  leuk  vindt.
+ ●  Schrijf  wie  die  muziek  maakt  .
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:
+
+✅  3.  E-mail  aan  collega's  –  sleutels  kwijt
+U  werkt  in  een  kantoor.  U  bent  uw  sleutels  kwijt.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega's.
+
+●  Schrijf  wat  er  is  gebeurd.
+ ●  Vraag  uw  collega's  om  de  sleutels  aan  u  te  geven  als  ze  die  vinden.
+ ●  Schrijf  hoe  ze  dat  kunnen  doen  (bijvoorbeeld:  waar  en  wanneer).
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  4.  Formulier  invullen  –  huisarts  (dokter)
+U  zoekt  een  nieuwe  huisarts.  U  vult  een  formulier  in  op  de  website  van  een  praktijk.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Kies
+
+een
+
+klacht:
+
+bijvoorbeeld
+
+een
+
+gebroken
+
+been,
+
+verkoudheid
+
+of
+
+iets
+
+anders.
+
+Inschrijfformulier  nieuwe  huisarts
+Voor-  en  achternaam:  _____________________________
+
+Adres:
+
+__________________________________________
+
+ Postcode  en  woonplaats:  ___________________________
+
+Telefoonnummer:
+
+_________________________________
+
+E-mail:
+
+_________________________________________
+
+Wat  is  uw  klacht?  (Wat  is  er  gebeurd?)
+
+Gebruikt  u  medicijnen?
+
+☐
+
+Ja
+
+☐
+
+Nee
+
+✅  1.  Formulier  invullen  –  fiets  kiezen  op  werk
+Op  uw  werk  mag  u  een  fiets  kiezen.  U  ziet  drie  fietsen:
+
+A
+
+=
+
+stadsfiets
+
+–
+
+B
+
+=
+
+racefiets
+
+–
+
+C
+
+=
+
+bakfiets
+
+(met
+
+bak
+
+voorop)
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Fietsformulier  –  Werkfiets  kiezen
+Voor-  en  achternaam:  _____________________________
+
+Adres:
+
+__________________________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+___________________________
+
+Lengte:
+
+___________________
+
+cm
+
+Kleur
+
+van
+
+de
+
+fiets:
+
+____________________________
+
+Type
+
+fiets
+
+(A/B/C):
+
+_____________
+
+Waarom  kiest  u  deze  fiets?
+
+✅  2.  E-mail  aan  de  taalschool  –  examens  Engels
+U  wilt  bij  een  school  twee  examens  Engels  doen.
+
+Op
+
+de
+
+website
+
+ziet
+
+u
+
+deze
+
+examens:
+
+Lezen
+Luisteren
+
+Schrijven
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+de
+
+school.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  welke  twee  examens  u  wilt  doen.
+
+●  Stel  twee  vragen.  Bedenk  deze  vragen  zelf.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  3.  Tekst  voor  de  wijkkrant  –  Mooie  buurt
+U  schrijft  voor  de  wijkkrant.  U  wilt  uw  buurt  mooier  en  leuker  maken.
+●  Schrijf  waarom  u  dat  wilt.
+ ●  Schrijf  wat  er  beter  kan  in  de  buurt.
+ ●  Schrijf  wat  u  zelf  wilt  doen  of  voorstellen.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+✅  1.  Brief  aan  uw  buurman  –  geluidsoverlast
+Uw  buurman  Piet  maakt  's  avonds  veel  lawaai.
+
+U
+
+hebt
+
+daar
+
+last
+
+van
+
+en
+
+wilt
+
+met
+
+hem
+
+praten.
+
+Maar
+
+Piet
+
+is
+
+niet
+
+thuis.
+
+U
+
+schrijft
+
+een
+
+brief
+
+aan
+
+hem.
+
+●  Schrijf  waarom  u  schrijft.
+ ●  Schrijf  wat  het  probleem  is.
+ ●  Vraag  of  u  samen  kunt  praten.
+
+✍  Schrijf  een  brief.  Gebruik  hele  zinnen.
+
+✅  2.  Formulier  invullen  –  cursus  via  werk
+U  werkt  in  een  fabriek.  Uw  baas  wil  dat  u  een  cursus  gaat  doen.
+
+U
+
+moet
+
+een
+
+formulier
+
+invullen.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  cursus
+
+Voornaam:  ____________________
+
+Achternaam:
+
+____________________
+
+Adres:
+
+_________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+____________
+
+Telefoonnummer:
+
+___________________
+
+E-mail:
+
+____________________________
+
+Wanneer  wilt  u  de  cursus  volgen?
+
+☐
+
+Maandag
+
+☐
+
+Woensdag
+
+☐
+
+Zaterdag
+
+Waar  werkt  u?
+
+Wat  is  uw  werkervaring?
+
+✅  3.  Tekst  voor  de  wijkkrant  –  Feest  in  de  buurt
+U  wilt  een  feest  organiseren  in  uw  buurt.
+
+U
+
+schrijft
+
+een
+
+korte
+
+tekst
+
+voor
+
+de
+
+wijkkrant
+
+om
+
+uw
+
+buren
+
+uit
+
+te
+
+nodigen.
+
+●  Schrijf  waarom  u  een  feest  wilt.
+ ●  Schrijf  waar  en  wanneer  het  feest  is.
+ ●  Schrijf  wat  de  buren  mee  kunnen  nemen  of  doen.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:
+
+✅  4.  E-mail  aan  kookcursus  –  Afzeggen
+U  hebt  zich  ingeschreven  voor  een  kookcursus,  maar  u  kunt  niet  gaan.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+de
+
+administratie
+
+van
+
+de
+
+cursus.
+
+●  Schrijf  waarom  u  niet  kunt  komen.  (Bedenk  zelf  een  reden)
+
+●  Schrijf  dat  u  graag  bij  de  volgende  cursus  wilt  zijn.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅`,
+    points: [`Schrijf  waarom  u  mailt.`, `Schrijf  dat  uw  auto  kapot  is.`, `Bedenk  een  oplossing  voor  uw  probleem.`, `Schrijf  over  het  park.`, `Schrijf  waarom  u  het  park  leuk  vindt.`, `Schrijf  wat  u  daar  doet.`],
+    keywords: [`formulier`, `invullen`, `review`, `fotoboeken`, `hebt`, `online`, `gekocht`, `vult`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Schrijf  waarom  u  mailt.: ...
+Schrijf  dat  uw  auto  kapot  is.: ...
+Bedenk  een  oplossing  voor  uw  probleem.: ...`,
+  },
+  {
+    id: 98,
+    title: `Ticket 98`,
+    type: "Formulier",
+    category: ["Buurt", "Cursus", "Dokter", "Familie", "Formulier", "School", "Transport", "Vrienden", "Werk", "Winkel"],
+    fullTask: `1.
+
+E-mail
+
+aan
+
+Hassan
+
+–
+
+kaartjes
+
+voor
+
+de
+
+voetbalwedstrijd
+
+U  hebt  kaartjes  voor  een  voetbalwedstrijd,  maar  u  kunt  niet  gaan.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+vriend
+
+Hassan.
+
+●  Schrijf  dat  u  kaartjes  hebt  en  voor  wanneer.
+ ●  Schrijf  waarom  u  niet  kunt  gaan.
+ ●  Vraag  of  Hassan  de  kaartjes  wil  hebben.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  2.  Formulier  invullen  –  schoolfeest
+Uw  school  viert  verschillende  feesten.
+
+De
+
+docent
+
+vraagt
+
+met
+
+welk
+
+feest
+
+u
+
+wilt
+
+helpen.
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Formulier  –  Hulp  bij  schoolfeest
+Voornaam:  ________________________
+
+Achternaam:
+
+_______________________
+
+Adres:
+
+____________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+____________
+
+Telefoonnummer:
+
+___________________
+
+E-mail:
+
+____________________________
+
+Welk  feest  kiest  u?
+
+☐
+
+Koningsdag
+
+☐
+
+Kerstfeest
+
+☐
+
+Sportdag
+
+☐
+
+Muziekdag
+
+Waarom  wilt  u  met  dit  feest  helpen?
+
+Wat  kunt  u  doen?
+
+✅  3.  E-mail  aan  winkel  –  bestelling  incompleet
+U  werkt  in  een  restaurant.  U  hebt  producten  besteld,  maar  u  hebt  niet  alles  gekregen.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+de
+
+winkel.
+
+●  Schrijf  welke  twee  producten  u  niet  hebt  gekregen.
+ ●  Schrijf  wanneer  u  ze  wilt  ontvangen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  4.  Tekst  voor  de  wijkkrant  –  Koken  thuis
+U  schrijft  een  korte  tekst  voor  de  wijkkrant  over  koken  in  uw  huis.
+●  Schrijf  wie  in  uw  huis  kookt.
+ ●  Schrijf  wat  die  persoon  graag  kookt.
+ ●  Schrijf  wanneer  die  persoon  kookt.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:
+✅  1.  Formulier  invullen  –  Klacht  bij  de  dokter
+U  voelt  zich  niet  goed  en  u  vult  een  formulier  in  bij  de  huisarts.
+
+U
+
+hebt
+
+rugpijn.
+
+U
+
+denkt
+
+dat
+
+het
+
+komt
+
+door
+
+uw
+
+werk
+
+in
+
+de
+
+winkel,
+
+omdat
+
+u
+
+de
+
+hele
+
+dag
+
+moet
+
+staan.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Formulier  –  Klacht  bij  de  huisarts
+Voor-  en  achternaam:  ____________________________
+
+Telefoonnummer:
+
+________________________________
+
+Wat  is  uw  klacht?
+
+Hoe  lang  hebt  u  al  pijn?
+
+Hebt  u  een  klacht  bij  de  winkel  ingediend?
+
+☐
+
+Ja
+
+→
+
+Waarom?
+
+__________________________________
+
+☐
+
+Nee
+
+Wanneer  denkt  u  beter  te  zijn?
+
+(In  te  vullen  door  de  huisarts)
+
+Naam
+
+arts:
+
+____________________________
+
+Datum:
+
+_______________________________
+
+✅  2.  E-mail  aan  Karim  –  zieke  klasgenoot
+U  volgt  een  Nederlandse  cursus.
+
+Vandaag
+
+was
+
+er
+
+een
+
+les,
+
+maar
+
+Karim
+
+was
+
+ziek.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+Karim.
+
+●  Vraag  hoe  het  met  hem  gaat.
+ ●  Schrijf  wat  het  huiswerk  is.
+ ●  Wens  hem  beterschap.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  3.  E-mail  aan  vriendin  –  fiets  kapot
+Uw  fiets  is  kapot.
+
+U
+
+moet
+
+naar
+
+de
+
+kroeg
+
+(stamkroeg).
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+vriendin.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  waar  u  naartoe  moet.
+ ●  Vraag  of  u  haar  fiets  mag  lenen.
+
+●  Schrijf  wanneer  u  de  fiets  teruggeeft.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  4.  Tekst  voor  de  wijkkrant  –  Geboorte  van  een  baby
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+wat
+
+mensen
+
+in
+
+uw
+
+land
+
+doen
+
+als
+
+er
+
+een
+
+baby
+
+geboren
+
+wordt.
+
+●  Schrijf  of  mensen  iets  speciaals  doen
+ ●  Schrijf  hoe  andere  mensen  weten  dat  er  een  baby  is  geboren.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:
+
+✅  1.  E-mail  aan  taalschool  –  docent  nodig
+U  leert  Nederlands.
+
+U
+
+wilt
+
+een
+
+docent
+
+om
+
+u
+
+te
+
+helpen
+
+met
+
+de
+
+taal.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+de
+
+taalschool.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  wat  u  met  de  docent  wilt  doen.
+ ●  Schrijf  waar  u  wilt  leren.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  2.  Formulier  invullen  –  Muziekschool
+U  wilt  zich  inschrijven  bij  een  muziekschool.
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  muziekschool
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Adres:
+
+______________________________
+
+ Postcode  en  woonplaats:  _______________
+
+Telefoonnummer:
+
+_____________________
+
+E-mail:
+
+______________________________
+
+Welke  dag(en)  wilt  u  les  hebben?
+
+☐
+
+Maandag
+
+☐
+
+Dinsdag
+
+☐
+
+Woensdag
+
+☐
+
+Donderdag
+
+☐
+
+Vrijdag
+
+☐
+
+Zaterdag
+
+Wanneer  wilt  u  beginnen  met  de  lessen?
+
+Hebt  u  al  muzieklessen  gevolgd?
+
+☐
+
+Ja
+
+→
+
+Welke?
+
+_________________________
+
+☐
+
+Nee
+
+✅  3.  E-mail  aan  collega's  –  sleutels  kwijt
+U  werkt  in  een  kantoor.
+
+U
+
+bent
+
+uw
+
+sleutels
+
+kwijt.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega's.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  dat  u  uw  sleutels  bent  verloren.
+ ●  Schrijf  hoe  uw  collega's  de  sleutels  aan  u  kunnen  geven.  Bedenk  het  zelf  ●  ✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  4.  Tekst  voor  de  wijkkrant  –  Wonen
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+waar
+
+u
+
+vroeger
+
+woonde
+
+en
+
+waar
+
+u
+
+nu
+
+woont.
+
+●  Schrijf  waar  u  vroeger  woonde.
+ ●  Schrijf  waar  u  nu  woont.
+
+●  Schrijf  wat  u  leuker  vindt:  de  stad  of  het  dorp,  en  waarom.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:
+
+✅  1.  E-mail  aan  klasgenoten  –  cadeau  voor  docent
+U  wilt  uw  docent  een  cadeau  geven.
+
+U
+
+denkt
+
+aan
+
+bloemen
+
+of
+
+een
+
+boek.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+klasgenoten.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  wat  u  wilt  kopen.
+ ●  Vraag  of  uw  klasgenoten  geld  willen  geven  voor  het  cadeau.
+ ●  Schrijf  tot  welke  datum  ze  het  geld  kunnen  geven.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  2.  Formulier  invullen  –  straatfeest  (feest  op  straat)
+U  wilt  meedoen  aan  een  feest  op  straat.
+
+U
+
+moet
+
+een
+
+formulier
+
+invullen.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  straatfeest
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Adres:
+
+______________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+_______________
+
+Telefoonnummer:
+
+_____________________
+
+E-mail:
+
+______________________________
+
+Met  hoeveel  personen  komt  u?
+
+Wat  wilt  u  doen  tijdens  het  feest?  (bijv.  zingen,  koken,  helpen  met  versieren)
+
+Wanneer  kunt  u  helpen  met  voorbereiden?
+
+✅  3.  E-mail  aan  collega  –  schoonmaken  niet  af
+U  werkte  in  het  kantoor  en  u  moest  schoonmaken.
+
+Maar
+
+u
+
+hebt
+
+niet
+
+alles
+
+gedaan.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega.
+
+●  Schrijf  wat  u  niet  hebt  gedaan.
+ ●  Schrijf  waarom  u  dat  niet  hebt  gedaan.
+ ●  Bies  uw  excuses  aan.
+ ●  Vraag  uw  collega  om  het  af  te  maken.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  4.  Tekst  voor  de  wijkkrant  –  Nieuw  in  Nederland
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+over
+
+uzelf.
+
+●  Schrijf  waar  u  vandaan  komt.
+ ●  Schrijf  wanneer  u  naar  Nederland  bent  gekomen.
+ ●  Schrijf  hoe  u  zich  voelt  en  wat  u  leuk  vindt  in  Nederland.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Schrijf  dat  u  kaartjes  hebt  en  voor  wanneer.`, `Schrijf  waarom  u  niet  kunt  gaan.`, `Vraag  of  Hassan  de  kaartjes  wil  hebben.`, `Schrijf  welke  twee  producten  u  niet  hebt  gekregen.`, `Schrijf  wanneer  u  ze  wilt  ontvangen.`, `Schrijf  wie  in  uw  huis  kookt.`],
+    keywords: [`e-mail`, `hassan`, `kaartjes`, `voetbalwedstrijd`, `hebt`, `kunt`, `gaan`, `schrijft`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Schrijf  dat  u  kaartjes  hebt  en  voor  wanneer.: ...
+Schrijf  waarom  u  niet  kunt  gaan.: ...
+Vraag  of  Hassan  de  kaartjes  wil  hebben.: ...`,
+  },
+  {
+    id: 99,
+    title: `Bericht ophangen in de supermarkt – kat gevonden`,
+    type: "Formulier",
+    category: ["Buurt", "Cursus", "Dokter", "Formulier", "Transport", "Werk"],
+    fullTask: `1.  Bericht  ophangen  in  de  supermarkt  –  kat  gevonden
+Er  zit  al  twee  dagen  een  kat  bij  uw  huis.
+
+U
+
+weet
+
+niet
+
+van
+
+wie
+
+de
+
+kat
+
+is.
+
+U
+
+schrijft
+
+een
+
+briefje
+
+voor
+
+het
+
+prikbord
+
+in
+
+de
+
+supermarkt.
+
+●  Schrijf  wat  er  gebeurd  is.
+ ●  Beschrijf  de  kat  (minimaal  twee  kenmerken).Bedenk  het  zelf.
+ ●  Schrijf  wat  u  wilt.
+
+✍  Schrijf  een  kort  bericht.  Gebruik  hele  zinnen.
+
+✅  2.  Formulier  invullen  –  ROC  Open  Dag
+Het  ROC  organiseert  een  open  dag.
+
+U
+
+wilt
+
+komen
+
+en
+
+u
+
+vult
+
+het
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  Open  Dag  ROC
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Geboortedatum:
+
+______________________
+
+Adres:
+
+______________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+_______________
+
+E-mail:
+
+______________________________
+
+Welke  opleiding  vindt  u  interessant?
+
+☐
+
+Verpleegkundige
+
+☐
+
+Kapper
+
+☐
+
+ICT-medewerker
+
+☐
+
+Bakker
+
+Waarom  vindt  u  deze  opleiding  interessant?
+
+Waarom  wilt  u  naar  de  open  dag  komen?
+
+✅  3.  Tekst  voor  de  wijkkrant  –  Favoriete  website/app
+U  schrijft  voor  de  wijkkrant  over  uw  favoriete  website  of  app.
+●  Schrijf  welke  app  of  website  u  graag  gebruikt.
+ ●  Schrijf  waarom  u  die  leuk  vindt.
+
+●  Schrijf  wanneer  u  die  app  of  website  gebruikt.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+
+✅  4.  E-mail  aan  uw  baas  –  rugpijn  na  tillen
+U  had  gisteren  dozen  getild  op  uw  werk.
+
+Nu
+
+hebt
+
+u
+
+rugpijn.
+
+Vanmiddag
+
+gaat
+
+u
+
+naar
+
+de
+
+fysiotherapeut.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+baas.
+
+●  Schrijf  wat  er  gisteren  is  gebeurd.
+ ●  Schrijf  dat  u  nu  pijn  hebt.
+ ●  Schrijf  wat  u  vandaag  na  de  lunch  gaat  doen.
+
+✅`,
+    points: [`Schrijf  wat  er  gebeurd  is.`, `Beschrijf  de  kat  (minimaal  twee  kenmerken).Bedenk  het  zelf.`, `Schrijf  wat  u  wilt.`, `Schrijf  welke  app  of  website  u  graag  gebruikt.`, `Schrijf  waarom  u  die  leuk  vindt.`, `Schrijf  wanneer  u  die  app  of  website  gebruikt.`],
+    keywords: [`bericht`, `ophangen`, `supermarkt`, `gevonden`, `twee`, `dagen`, `huis`, `weet`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Schrijf  wat  er  gebeurd  is.: ...
+Beschrijf  de  kat  (minimaal  twee  kenmerken).Bedenk  het  zelf.: ...
+Schrijf  wat  u  wilt.: ...`,
+  },
+  {
+    id: 100,
+    title: `Ticket 100`,
+    type: "Formulier",
+    category: ["Buurt", "Cursus", "Dokter", "Familie", "Formulier", "School", "Transport", "Vrienden", "Werk"],
+    fullTask: `1.
+
+E-mail
+
+–
+
+kookcursus
+
+(eten
+
+meenemen)
+
+U  volgt  een  kookcursus.
+
+Er
+
+is
+
+een
+
+gezamenlijke
+
+avond
+
+en
+
+iedereen
+
+moet
+
+iets
+
+te
+
+eten
+
+meenemen.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+de
+
+organisator.
+
+●  Schrijf  wat  u  meeneemt  om  te  eten.
+ ●  Schrijf  voor  hoeveel  personen  het  is.
+ ●  Schrijf  of  er  vlees  in  zit.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  2.  Formulier  invullen  –  Muziekschool
+U  wilt  muzieklessen  volgen.
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  Muziekschool
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Adres:
+
+______________________________
+
+ Postcode  en  woonplaats:  _______________
+
+Telefoonnummer:
+
+_____________________
+
+E-mail:
+
+______________________________
+
+Welk  instrument  wilt  u  leren?
+
+☐
+
+Gitaar
+
+☐
+
+Piano
+
+☐
+
+Drums
+
+☐
+
+Zang
+
+Wanneer  kunt  u  les  nemen?
+
+Waarom  wilt  u  muziek  leren?
+
+✅  3.  E-mail  aan  collega  –  geen  werk  gedaan
+U  werkt  in  een  schoenmakerij.
+
+Vandaag
+
+hebt
+
+u
+
+geen
+
+schoenen
+
+kunnen
+
+maken
+
+of
+
+repareren.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega.
+
+●  Schrijf  wat  u  niet  hebt  gedaan.
+ ●  Schrijf  waarom  u  dat  niet  hebt  gedaan.
+ ●  Schrijf  wat  uw  collega  nu  moet  doen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  4.  Tekst  voor  de  wijkkrant  –  aardige  buurman
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+iets
+
+over
+
+uw
+
+buurman.
+
+●  Schrijf  dat  uw  buurman  aardig  is.
+ ●  Schrijf  waarom  hij  aardig  is.
+ ●  Schrijf  wat  u  samen  met  hem  doet.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+
+Dit  is  mijn  tekst  voor  de  wijkkrant:
+
+✅  1.  Tekst  voor  de  wijkkrant  –  Vakantie
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+over
+
+uw
+
+vakantie.
+
+●  Schrijf  waar  u  op  vakantie  was.
+ ●  Schrijf  wanneer  u  daar  was.
+ ●  Schrijf  met  wie  u  was.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+
+✅  2.  E-mail  aan  Mariska  –  zoon  ophalen
+U  kunt  morgen  uw  zoon  niet  van  school  halen.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+Mariska.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  waarom  u  uw  zoon  niet  zelf  kunt  ophalen.
+ ●  Vraag  of  Mariska  uw  zoon  kan  ophalen.
+ ●  Schrijf  hoe  laat  u  thuis  bent.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  3.  Formulier  invullen  –  EHBO-cursus
+U  wilt  een  EHBO-cursus  volgen.
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Inschrijfformulier  EHBO
+
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Adres:
+
+______________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+_______________
+
+Telefoonnummer:
+
+_____________________
+
+E-mail:
+
+______________________________
+
+Wat  voor  werk  doet  u?
+
+Waarom  wilt  u  een  EHBO-cursus  volgen?
+
+✅  4.  E-mail  aan  docent  –  cursus  gemist
+U  had  vorige  week  uw  eerste  les,  maar  u  bent  niet  gekomen.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+docent.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  waarom  u  niet  bij  de  les  was.
+ ●  Vraag  wanneer  u  de  eerste  les  kunt  volgen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+✅  1.  E-mail  aan  Amir  –  keukenspullen
+Uw  vriend  Amir  heeft  u  een  doos  met  keukenspullen  gegeven.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+hem.
+
+●  Bedank  Amir  voor  de  doos.
+ ●  Schrijf  welke  dingen  u  gebruikt.
+ ●  Schrijf  waarom  u  die  dingen  gebruikt.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+✅  2.  Formulier  invullen  –  minder  uren  werken
+U  wilt  minder  uren  werken.
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Formulier  –  Minder  uren  werken
+Voor-  en  achternaam:  ____________________________
+
+Geboortedatum:
+
+_________________________________
+
+Adres:
+
+_________________________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+_________________________
+
+Telefoonnummer:
+
+________________________________
+
+E-mail:
+
+________________________________________
+
+Waar  werkt  u?
+
+Wat  doet  u  daar?
+
+Hoeveel  uur  werkt  u  nu  per  week?
+
+Hoeveel  uur  wilt  u  werken?
+
+Vanaf  welke  datum  wilt  u  dit  veranderen?
+
+Waarom  wilt  u  minder  (of  meer)  werken?
+
+✅  3.  Tekst  voor  de  wijkkrant  –  Feestdag
+U  schrijft  voor  de  wijkkrant  over  een  feestdag.
+●  Schrijf  over  welke  feestdag  het  gaat.
+ ●  Schrijf  wat  mensen  op  die  dag  doen.
+ ●  Schrijf  waarom  u  die  dag  leuk  vindt.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:
+
+✅  4.  E-mail  aan  vriend  –  hulp  met  huiswerk
+U  leert  Nederlands  en  u  hebt  huiswerk.
+
+Maar
+
+u
+
+begrijpt
+
+iets
+
+niet.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+vriend.
+
+●  Schrijf  wat  u  niet  kunt  doen.
+ ●  Vraag  of  hij  u  kan  helpen.
+ ●  Stel  een  moment  voor  om  samen  te  oefenen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  1.  E-mail  aan  vriendin  –  nieuwe  woning
+Uw  vriendin  heeft  een  nieuwe  woning.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+haar.
+
+●  Feliciteer  uw  vriendin  met  de  nieuwe  woning.
+ ●  Schrijf  dat  u  wilt  helpen.
+ ●  Vraag  wanneer  ze  gaat  verhuizen.
+ ●  Schrijf  waarmee  u  kunt  helpen
+✅  2.  Formulier  invullen  –  taalcursus  evaluatie
+U  volgt  een  taalcursus.
+
+Uw
+
+docent
+
+wil
+
+weten
+
+wat
+
+goed
+
+is
+
+en
+
+wat
+
+niet
+
+goed
+
+is.
+
+U
+
+vult
+
+het
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Evaluatieformulier  taalcursus
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Niveau:
+
+☐
+
+A1
+
+☐
+
+A2
+
+☐
+
+B1
+
+Wat  vindt  u  goed  aan  de  cursus?  En  waarom?
+
+☐
+
+Boek
+
+–
+
+__________________________________________
+
+☐
+
+Docent
+
+–
+
+_________________________________________
+
+☐
+
+Lokaal
+
+–
+
+_________________________________________
+
+Wat  vindt  u  niet  goed?  En  waarom?
+
+☐
+
+Boek
+
+–
+
+__________________________________________
+
+ ☐  Docent  –  _________________________________________
+
+☐
+
+Lokaal
+
+–
+
+_________________________________________
+
+✅  3.  E-mail  aan  baas  –  kapotte  broek
+U  werkt  in  de  keuken  van  een  restaurant.
+
+Uw
+
+werkbroek
+
+is
+
+kapot.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+baas.
+
+●  Schrijf  wat  er  gebeurd  is.
+ ●  Schrijf  wat  u  wilt  (bijv.  nieuwe  broek  of  reparatie).
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  4.  Tekst  voor  de  wijkkrant  –  vrije  tijd
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+over
+
+uw
+
+vrije
+
+tijd.
+
+●  Schrijf  wat  u  in  uw  vrije  tijd  doet.
+ ●  Schrijf  waar  u  dat  doet.
+ ●  Schrijf  met  wie  u  dat  doet.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+
+✅  1.  E-mail  aan  klasgenoot  –  ziek  en  huiswerk
+Uw  klasgenoot  is  ziek  en  was  niet  op  de  les.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+hem.
+
+●   Vraag  hoe  het  met  hem  gaat.
+ ●  Schrijf  wat  jullie  in  de  les  hebben  gedaan.
+ ●  Schrijf  wat  het  huiswerk  is.
+ ●  Wens  beterschap.
+
+✅  2.  Formulier  invullen  –  internetstoring
+Uw  internet  werkt  niet.
+
+U
+
+vult
+
+een
+
+formulier
+
+in
+
+op
+
+de
+
+website
+
+van
+
+het
+
+internetbedrijf.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Formulier  –  Probleem  met  internet
+Voor-  en  achternaam:  ___________________________
+
+Adres:
+
+________________________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+_________________________
+
+Telefoonnummer:
+
+_______________________________
+
+E-mail:
+
+_______________________________________
+
+Wat  is  het  probleem?
+
+Hoe  lang  hebt  u  dit  probleem  al?
+
+✅  3.  E-mail  aan  collega  –  schoonmaken  niet  af
+U  werkt  als  schoonmaker  in  een  restaurant.
+
+U
+
+was
+
+vandaag
+
+ziek
+
+en
+
+kon
+
+niet
+
+alles
+
+schoonmaken.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega.
+
+●  Schrijf  dat  u  ziek  bent.
+ ●  Schrijf  waarom  u  ziek  bent.
+ ●  Schrijf  wat  u  niet  hebt  gedaan.
+ ●  Vraag  uw  collega  om  dat  morgen  te  doen.
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  4.  Tekst  voor  de  wijkkrant  –  Feest
+U  schrijft  voor  de  wijkkrant  over  een  feest.
+
+●  Schrijf  over  welk  feest  het  gaat.
+ ●  Schrijf  wanneer  het  feest  was.
+ ●  Schrijf  wat  u  van  het  feest  vond.
+ ●  Schrijf  waarom  het  leuk  was.
+✅  1.  E-mail  aan  collega  –  taken  overnemen
+U  werkt  tot  13.00  uur.
+
+U
+
+hebt
+
+geen
+
+tijd
+
+om
+
+uw
+
+bureau
+
+op
+
+te
+
+ruimen
+
+en
+
+koffie
+
+te
+
+brengen
+
+voor
+
+meneer
+
+de
+
+Boer.
+
+Uw
+
+collega
+
+komt
+
+om
+
+13.00
+
+uur.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+uw
+
+collega.
+
+●  Schrijf  waarom  u  mailt.
+ ●  Schrijf  wat  uw  collega  moet  doen.
+ ●  Noem  de  twee  taken
+
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  2.  Formulier  invullen  –  energieleverancier
+U  wilt  klant  worden  bij  een  energiebedrijf.
+
+U
+
+vult
+
+een
+
+formulier
+
+in.
+
+Sommige
+
+gegevens
+
+moet
+
+u
+
+zelf
+
+bedenken.
+
+Formulier  –  Nieuwe  klant  energiebedrijf
+Voornaam:  __________________________
+
+Achternaam:
+
+_________________________
+
+Adres:
+
+______________________________
+
+Postcode
+
+en
+
+woonplaats:
+
+_______________
+
+Telefoonnummer:
+
+_____________________
+
+E-mail:
+
+______________________________
+
+Wat  voor  energie  wilt  u?
+
+☐
+
+Gas
+
+☐
+
+Elektriciteit
+
+☐
+
+Gas
+
+en
+
+elektriciteit
+
+Wanneer  wilt  u  beginnen  met  het  contract?
+
+Wilt  u  automatische  betaling?
+
+☐
+
+Ja
+
+☐
+
+Nee
+
+✅  3.  E-mail  aan  vriend  –  Nederlandse  cursus
+Uw  vriend  wil  Nederlands  leren.
+
+U
+
+schrijft
+
+een
+
+e-mail
+
+aan
+
+hem.
+
+●  Schrijf  dat  uw  vriend  een  cursus  zoekt.
+ ●  Schrijf  welke  school  u  goed  vindt.
+ ●  Schrijf  waarom  u  die  school  goed  vindt.
+ ●  Schrijf  hoe  hij  zich  kan  inschrijven.
+✍  Schrijf  een  e-mail.  Gebruik  hele  zinnen.
+
+✅  4.  Tekst  voor  de  wijkkrant  –  vrienden
+U  schrijft  een  korte  tekst  voor  de  wijkkrant.
+
+U
+
+vertelt
+
+over
+
+uw
+
+vrienden.
+
+●  Schrijf  hoeveel  vrienden  u  hebt.
+ ●  Schrijf  hoe  lang  u  hen  kent.
+ ●  Schrijf  wat  u  samen  doet.
+
+✍  Schrijf  minimaal  drie  zinnen.  Gebruik  hele  zinnen.
+Dit  is  mijn  tekst  voor  de  wijkkrant:`,
+    points: [`Schrijf  wat  u  meeneemt  om  te  eten.`, `Schrijf  voor  hoeveel  personen  het  is.`, `Schrijf  of  er  vlees  in  zit.`, `Schrijf  wat  u  niet  hebt  gedaan.`, `Schrijf  waarom  u  dat  niet  hebt  gedaan.`, `Schrijf  wat  uw  collega  nu  moet  doen.`],
+    keywords: [`e-mail`, `kookcursus`, `eten`, `meenemen`, `volgt`, `gezamenlijke`, `avond`, `iedereen`],
+    simpleAnswer: `Voornaam: Mykola
+Achternaam: Miskov
+Adres: Hoofdstraat 10
+Postcode en woonplaats: 1234 AB Amsterdam
+Telefoonnummer: 0612345678
+E-mail: mykola@email.com
+Schrijf  wat  u  meeneemt  om  te  eten.: ...
+Schrijf  voor  hoeveel  personen  het  is.: ...
+Schrijf  of  er  vlees  in  zit.: ...`,
+  },
 ];
+
+console.log(`Loaded ${tickets.length} tickets`);
