@@ -26,6 +26,8 @@ const STORAGE_KEYS = {
   theme: "a2_theme",
   exam: "a2_exam_mode",
   userName: "a2_user_name",
+  aiApiKey: "a2_ai_api_key",
+  aiModel: "a2_ai_model",
 };
 
 const QUICK_REASONS = [
@@ -56,6 +58,14 @@ const QUICK_ACTIONS = ["drink koffie", "eet kebab", "kijk TikTok", "werk", "stud
 type CheckResult = {
   pass: boolean;
   checks: { label: string; ok: boolean }[];
+};
+
+type AICheckResult = {
+  pass: boolean;
+  score: number;
+  strengths: string[];
+  issues: string[];
+  improvedAnswer: string;
 };
 
 function escapeRegExp(value: string): string {
@@ -192,6 +202,11 @@ export default function App() {
   const [exportMessage, setExportMessage] = useState("");
   const [userName, setUserName] = useState("Mykola");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [aiApiKey, setAiApiKey] = useState("");
+  const [aiModel, setAiModel] = useState("gpt-4o-mini");
+  const [aiCheckResult, setAiCheckResult] = useState<AICheckResult | null>(null);
+  const [aiCheckError, setAiCheckError] = useState("");
+  const [isAiChecking, setIsAiChecking] = useState(false);
   const [isMobileTicketsOpen, setIsMobileTicketsOpen] = useState(false);
   const [isDesktopTicketsCollapsed, setIsDesktopTicketsCollapsed] = useState(false);
   const [isFilterAreaCollapsed, setIsFilterAreaCollapsed] = useState(false);
@@ -219,11 +234,15 @@ export default function App() {
     const savedTheme = localStorage.getItem(STORAGE_KEYS.theme);
     const savedExam = localStorage.getItem(STORAGE_KEYS.exam);
     const savedUserName = localStorage.getItem(STORAGE_KEYS.userName);
+    const savedAiApiKey = localStorage.getItem(STORAGE_KEYS.aiApiKey);
+    const savedAiModel = localStorage.getItem(STORAGE_KEYS.aiModel);
 
     if (known) setKnownMap(JSON.parse(known) as Record<number, boolean>);
     if (savedAnswers) setAnswers(JSON.parse(savedAnswers) as Record<number, string>);
     if (savedTheme === "dark") setIsDark(true);
     if (savedUserName && savedUserName.trim()) setUserName(savedUserName);
+    if (savedAiApiKey) setAiApiKey(savedAiApiKey);
+    if (savedAiModel && savedAiModel.trim()) setAiModel(savedAiModel);
     if (savedExam) {
       const examState = JSON.parse(savedExam) as { examMode: boolean; examTicketId: number | null; examSeconds: number };
       setExamMode(Boolean(examState.examMode));
@@ -248,6 +267,14 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.userName, userName.trim() || "Mykola");
   }, [userName]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.aiApiKey, aiApiKey.trim());
+  }, [aiApiKey]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.aiModel, aiModel.trim() || "gpt-4o-mini");
+  }, [aiModel]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.exam, JSON.stringify({ examMode, examTicketId, examSeconds }));
@@ -284,6 +311,8 @@ export default function App() {
     if (!currentTicket) return;
     setAnswers((prev) => ({ ...prev, [currentTicket.id]: value }));
     setCheckResult(null);
+    setAiCheckResult(null);
+    setAiCheckError("");
   };
 
   const toggleKnown = () => {
@@ -294,6 +323,89 @@ export default function App() {
   const runCheck = () => {
     if (!currentTicket) return;
     setCheckResult(evaluateAnswer(currentAnswer, currentTicket, displayName));
+  };
+
+  const runAICheck = async () => {
+    if (!currentTicket) return;
+    const apiKey = aiApiKey.trim();
+    if (!apiKey) {
+      setAiCheckError("Введи OpenAI API key у меню профілю.");
+      return;
+    }
+    if (!currentAnswer.trim()) {
+      setAiCheckError("Спочатку напиши свою відповідь.");
+      return;
+    }
+
+    setIsAiChecking(true);
+    setAiCheckError("");
+    setAiCheckResult(null);
+
+    try {
+      const systemPrompt =
+        "You are a strict A2 Dutch writing examiner. Return ONLY valid JSON with keys: pass(boolean), score(number 0-100), strengths(string[]), issues(string[]), improvedAnswer(string).";
+
+      const userPrompt = [
+        "Check this Dutch A2 writing answer using Mykola System style:",
+        "- short simple A2 sentences",
+        "- use 'want' instead of 'omdat' when giving reasons",
+        "- keep content close to task, minimal fantasy",
+        "",
+        `Ticket title: ${currentTicket.title}`,
+        "Full task:",
+        currentTicket.fullTask,
+        "",
+        "Student answer:",
+        currentAnswer,
+        "",
+        `Student name must be: ${displayName}`,
+        "Return improvedAnswer as a corrected simple Dutch answer.",
+      ].join("\n");
+
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: aiModel.trim() || "gpt-4o-mini",
+          temperature: 0.2,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userPrompt },
+          ],
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText.slice(0, 200)}`);
+      }
+
+      const data = (await response.json()) as {
+        choices?: { message?: { content?: string } }[];
+      };
+      const content = data.choices?.[0]?.message?.content?.trim() ?? "";
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error("AI повернув не JSON.");
+      const parsed = JSON.parse(jsonMatch[0]) as Partial<AICheckResult>;
+
+      const normalized: AICheckResult = {
+        pass: Boolean(parsed.pass),
+        score: Math.max(0, Math.min(100, Number(parsed.score) || 0)),
+        strengths: Array.isArray(parsed.strengths) ? parsed.strengths.map(String).slice(0, 5) : [],
+        issues: Array.isArray(parsed.issues) ? parsed.issues.map(String).slice(0, 5) : [],
+        improvedAnswer: typeof parsed.improvedAnswer === "string" ? parsed.improvedAnswer : "",
+      };
+
+      setAiCheckResult(normalized);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Невідома помилка AI перевірки.";
+      setAiCheckError(message);
+    } finally {
+      setIsAiChecking(false);
+    }
   };
 
   const copySimpleAnswer = async () => {
@@ -414,6 +526,21 @@ export default function App() {
                 onChange={(e) => setUserName(e.target.value)}
                 className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-700 dark:bg-slate-900"
                 placeholder="Введи ім'я"
+              />
+              <label className="mt-3 block text-sm font-semibold">OpenAI API key (для AI перевірки)</label>
+              <input
+                value={aiApiKey}
+                onChange={(e) => setAiApiKey(e.target.value)}
+                className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-700 dark:bg-slate-900"
+                placeholder="sk-..."
+                type="password"
+              />
+              <label className="mt-3 block text-sm font-semibold">AI модель</label>
+              <input
+                value={aiModel}
+                onChange={(e) => setAiModel(e.target.value)}
+                className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-700 dark:bg-slate-900"
+                placeholder="gpt-4o-mini"
               />
             </div>
           )}
@@ -864,6 +991,13 @@ export default function App() {
                   <button className="rounded-xl bg-indigo-600 px-4 py-2 font-semibold text-white" onClick={runCheck}>
                     Перевірити
                   </button>
+                  <button
+                    className="rounded-xl bg-fuchsia-600 px-4 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+                    onClick={runAICheck}
+                    disabled={!currentTicket || isAiChecking}
+                  >
+                    {isAiChecking ? "AI перевіряє..." : "AI Перевірити"}
+                  </button>
                 </div>
               </div>
 
@@ -883,6 +1017,44 @@ export default function App() {
                       </li>
                     ))}
                   </ul>
+                </div>
+              )}
+
+              {(aiCheckResult || aiCheckError) && (
+                <div
+                  className={`mt-4 rounded-xl border p-3 ${
+                    aiCheckResult?.pass
+                      ? "border-emerald-400 bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-200"
+                      : "border-fuchsia-400 bg-fuchsia-50 text-fuchsia-800 dark:bg-fuchsia-900/30 dark:text-fuchsia-200"
+                  }`}
+                >
+                  <p className="mb-2 text-lg font-bold">AI перевірка</p>
+                  {aiCheckError && <p className="text-sm">⚠️ {aiCheckError}</p>}
+                  {aiCheckResult && (
+                    <div className="space-y-2 text-sm">
+                      <p>
+                        <span className="font-semibold">Результат:</span> {aiCheckResult.pass ? "PASS" : "RISK"} ({aiCheckResult.score}/100)
+                      </p>
+                      {aiCheckResult.strengths.length > 0 && (
+                        <p>
+                          <span className="font-semibold">Сильні сторони:</span> {aiCheckResult.strengths.join("; ")}
+                        </p>
+                      )}
+                      {aiCheckResult.issues.length > 0 && (
+                        <p>
+                          <span className="font-semibold">Що виправити:</span> {aiCheckResult.issues.join("; ")}
+                        </p>
+                      )}
+                      {aiCheckResult.improvedAnswer && (
+                        <div>
+                          <p className="mb-1 font-semibold">Покращений варіант:</p>
+                          <pre className="whitespace-pre-wrap rounded-lg border border-fuchsia-200 bg-white/60 p-3 text-sm dark:border-fuchsia-700 dark:bg-slate-900/50">
+                            {aiCheckResult.improvedAnswer}
+                          </pre>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
             </main>
