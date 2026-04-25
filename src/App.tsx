@@ -817,7 +817,9 @@ export default function App() {
                     }}
                   />
                   <span className="whitespace-nowrap text-xs text-slate-600 dark:text-slate-300">
-                    Найпростіша відповідь + Шаблон
+                    {collapseSimplePanel && collapseTemplatePanel
+                      ? "Обидва приховано"
+                      : "Найпростіша відповідь + Шаблон"}
                   </span>
                 </label>
                 <div className="mb-4 grid gap-4 lg:grid-cols-2">
