@@ -74,10 +74,31 @@ function containsAny(input: string, words: string[]): boolean {
   return words.some((word) => lower.includes(word.toLowerCase()));
 }
 
+function getTicketPoints(ticket: Ticket): string[] {
+  if (ticket.points && ticket.points.length > 0) return ticket.points;
+  return ticket.fullTask
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith("●") || line.startsWith("-"))
+    .map((line) => line.replace(/^[●\-\s]+/, "").trim());
+}
+
+function getTicketKeywords(ticket: Ticket): string[] {
+  if (ticket.keywords && ticket.keywords.length > 0) return ticket.keywords;
+  const words = ticket.fullTask.toLowerCase().match(/[a-zà-ÿ]{4,}/g) ?? [];
+  const uniq: string[] = [];
+  for (const w of words) {
+    if (!uniq.includes(w)) uniq.push(w);
+    if (uniq.length >= 8) break;
+  }
+  return uniq;
+}
+
 function evaluateAnswer(answer: string, ticket: Ticket, userName: string): CheckResult {
   const lower = answer.toLowerCase();
-  const keywordHits = ticket.keywords.filter((k) => lower.includes(k.toLowerCase()));
-  const keyWordsOk = keywordHits.length >= Math.max(2, Math.ceil(ticket.keywords.length * 0.3));
+  const ticketKeywords = getTicketKeywords(ticket);
+  const keywordHits = ticketKeywords.filter((k) => lower.includes(k.toLowerCase()));
+  const keyWordsOk = keywordHits.length >= Math.max(2, Math.ceil(ticketKeywords.length * 0.3));
   const safeName = userName.trim() || "Mykola";
   const nameRegex = new RegExp(escapeRegExp(safeName), "i");
 
@@ -239,7 +260,7 @@ export default function App() {
   const filteredTickets = useMemo(() => {
     const q = search.toLowerCase().trim();
     return tickets.filter((ticket) => {
-      const haystack = `${ticket.id} ${ticket.title} ${ticket.type} ${ticket.fullTask} ${ticket.keywords.join(" ")}`.toLowerCase();
+      const haystack = `${ticket.id} ${ticket.title} ${ticket.type} ${ticket.fullTask} ${getTicketKeywords(ticket).join(" ")}`.toLowerCase();
       const matchesSearch = !q || haystack.includes(q);
       const matchesFilters =
         activeFilters.length === 0 || activeFilters.some((filter) => ticket.category.includes(filter) || ticket.type === filter);
@@ -717,12 +738,12 @@ export default function App() {
                 <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm dark:border-slate-700 dark:bg-slate-800">
                   <p className="font-semibold">Що обов'язково написати:</p>
                   <ul className="mt-1 list-inside list-disc">
-                    {currentTicket.points.map((point) => (
+                    {getTicketPoints(currentTicket).map((point) => (
                       <li key={point}>{point}</li>
                     ))}
                   </ul>
                   <p className="mt-2">
-                    <span className="font-semibold">Ключові слова:</span> {currentTicket.keywords.join(", ")}
+                    <span className="font-semibold">Ключові слова:</span> {getTicketKeywords(currentTicket).join(", ")}
                   </p>
                 </div>
               </article>

@@ -11,7 +11,7 @@ export interface Ticket {
   type: TicketType;
   category: string[];
   fullTask: string;
-  points: string[];
-  keywords: string[];
+  points?: string[];
+  keywords?: string[];
   simpleAnswer: string;
 }
