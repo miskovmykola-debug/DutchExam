@@ -180,7 +180,7 @@ export default function App() {
   const [quickAction, setQuickAction] = useState(QUICK_ACTIONS[0]);
 
   const selectedTicket = useMemo(
-    () => tickets.find((ticket) => ticket.id === selectedId) ?? tickets[0],
+    () => tickets.find((ticket) => ticket.id === selectedId) ?? null,
     [selectedId],
   );
 
@@ -248,7 +248,7 @@ export default function App() {
   }, [search, activeFilters]);
 
   const currentTicket = examMode && examTicket ? examTicket : selectedTicket;
-  const currentAnswer = answers[currentTicket.id] ?? "";
+  const currentAnswer = currentTicket ? answers[currentTicket.id] ?? "" : "";
   const progressDone = Object.values(knownMap).filter(Boolean).length;
   const displayName = userName.trim() || "Mykola";
   const personalizeText = (text: string) => text.replace(/\bMykola\b/g, displayName);
@@ -257,23 +257,28 @@ export default function App() {
   };
 
   const updateAnswer = (value: string) => {
+    if (!currentTicket) return;
     setAnswers((prev) => ({ ...prev, [currentTicket.id]: value }));
     setCheckResult(null);
   };
 
   const toggleKnown = () => {
+    if (!currentTicket) return;
     setKnownMap((prev) => ({ ...prev, [currentTicket.id]: !prev[currentTicket.id] }));
   };
 
   const runCheck = () => {
+    if (!currentTicket) return;
     setCheckResult(evaluateAnswer(currentAnswer, currentTicket, displayName));
   };
 
   const copySimpleAnswer = async () => {
+    if (!currentTicket) return;
     await navigator.clipboard.writeText(personalizeText(currentTicket.simpleAnswer));
   };
 
   const toggleExamMode = () => {
+    if (tickets.length === 0) return;
     if (!examMode) {
       const random = pickRandomTicket(selectedId);
       setExamTicketId(random.id);
@@ -288,6 +293,7 @@ export default function App() {
   };
 
   const nextExamTicket = () => {
+    if (tickets.length === 0) return;
     const random = pickRandomTicket(examTicketId ?? undefined);
     setExamTicketId(random.id);
     setExamSeconds(600);
@@ -672,23 +678,30 @@ export default function App() {
               >
                 {isMobileTicketsOpen ? "Сховати список білетів" : "Показати список білетів"}
               </button>
-              <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-                <h2 className="text-xl font-bold">
-                  #{currentTicket.id} {currentTicket.title}
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                  {examMode && (
-                    <button className="rounded-xl bg-indigo-600 px-3 py-2 text-sm font-semibold text-white" onClick={nextExamTicket}>
-                      Наступний випадковий
+              {currentTicket ? (
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                  <h2 className="text-xl font-bold">
+                    #{currentTicket.id} {currentTicket.title}
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {examMode && (
+                      <button className="rounded-xl bg-indigo-600 px-3 py-2 text-sm font-semibold text-white" onClick={nextExamTicket}>
+                        Наступний випадковий
+                      </button>
+                    )}
+                    <button className="rounded-xl bg-emerald-600 px-3 py-2 text-sm font-semibold text-white" onClick={toggleKnown}>
+                      {knownMap[currentTicket.id] ? "Позначено: знаю" : "Я знаю цей білет"}
                     </button>
-                  )}
-                  <button className="rounded-xl bg-emerald-600 px-3 py-2 text-sm font-semibold text-white" onClick={toggleKnown}>
-                    {knownMap[currentTicket.id] ? "Позначено: знаю" : "Я знаю цей білет"}
-                  </button>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="mb-3 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm dark:border-slate-700 dark:bg-slate-800">
+                  Немає білетів у базі. Додай нові білети в `src/data/tickets.ts`.
+                </div>
+              )}
 
-              <article className="mb-4 rounded-xl border border-slate-200 p-3 dark:border-slate-700">
+              {currentTicket && (
+                <article className="mb-4 rounded-xl border border-slate-200 p-3 dark:border-slate-700">
                 <div className="mb-2 flex items-center justify-between">
                 <h3 className="font-semibold">Повний текст білета</h3>
                   <button
@@ -713,8 +726,9 @@ export default function App() {
                   </p>
                 </div>
               </article>
+              )}
 
-              {!examMode && (
+              {!examMode && currentTicket && (
                 <div className="mb-4 grid gap-4 lg:grid-cols-2">
                   <article className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
                     <div className="mb-2 flex items-center justify-between">
@@ -769,6 +783,7 @@ export default function App() {
                   onChange={(e) => updateAnswer(e.target.value)}
                   className="h-56 w-full rounded-xl border border-slate-300 p-3 text-sm dark:border-slate-700 dark:bg-slate-800"
                   placeholder="Пиши коротко, просто, рівень A2..."
+                  disabled={!currentTicket}
                 />
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button className="rounded-xl bg-indigo-600 px-4 py-2 font-semibold text-white" onClick={runCheck}>
