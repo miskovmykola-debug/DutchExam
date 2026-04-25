@@ -800,14 +800,6 @@ export default function App() {
                     {currentTicket.fullTask}
                   </pre>
                 )}
-                <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm dark:border-slate-700 dark:bg-slate-800">
-                  <p className="font-semibold">Що обов'язково написати:</p>
-                  <ul className="mt-1 list-inside list-disc">
-                    {getTicketPoints(currentTicket).map((point) => (
-                      <li key={point}>{point}</li>
-                    ))}
-                  </ul>
-                </div>
               </article>
               )}
 
@@ -835,7 +827,7 @@ export default function App() {
                       </div>
                     </div>
                     <pre className="whitespace-pre-wrap text-sm">
-                      {hideSimpleAnswer ? "Відповідь прихована" : personalizeText(currentTicket.simpleAnswer)}
+                      {hideSimpleAnswer ? "" : personalizeText(currentTicket.simpleAnswer)}
                     </pre>
                   </article>
                   <article className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
