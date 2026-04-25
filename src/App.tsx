@@ -184,8 +184,6 @@ export default function App() {
   const [knownMap, setKnownMap] = useState<Record<number, boolean>>({});
   const [hideSimpleAnswer, setHideSimpleAnswer] = useState(true);
   const [hideTemplate, setHideTemplate] = useState(false);
-  const [collapseSimplePanel, setCollapseSimplePanel] = useState(false);
-  const [collapseTemplatePanel, setCollapseTemplatePanel] = useState(false);
   const [checkResult, setCheckResult] = useState<CheckResult | null>(null);
   const [isDark, setIsDark] = useState(false);
   const [examMode, setExamMode] = useState(false);
@@ -198,6 +196,7 @@ export default function App() {
   const [isDesktopTicketsCollapsed, setIsDesktopTicketsCollapsed] = useState(false);
   const [isFilterAreaCollapsed, setIsFilterAreaCollapsed] = useState(false);
   const [isMobileTopMenuOpen, setIsMobileTopMenuOpen] = useState(false);
+  const [hideFullTask, setHideFullTask] = useState(false);
   const [quickReason, setQuickReason] = useState(QUICK_REASONS[0]);
   const [quickRequest, setQuickRequest] = useState(QUICK_REQUESTS[0]);
   const [quickPlace, setQuickPlace] = useState(QUICK_PLACES[0]);
@@ -780,17 +779,27 @@ export default function App() {
               {currentTicket && (
                 <article className="mb-4 rounded-xl border border-slate-200 p-3 dark:border-slate-700">
                 <div className="mb-2 flex items-center justify-between">
-                <h3 className="font-semibold">Повний текст білета</h3>
-                  <button
-                    className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
-                    onClick={() => navigator.clipboard.writeText(currentTicket.fullTask)}
-                  >
-                    Скопіювати білет
-                  </button>
+                  <h3 className="font-semibold">Повний текст білета</h3>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
+                      onClick={() => setHideFullTask((prev) => !prev)}
+                    >
+                      {hideFullTask ? "Показати білет" : "Сховати білет"}
+                    </button>
+                    <button
+                      className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
+                      onClick={() => navigator.clipboard.writeText(currentTicket.fullTask)}
+                    >
+                      Скопіювати білет
+                    </button>
+                  </div>
                 </div>
-                <pre className="whitespace-pre-wrap rounded-lg border border-slate-200 bg-slate-50 p-4 text-base leading-relaxed dark:border-slate-700 dark:bg-slate-800">
-                  {currentTicket.fullTask}
-                </pre>
+                {!hideFullTask && (
+                  <pre className="whitespace-pre-wrap rounded-lg border border-slate-200 bg-slate-50 p-4 text-base leading-relaxed dark:border-slate-700 dark:bg-slate-800">
+                    {currentTicket.fullTask}
+                  </pre>
+                )}
                 <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm dark:border-slate-700 dark:bg-slate-800">
                   <p className="font-semibold">Що обов'язково написати:</p>
                   <ul className="mt-1 list-inside list-disc">
@@ -798,30 +807,12 @@ export default function App() {
                       <li key={point}>{point}</li>
                     ))}
                   </ul>
-                  <p className="mt-2">
-                    <span className="font-semibold">Ключові слова:</span> {getTicketKeywords(currentTicket).join(", ")}
-                  </p>
                 </div>
               </article>
               )}
 
               {!examMode && currentTicket && (
                 <>
-                <label className="mb-2 inline-flex items-center gap-2 rounded-lg bg-slate-100 px-2.5 py-1.5 dark:bg-slate-800">
-                  <input
-                    type="checkbox"
-                    checked={collapseSimplePanel && collapseTemplatePanel}
-                    onChange={(e) => {
-                      setCollapseSimplePanel(e.target.checked);
-                      setCollapseTemplatePanel(e.target.checked);
-                    }}
-                  />
-                  <span className="whitespace-nowrap text-xs text-slate-600 dark:text-slate-300">
-                    {collapseSimplePanel && collapseTemplatePanel
-                      ? "Обидва приховано"
-                      : "Найпростіша відповідь + Шаблон"}
-                  </span>
-                </label>
                 <div className="mb-4 grid gap-4 lg:grid-cols-2">
                   <article className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
                     <div className="mb-2 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -843,11 +834,9 @@ export default function App() {
                         </button>
                       </div>
                     </div>
-                    {!collapseSimplePanel && (
-                      <pre className="whitespace-pre-wrap text-sm">
+                    <pre className="whitespace-pre-wrap text-sm">
                       {hideSimpleAnswer ? "Відповідь прихована" : personalizeText(currentTicket.simpleAnswer)}
-                      </pre>
-                    )}
+                    </pre>
                   </article>
                   <article className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
                     <div className="mb-2 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -862,11 +851,9 @@ export default function App() {
                         </button>
                       </div>
                     </div>
-                    {!collapseTemplatePanel && (
-                      <pre className="whitespace-pre-wrap text-sm">
-                        {hideTemplate ? "Шаблон прихований" : personalizeText(getTemplateByType(currentTicket.type))}
-                      </pre>
-                    )}
+                    <pre className="whitespace-pre-wrap text-sm">
+                      {hideTemplate ? "Шаблон прихований" : personalizeText(getTemplateByType(currentTicket.type))}
+                    </pre>
                   </article>
                 </div>
                 </>
