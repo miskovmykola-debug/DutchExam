@@ -655,12 +655,27 @@ export default function App() {
             </div>
           </section>
         ) : (
-          <div className={`grid gap-4 ${isDesktopTicketsCollapsed ? "lg:grid-cols-1" : "lg:grid-cols-[320px_1fr]"}`}>
+          <div className={`relative grid gap-4 ${isDesktopTicketsCollapsed ? "lg:grid-cols-1" : "lg:grid-cols-[320px_1fr]"}`}>
+            {isMobileTicketsOpen && (
+              <button
+                className="fixed inset-0 z-30 bg-slate-950/45 lg:hidden"
+                onClick={() => setIsMobileTicketsOpen(false)}
+                aria-label="Закрити список білетів"
+              />
+            )}
             <aside
               className={`rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900 ${
-                isMobileTicketsOpen ? "block" : "hidden"
-              } ${isDesktopTicketsCollapsed ? "lg:hidden" : "lg:block"}`}
+                isMobileTicketsOpen
+                  ? "fixed inset-y-0 left-0 z-40 block w-[88vw] max-w-[360px] overflow-y-auto rounded-none rounded-r-2xl"
+                  : "hidden"
+              } ${isDesktopTicketsCollapsed ? "lg:hidden" : "lg:block lg:static lg:w-auto lg:max-w-none lg:rounded-2xl"}`}
             >
+              <button
+                className="mb-2 w-full rounded-xl bg-slate-200 px-3 py-2 text-sm font-semibold dark:bg-slate-700 lg:hidden"
+                onClick={() => setIsMobileTicketsOpen(false)}
+              >
+                Сховати список білетів
+              </button>
               <div className="mb-2 flex items-center gap-2">
                 <input
                   value={search}
@@ -702,7 +717,10 @@ export default function App() {
                 {filteredTickets.map((ticket) => (
                   <button
                     key={ticket.id}
-                    onClick={() => setSelectedId(ticket.id)}
+                    onClick={() => {
+                      setSelectedId(ticket.id);
+                      setIsMobileTicketsOpen(false);
+                    }}
                     className={`w-full rounded-lg border px-2.5 py-2 text-left ${
                       ticket.id === selectedId && !examMode
                         ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20"
@@ -720,12 +738,14 @@ export default function App() {
 
             <main className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
               <div className="mb-3 flex gap-2">
-                <button
-                  className="w-full rounded-xl bg-slate-200 px-3 py-2 text-sm font-semibold dark:bg-slate-700 lg:hidden"
-                  onClick={() => setIsMobileTicketsOpen((prev) => !prev)}
-                >
-                  {isMobileTicketsOpen ? "Сховати список білетів" : "Показати список білетів"}
-                </button>
+                {!isMobileTicketsOpen && (
+                  <button
+                    className="w-full rounded-xl bg-slate-200 px-3 py-2 text-sm font-semibold dark:bg-slate-700 lg:hidden"
+                    onClick={() => setIsMobileTicketsOpen(true)}
+                  >
+                    Показати список білетів
+                  </button>
+                )}
                 {isDesktopTicketsCollapsed && (
                   <button
                     className="hidden rounded-xl bg-slate-200 px-3 py-2 text-sm font-semibold dark:bg-slate-700 lg:block"
@@ -787,7 +807,7 @@ export default function App() {
 
               {!examMode && currentTicket && (
                 <>
-                <label className="mb-2 inline-flex items-center gap-2 rounded-lg bg-slate-100 px-2.5 py-1.5 text-sm font-semibold dark:bg-slate-800">
+                <label className="mb-2 inline-flex items-center gap-2 rounded-lg bg-slate-100 px-2.5 py-1.5 dark:bg-slate-800">
                   <input
                     type="checkbox"
                     checked={collapseSimplePanel && collapseTemplatePanel}
@@ -796,8 +816,9 @@ export default function App() {
                       setCollapseTemplatePanel(e.target.checked);
                     }}
                   />
-                  <span className="sm:hidden">Обидва</span>
-                  <span className="hidden sm:inline">Приховати обидва</span>
+                  <span className="whitespace-nowrap text-xs text-slate-600 dark:text-slate-300">
+                    Найпростіша відповідь + Шаблон
+                  </span>
                 </label>
                 <div className="mb-4 grid gap-4 lg:grid-cols-2">
                   <article className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
