@@ -103,6 +103,14 @@ function downloadFile(filename: string, content: string, mimeType: string) {
   URL.revokeObjectURL(url);
 }
 
+function getShortTask(ticket: Ticket): string {
+  return ticket.shortTask ?? ticket.task ?? "";
+}
+
+function getFullTask(ticket: Ticket): string {
+  return ticket.fullTask ?? ticket.shortTask ?? ticket.task ?? "";
+}
+
 export default function App() {
   const [activePage, setActivePage] = useState<"trainer" | "cheatsheet" | "koli">("trainer");
   const [selectedId, setSelectedId] = useState<number>(1);
@@ -188,7 +196,8 @@ export default function App() {
   const filteredTickets = useMemo(() => {
     const q = search.toLowerCase().trim();
     return tickets.filter((ticket) => {
-      const haystack = `${ticket.id} ${ticket.title} ${ticket.type} ${ticket.task} ${ticket.keywords.join(" ")}`.toLowerCase();
+      const haystack =
+        `${ticket.id} ${ticket.title} ${ticket.type} ${getShortTask(ticket)} ${getFullTask(ticket)} ${ticket.keywords.join(" ")}`.toLowerCase();
       const matchesSearch = !q || haystack.includes(q);
       const matchesFilters =
         activeFilters.length === 0 ||
@@ -216,8 +225,8 @@ export default function App() {
       `Білет #${currentTicket.id}: ${currentTicket.title}`,
       `Тип: ${currentTicket.type}`,
       "",
-      "Завдання:",
-      currentTicket.task,
+      "Повний текст білета:",
+      getFullTask(currentTicket),
       "",
       "Що обов'язково написати:",
       ...currentTicket.points.map((point, index) => `${index + 1}. ${point}`),
@@ -276,7 +285,8 @@ export default function App() {
         id: ticket.id,
         title: ticket.title,
         type: ticket.type,
-        task: ticket.task,
+        shortTask: getShortTask(ticket),
+        fullTask: getFullTask(ticket),
         answer: answers[ticket.id] ?? "",
         known: Boolean(knownMap[ticket.id]),
       }));
@@ -295,7 +305,8 @@ export default function App() {
         const userAnswer = answers[ticket.id] ?? "";
         return [
           `#${ticket.id} ${ticket.title} [${ticket.type}]`,
-          `Task: ${ticket.task}`,
+          `Short task: ${getShortTask(ticket)}`,
+          `Full task: ${getFullTask(ticket)}`,
           "My answer:",
           userAnswer,
           "",
@@ -665,7 +676,7 @@ export default function App() {
 
               <article className="mb-4 rounded-xl border border-slate-200 p-3 dark:border-slate-700">
                 <div className="mb-2 flex items-center justify-between">
-                  <h3 className="font-semibold">Весь білет (повний текст)</h3>
+                <h3 className="font-semibold">Повний текст білета</h3>
                   <button
                     className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
                     onClick={() => navigator.clipboard.writeText(fullTicketText)}
@@ -673,7 +684,23 @@ export default function App() {
                     Скопіювати білет
                   </button>
                 </div>
-                <pre className="whitespace-pre-wrap text-sm">{fullTicketText}</pre>
+                <pre className="whitespace-pre-wrap rounded-lg border border-slate-200 bg-slate-50 p-3 font-mono text-sm dark:border-slate-700 dark:bg-slate-800">
+                  {getFullTask(currentTicket)}
+                </pre>
+                <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm dark:border-slate-700 dark:bg-slate-800">
+                  <p className="font-semibold">Що обов'язково написати:</p>
+                  <ul className="mt-1 list-inside list-disc">
+                    {currentTicket.points.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                  <p className="mt-2">
+                    <span className="font-semibold">Ключові слова:</span> {currentTicket.keywords.join(", ")}
+                  </p>
+                  <p className="mt-2">
+                    <span className="font-semibold">Короткий опис:</span> {getShortTask(currentTicket)}
+                  </p>
+                </div>
               </article>
 
               {!examMode && (

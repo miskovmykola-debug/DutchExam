@@ -96,7 +96,13 @@ Kun je werkkleren meenemen?
 
 Met vriendelijke groet,
 Mykola`, template: emailTemplate },
-  { id: 8, title: "Oppas gezocht", type: "E-mail", task: "Vraag vrienden om oppas.", points: ["Oppas nodig", "Wanneer", "Vragen of ze iemand kennen"], keywords: ["oppas", "kind", "zaterdag", "vrienden"], simpleAnswer: `Beste vrienden,
+  { id: 8, title: "Oppas gezocht", type: "E-mail", shortTask: "Vraag vrienden om oppas", fullTask: `U heeft kinderen, maar u moet soms weg van huis.
+U zoekt een oppas. U kent niemand.
+U schrijft een e-mail aan uw vrienden.
+● Schrijf waarom u een oppas zoekt.
+● Schrijf wanneer u een oppas nodig hebt.
+● Vraag of uw vrienden een goede oppas kennen.
+Schrijf een e-mail. Gebruik hele zinnen.`, points: ["Oppas nodig", "Wanneer", "Vragen of ze iemand kennen"], keywords: ["oppas", "kind", "zaterdag", "vrienden"], simpleAnswer: `Beste vrienden,
 
 Ik zoek een oppas voor mijn kind.
 Ik heb zaterdag een oppas nodig.

@@ -10,7 +10,9 @@ export interface Ticket {
   id: number;
   title: string;
   type: TicketType;
-  task: string;
+  shortTask?: string;
+  fullTask?: string;
+  task?: string;
   points: string[];
   keywords: string[];
   simpleAnswer: string;
