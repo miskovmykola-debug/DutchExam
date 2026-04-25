@@ -184,7 +184,8 @@ export default function App() {
   const [knownMap, setKnownMap] = useState<Record<number, boolean>>({});
   const [hideSimpleAnswer, setHideSimpleAnswer] = useState(true);
   const [hideTemplate, setHideTemplate] = useState(false);
-  const [collapseHelpPanels, setCollapseHelpPanels] = useState(false);
+  const [collapseSimplePanel, setCollapseSimplePanel] = useState(false);
+  const [collapseTemplatePanel, setCollapseTemplatePanel] = useState(false);
   const [checkResult, setCheckResult] = useState<CheckResult | null>(null);
   const [isDark, setIsDark] = useState(false);
   const [examMode, setExamMode] = useState(false);
@@ -194,6 +195,9 @@ export default function App() {
   const [userName, setUserName] = useState("Mykola");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileTicketsOpen, setIsMobileTicketsOpen] = useState(false);
+  const [isDesktopTicketsCollapsed, setIsDesktopTicketsCollapsed] = useState(false);
+  const [isFilterAreaCollapsed, setIsFilterAreaCollapsed] = useState(false);
+  const [isMobileTopMenuOpen, setIsMobileTopMenuOpen] = useState(false);
   const [quickReason, setQuickReason] = useState(QUICK_REASONS[0]);
   const [quickRequest, setQuickRequest] = useState(QUICK_REQUESTS[0]);
   const [quickPlace, setQuickPlace] = useState(QUICK_PLACES[0]);
@@ -362,15 +366,21 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <div className="mx-auto max-w-[1500px] p-3 md:p-5">
-        <header className="mb-4 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+        <header className="mb-3 rounded-2xl border border-slate-200 bg-white p-3 md:mb-4 md:p-4 dark:border-slate-800 dark:bg-slate-900">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-2xl font-bold">A2 Schrijven Trainer — Mykola System</h1>
-              <p className="text-sm text-slate-600 dark:text-slate-300">
+              <h1 className="text-xl font-bold md:text-2xl">A2 Schrijven Trainer — Mykola System</h1>
+              <p className="hidden text-sm text-slate-600 md:block dark:text-slate-300">
                 Простий стиль A2: коротко, want замість omdat, ім'я Mykola, країна Oekraïne.
               </p>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <button
+              className="rounded-xl bg-slate-200 px-3 py-2 text-sm font-semibold dark:bg-slate-700 md:hidden"
+              onClick={() => setIsMobileTopMenuOpen((prev) => !prev)}
+            >
+              {isMobileTopMenuOpen ? "Сховати меню" : "Меню"}
+            </button>
+            <div className={`${isMobileTopMenuOpen ? "flex" : "hidden"} flex-wrap gap-2 md:flex`}>
               <button className="rounded-xl bg-slate-200 px-3 py-2 text-sm font-semibold dark:bg-slate-700" onClick={() => setActivePage("trainer")}>
                 Тренажер
               </button>
@@ -398,7 +408,7 @@ export default function App() {
             </div>
           </div>
           {isProfileOpen && (
-            <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
+            <div className="mt-2 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
               <label className="block text-sm font-semibold">Твоє ім'я для листів</label>
               <input
                 value={userName}
@@ -408,7 +418,7 @@ export default function App() {
               />
             </div>
           )}
-          <div className="mt-3 text-sm">
+          <div className="mt-2 text-sm">
             <span className="rounded-lg bg-emerald-100 px-3 py-1 font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200">
               Прогрес: {progressDone}/{tickets.length} білетів знаю
             </span>
@@ -645,39 +655,55 @@ export default function App() {
             </div>
           </section>
         ) : (
-          <div className="grid gap-4 lg:grid-cols-[340px_1fr]">
+          <div className={`grid gap-4 ${isDesktopTicketsCollapsed ? "lg:grid-cols-1" : "lg:grid-cols-[320px_1fr]"}`}>
             <aside
-              className={`rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 ${
+              className={`rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900 ${
                 isMobileTicketsOpen ? "block" : "hidden"
-              } lg:block`}
+              } ${isDesktopTicketsCollapsed ? "lg:hidden" : "lg:block"}`}
             >
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Пошук по слову..."
-                className="mb-3 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800"
-              />
-              <div className="mb-4 flex flex-wrap gap-2">
-                {FILTERS.map((filter) => (
-                  <button
-                    key={filter}
-                    onClick={() => toggleFilter(filter)}
-                    className={`rounded-xl px-3 py-1 text-sm font-semibold ${
-                      activeFilters.includes(filter)
-                        ? "bg-indigo-600 text-white"
-                        : "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-100"
-                    }`}
-                  >
-                    {filter}
-                  </button>
-                ))}
+              <div className="mb-2 flex items-center gap-2">
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Пошук по слову..."
+                  className="min-w-0 flex-1 rounded-lg border border-slate-300 px-2.5 py-2 text-sm dark:border-slate-700 dark:bg-slate-800"
+                />
+                <button
+                  className="rounded-lg bg-slate-200 px-2.5 py-2 text-xs font-semibold dark:bg-slate-700"
+                  onClick={() => setIsFilterAreaCollapsed((prev) => !prev)}
+                >
+                  {isFilterAreaCollapsed ? "Фільтри" : "Сховати"}
+                </button>
+                <button
+                  className="hidden rounded-lg bg-slate-200 px-2.5 py-2 text-xs font-semibold dark:bg-slate-700 lg:block"
+                  onClick={() => setIsDesktopTicketsCollapsed(true)}
+                >
+                  Закрити
+                </button>
               </div>
-              <div className="max-h-[65vh] space-y-2 overflow-auto pr-1">
+              {!isFilterAreaCollapsed && (
+                <div className="mb-2 flex max-h-24 flex-wrap gap-1.5 overflow-auto">
+                  {FILTERS.map((filter) => (
+                    <button
+                      key={filter}
+                      onClick={() => toggleFilter(filter)}
+                      className={`rounded-lg px-2 py-1 text-xs font-semibold ${
+                        activeFilters.includes(filter)
+                          ? "bg-indigo-600 text-white"
+                          : "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-100"
+                      }`}
+                    >
+                      {filter}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div className="max-h-[72vh] space-y-1.5 overflow-auto pr-1">
                 {filteredTickets.map((ticket) => (
                   <button
                     key={ticket.id}
                     onClick={() => setSelectedId(ticket.id)}
-                    className={`w-full rounded-xl border p-3 text-left ${
+                    className={`w-full rounded-lg border px-2.5 py-2 text-left ${
                       ticket.id === selectedId && !examMode
                         ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20"
                         : "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
@@ -693,12 +719,22 @@ export default function App() {
             </aside>
 
             <main className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-              <button
-                className="mb-3 w-full rounded-xl bg-slate-200 px-3 py-2 text-sm font-semibold dark:bg-slate-700 lg:hidden"
-                onClick={() => setIsMobileTicketsOpen((prev) => !prev)}
-              >
-                {isMobileTicketsOpen ? "Сховати список білетів" : "Показати список білетів"}
-              </button>
+              <div className="mb-3 flex gap-2">
+                <button
+                  className="w-full rounded-xl bg-slate-200 px-3 py-2 text-sm font-semibold dark:bg-slate-700 lg:hidden"
+                  onClick={() => setIsMobileTicketsOpen((prev) => !prev)}
+                >
+                  {isMobileTicketsOpen ? "Сховати список білетів" : "Показати список білетів"}
+                </button>
+                {isDesktopTicketsCollapsed && (
+                  <button
+                    className="hidden rounded-xl bg-slate-200 px-3 py-2 text-sm font-semibold dark:bg-slate-700 lg:block"
+                    onClick={() => setIsDesktopTicketsCollapsed(false)}
+                  >
+                    Показати меню білетів
+                  </button>
+                )}
+              </div>
               {currentTicket ? (
                 <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                   <h2 className="text-xl font-bold">
@@ -750,6 +786,18 @@ export default function App() {
               )}
 
               {!examMode && currentTicket && (
+                <>
+                <label className="mb-3 inline-flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold dark:bg-slate-800">
+                  <input
+                    type="checkbox"
+                    checked={collapseSimplePanel && collapseTemplatePanel}
+                    onChange={(e) => {
+                      setCollapseSimplePanel(e.target.checked);
+                      setCollapseTemplatePanel(e.target.checked);
+                    }}
+                  />
+                  Приховати обидва
+                </label>
                 <div className="mb-4 grid gap-4 lg:grid-cols-2">
                   <article className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
                     <div className="mb-2 flex items-center justify-between">
@@ -757,9 +805,9 @@ export default function App() {
                       <div className="flex gap-2">
                         <button
                           className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
-                          onClick={() => setCollapseHelpPanels((prev) => !prev)}
+                          onClick={() => setCollapseSimplePanel((prev) => !prev)}
                         >
-                          {collapseHelpPanels ? "Розгорнути обидва" : "Згорнути обидва"}
+                          {collapseSimplePanel ? "Розгорнути" : "Згорнути"}
                         </button>
                         <button
                           className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
@@ -772,7 +820,7 @@ export default function App() {
                         </button>
                       </div>
                     </div>
-                    {!collapseHelpPanels && (
+                    {!collapseSimplePanel && (
                       <pre className="whitespace-pre-wrap text-sm">
                       {hideSimpleAnswer ? "Відповідь прихована" : personalizeText(currentTicket.simpleAnswer)}
                       </pre>
@@ -787,14 +835,21 @@ export default function App() {
                       >
                         {hideTemplate ? "Показати шаблон" : "Сховати шаблон"}
                       </button>
+                      <button
+                        className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
+                        onClick={() => setCollapseTemplatePanel((prev) => !prev)}
+                      >
+                        {collapseTemplatePanel ? "Розгорнути" : "Згорнути"}
+                      </button>
                     </div>
-                    {!collapseHelpPanels && (
+                    {!collapseTemplatePanel && (
                       <pre className="whitespace-pre-wrap text-sm">
                         {hideTemplate ? "Шаблон прихований" : personalizeText(getTemplateByType(currentTicket.type))}
                       </pre>
                     )}
                   </article>
                 </div>
+                </>
               )}
 
               <div>
