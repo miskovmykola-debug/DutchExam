@@ -787,7 +787,7 @@ export default function App() {
 
               {!examMode && currentTicket && (
                 <>
-                <label className="mb-3 inline-flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold dark:bg-slate-800">
+                <label className="mb-2 inline-flex items-center gap-2 rounded-lg bg-slate-100 px-2.5 py-1.5 text-sm font-semibold dark:bg-slate-800">
                   <input
                     type="checkbox"
                     checked={collapseSimplePanel && collapseTemplatePanel}
@@ -796,27 +796,27 @@ export default function App() {
                       setCollapseTemplatePanel(e.target.checked);
                     }}
                   />
-                  Приховати обидва
+                  <span className="sm:hidden">Обидва</span>
+                  <span className="hidden sm:inline">Приховати обидва</span>
                 </label>
                 <div className="mb-4 grid gap-4 lg:grid-cols-2">
                   <article className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
-                    <div className="mb-2 flex items-center justify-between">
-                      <h3 className="font-semibold">Найпростіша відповідь</h3>
-                      <div className="flex gap-2">
+                    <div className="mb-2 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
+                      <h3 className="text-lg font-semibold sm:text-xl">Найпростіша відповідь</h3>
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         <button
-                          className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
-                          onClick={() => setCollapseSimplePanel((prev) => !prev)}
-                        >
-                          {collapseSimplePanel ? "Розгорнути" : "Згорнути"}
-                        </button>
-                        <button
-                          className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
+                          className="rounded-lg bg-slate-200 px-2.5 py-1 text-xs font-semibold sm:px-3 sm:text-sm dark:bg-slate-700"
                           onClick={() => setHideSimpleAnswer((prev) => !prev)}
                         >
-                          {hideSimpleAnswer ? "Показати відповідь" : "Сховати відповідь"}
+                          <span className="sm:hidden">{hideSimpleAnswer ? "Показ." : "Схов."}</span>
+                          <span className="hidden sm:inline">{hideSimpleAnswer ? "Показати відповідь" : "Сховати відповідь"}</span>
                         </button>
-                        <button className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700" onClick={copySimpleAnswer}>
-                          Скопіювати відповідь
+                        <button
+                          className="rounded-lg bg-slate-200 px-2.5 py-1 text-xs font-semibold sm:px-3 sm:text-sm dark:bg-slate-700"
+                          onClick={copySimpleAnswer}
+                        >
+                          <span className="sm:hidden">Копія</span>
+                          <span className="hidden sm:inline">Скопіювати відповідь</span>
                         </button>
                       </div>
                     </div>
@@ -827,20 +827,17 @@ export default function App() {
                     )}
                   </article>
                   <article className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
-                    <div className="mb-2 flex items-center justify-between">
-                      <h3 className="font-semibold">Шаблон</h3>
-                      <button
-                        className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
-                        onClick={() => setHideTemplate((prev) => !prev)}
-                      >
-                        {hideTemplate ? "Показати шаблон" : "Сховати шаблон"}
-                      </button>
-                      <button
-                        className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
-                        onClick={() => setCollapseTemplatePanel((prev) => !prev)}
-                      >
-                        {collapseTemplatePanel ? "Розгорнути" : "Згорнути"}
-                      </button>
+                    <div className="mb-2 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
+                      <h3 className="text-lg font-semibold sm:text-xl">Шаблон</h3>
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                        <button
+                          className="rounded-lg bg-slate-200 px-2.5 py-1 text-xs font-semibold sm:px-3 sm:text-sm dark:bg-slate-700"
+                          onClick={() => setHideTemplate((prev) => !prev)}
+                        >
+                          <span className="sm:hidden">{hideTemplate ? "Показ." : "Схов."}</span>
+                          <span className="hidden sm:inline">{hideTemplate ? "Показати шаблон" : "Сховати шаблон"}</span>
+                        </button>
+                      </div>
                     </div>
                     {!collapseTemplatePanel && (
                       <pre className="whitespace-pre-wrap text-sm">
