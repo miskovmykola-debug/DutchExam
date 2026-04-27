@@ -471,6 +471,19 @@ export default function App() {
     setCheckResult(null);
   };
 
+  const goToNextTicket = () => {
+    if (!currentTicket || filteredTickets.length === 0) return;
+    const currentIndex = filteredTickets.findIndex((ticket) => ticket.id === currentTicket.id);
+    if (currentIndex === -1) {
+      setSelectedId(filteredTickets[0].id);
+      return;
+    }
+    const nextIndex = (currentIndex + 1) % filteredTickets.length;
+    setSelectedId(filteredTickets[nextIndex].id);
+    setCheckResult(null);
+    setIsMobileTicketsOpen(false);
+  };
+
   const exportAnswersAsJson = () => {
     const payload = tickets
       .filter((ticket) => (answers[ticket.id] ?? "").trim().length > 0)
@@ -916,6 +929,11 @@ export default function App() {
                     #{currentTicket.id} {currentTicket.title}
                   </h2>
                   <div className="flex flex-wrap gap-2">
+                    {!examMode && (
+                      <button className="rounded-xl bg-indigo-500 px-3 py-2 text-sm font-semibold text-white" onClick={goToNextTicket}>
+                        Наступний білет
+                      </button>
+                    )}
                     {examMode && (
                       <button className="rounded-xl bg-indigo-600 px-3 py-2 text-sm font-semibold text-white" onClick={nextExamTicket}>
                         Наступний випадковий
