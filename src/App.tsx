@@ -24,6 +24,7 @@ const STORAGE_KEYS = {
   known: "a2_known_tickets",
   answers: "a2_answers",
   drafts: "a2_draft_notes",
+  difficult: "a2_difficult_tickets",
   theme: "a2_theme",
   exam: "a2_exam_mode",
   userName: "a2_user_name",
@@ -95,47 +96,117 @@ function getTicketKeywords(ticket: Ticket): string[] {
   return uniq;
 }
 
-const TASK_TRANSLATION_RULES: Array<[string, string]> = [
+const TASK_PHRASE_TRANSLATION_RULES: Array<[string, string]> = [
   ["Schrijf een e-mail. Gebruik hele zinnen.", "Напишіть e-mail. Використовуйте повні речення."],
   ["Schrijf een brief. Gebruik hele zinnen.", "Напишіть лист. Використовуйте повні речення."],
   ["Schrijf een kort bericht. Gebruik hele zinnen.", "Напишіть коротке повідомлення. Використовуйте повні речення."],
-  ["Schrijf minimaal drie zinnen. Gebruik hele zinnen.", "Напишіть щонайменше 3 речення. Використовуйте повні речення."],
+  ["Schrijf minimaal drie zinnen. Gebruik hele zinnen.", "Напишіть щонайменше три речення. Використовуйте повні речення."],
   ["Sommige gegevens moet u zelf bedenken.", "Деякі дані потрібно придумати самостійно."],
   ["U schrijft een e-mail aan", "Ви пишете e-mail до"],
+  ["U schrijft een brief aan", "Ви пишете листа до"],
   ["U vult een formulier in", "Ви заповнюєте форму"],
   ["U schrijft een korte tekst voor de wijkkrant", "Ви пишете короткий текст для районної газети"],
   ["U schrijft voor de wijkkrant", "Ви пишете для районної газети"],
+  ["Iedereen mag iets schrijven.", "Кожен може щось написати."],
   ["Schrijf waarom u schrijft.", "Напишіть, чому ви пишете."],
   ["Schrijf waarom u mailt.", "Напишіть, чому ви пишете лист."],
   ["Schrijf wat uw probleem is.", "Напишіть, у чому ваша проблема."],
-  ["Vraag of", "Запитайте, чи"],
-  ["Schrijf wanneer", "Напишіть, коли"],
-  ["Schrijf waar", "Напишіть, де"],
-  ["Schrijf wat", "Напишіть, що"],
-  ["Schrijf wie", "Напишіть, хто"],
-  ["Schrijf hoe", "Напишіть, як"],
-  ["Waarom", "Чому"],
-  ["Wanneer", "Коли"],
-  ["Waar", "Де"],
-  ["Wat", "Що"],
-  ["Voor- en achternaam", "Ім'я та прізвище"],
-  ["Voornaam", "Ім'я"],
-  ["Achternaam", "Прізвище"],
-  ["Adres", "Адреса"],
-  ["Postcode en woonplaats", "Поштовий індекс і місто"],
-  ["Postcode", "Поштовий індекс"],
-  ["Woonplaats", "Місто"],
-  ["Telefoonnummer", "Номер телефону"],
-  ["E-mail", "E-mail"],
+  ["Gebruik hele zinnen.", "Використовуйте повні речення."],
+  ["In te vullen door de huisarts", "Заповнює лікар"],
+  ["☐ Ja", "☐ Так"],
+  ["☐ Nee", "☐ Ні"],
+];
+
+const TASK_WORD_TRANSLATION_RULES: Array<[string, string]> = [
+  ["schrijf", "напишіть"],
+  ["vraag", "запитайте"],
+  ["waarom", "чому"],
+  ["wanneer", "коли"],
+  ["waar", "де"],
+  ["wat", "що"],
+  ["wie", "хто"],
+  ["hoe", "як"],
+  ["welke", "який"],
+  ["welk", "який"],
+  ["gebruik", "використовуйте"],
+  ["hele", "повні"],
+  ["zinnen", "речення"],
+  ["zinnen", "речення"],
+  ["minimaal", "щонайменше"],
+  ["gegevens", "дані"],
+  ["bedenken", "придумати"],
+  ["formulier", "форма"],
+  ["wijkkrant", "районна газета"],
+  ["voornaam", "ім'я"],
+  ["achternaam", "прізвище"],
+  ["adres", "адреса"],
+  ["postcode", "поштовий індекс"],
+  ["woonplaats", "місто"],
+  ["telefoonnummer", "номер телефону"],
+  ["geboortedatum", "дата народження"],
+  ["naam", "ім'я"],
+  ["datum", "дата"],
+  ["opleiding", "навчальна програма"],
+  ["cursus", "курс"],
+  ["school", "школа"],
+  ["docent", "викладач"],
+  ["vriend", "друг"],
+  ["vrienden", "друзі"],
+  ["collega", "колега"],
+  ["collega's", "колеги"],
+  ["buurman", "сусід"],
+  ["buren", "сусіди"],
+  ["kinderen", "діти"],
+  ["huis", "дім"],
+  ["werk", "робота"],
+  ["werken", "працювати"],
+  ["ziek", "хворий"],
+  ["probleem", "проблема"],
+  ["afspraak", "зустріч"],
+  ["koken", "готувати"],
+  ["fiets", "велосипед"],
+  ["auto", "авто"],
+  ["sleutels", "ключі"],
+  ["morgen", "завтра"],
+  ["vandaag", "сьогодні"],
+  ["week", "тиждень"],
+  ["maandag", "понеділок"],
+  ["dinsdag", "вівторок"],
+  ["woensdag", "середа"],
+  ["donderdag", "четвер"],
+  ["vrijdag", "п'ятниця"],
+  ["zaterdag", "субота"],
+  ["zondag", "неділя"],
+  ["ja", "так"],
+  ["nee", "ні"],
+  ["en", "і"],
+  ["of", "або"],
+  ["maar", "але"],
+  ["u", "ви"],
+  ["uw", "ваш"],
+  ["jullie", "ви"],
+  ["het", "це"],
+  ["een", ""],
+  ["de", ""],
 ];
 
 function translateTicketTaskToUkrainian(input: string): string {
   let translated = input;
-  for (const [from, to] of TASK_TRANSLATION_RULES.sort((a, b) => b[0].length - a[0].length)) {
-    const regex = new RegExp(escapeRegExp(from), "gi");
-    translated = translated.replace(regex, to);
+
+  for (const [from, to] of TASK_PHRASE_TRANSLATION_RULES.sort((a, b) => b[0].length - a[0].length)) {
+    translated = translated.replace(new RegExp(escapeRegExp(from), "gi"), to);
   }
-  return translated;
+
+  for (const [from, to] of TASK_WORD_TRANSLATION_RULES.sort((a, b) => b[0].length - a[0].length)) {
+    translated = translated.replace(new RegExp(`\\b${escapeRegExp(from)}\\b`, "gi"), to);
+  }
+
+  return translated
+    .replace(/[ ]{2,}/g, " ")
+    .replace(/ \./g, ".")
+    .replace(/ ,/g, ",")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 function evaluateAnswer(answer: string, ticket: Ticket, userName: string): CheckResult {
@@ -227,6 +298,7 @@ export default function App() {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [draftNotes, setDraftNotes] = useState<Record<number, string>>({});
   const [knownMap, setKnownMap] = useState<Record<number, boolean>>({});
+  const [difficultMap, setDifficultMap] = useState<Record<number, boolean>>({});
   const [hideSimpleAnswer, setHideSimpleAnswer] = useState(true);
   const [hideTemplate, setHideTemplate] = useState(false);
   const [checkResult, setCheckResult] = useState<CheckResult | null>(null);
@@ -240,6 +312,7 @@ export default function App() {
   const [isMobileTicketsOpen, setIsMobileTicketsOpen] = useState(false);
   const [isDesktopTicketsCollapsed, setIsDesktopTicketsCollapsed] = useState(false);
   const [isFilterAreaCollapsed, setIsFilterAreaCollapsed] = useState(false);
+  const [showOnlyDifficult, setShowOnlyDifficult] = useState(false);
   const [isMobileTopMenuOpen, setIsMobileTopMenuOpen] = useState(false);
   const [hideFullTask, setHideFullTask] = useState(false);
   const [showTaskTranslation, setShowTaskTranslation] = useState(false);
@@ -263,6 +336,7 @@ export default function App() {
     const known = localStorage.getItem(STORAGE_KEYS.known);
     const savedAnswers = localStorage.getItem(STORAGE_KEYS.answers);
     const savedDrafts = localStorage.getItem(STORAGE_KEYS.drafts);
+    const savedDifficult = localStorage.getItem(STORAGE_KEYS.difficult);
     const savedTheme = localStorage.getItem(STORAGE_KEYS.theme);
     const savedExam = localStorage.getItem(STORAGE_KEYS.exam);
     const savedUserName = localStorage.getItem(STORAGE_KEYS.userName);
@@ -270,6 +344,7 @@ export default function App() {
     if (known) setKnownMap(JSON.parse(known) as Record<number, boolean>);
     if (savedAnswers) setAnswers(JSON.parse(savedAnswers) as Record<number, string>);
     if (savedDrafts) setDraftNotes(JSON.parse(savedDrafts) as Record<number, string>);
+    if (savedDifficult) setDifficultMap(JSON.parse(savedDifficult) as Record<number, boolean>);
     if (savedTheme === "dark") setIsDark(true);
     if (savedUserName && savedUserName.trim()) setUserName(savedUserName);
     if (savedExam) {
@@ -291,6 +366,10 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.drafts, JSON.stringify(draftNotes));
   }, [draftNotes]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.difficult, JSON.stringify(difficultMap));
+  }, [difficultMap]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.theme, isDark ? "dark" : "light");
@@ -319,9 +398,10 @@ export default function App() {
       const matchesSearch = !q || haystack.includes(q);
       const matchesFilters =
         activeFilters.length === 0 || activeFilters.some((filter) => ticket.category.includes(filter) || ticket.type === filter);
-      return matchesSearch && matchesFilters;
+      const matchesDifficult = !showOnlyDifficult || Boolean(difficultMap[ticket.id]);
+      return matchesSearch && matchesFilters && matchesDifficult;
     });
-  }, [search, activeFilters]);
+  }, [search, activeFilters, showOnlyDifficult, difficultMap]);
 
   const currentTicket = examMode && examTicket ? examTicket : selectedTicket;
   const currentAnswer = currentTicket ? answers[currentTicket.id] ?? "" : "";
@@ -351,6 +431,11 @@ export default function App() {
   const toggleKnown = () => {
     if (!currentTicket) return;
     setKnownMap((prev) => ({ ...prev, [currentTicket.id]: !prev[currentTicket.id] }));
+  };
+
+  const toggleDifficult = () => {
+    if (!currentTicket) return;
+    setDifficultMap((prev) => ({ ...prev, [currentTicket.id]: !prev[currentTicket.id] }));
   };
 
   const runCheck = () => {
@@ -744,6 +829,15 @@ export default function App() {
                   placeholder="Пошук по слову..."
                   className="min-w-0 flex-1 rounded-lg border border-slate-300 px-2.5 py-2 text-sm dark:border-slate-700 dark:bg-slate-800"
                 />
+                <label className="flex shrink-0 items-center gap-1.5 rounded-lg bg-rose-100 px-2.5 py-2 text-xs font-semibold text-rose-700 dark:bg-rose-900/40 dark:text-rose-200">
+                  <input
+                    type="checkbox"
+                    checked={showOnlyDifficult}
+                    onChange={(e) => setShowOnlyDifficult(e.target.checked)}
+                    className="h-3.5 w-3.5 accent-rose-600"
+                  />
+                  Складні
+                </label>
                 <button
                   className="rounded-lg bg-slate-200 px-2.5 py-2 text-xs font-semibold dark:bg-slate-700"
                   onClick={() => setIsFilterAreaCollapsed((prev) => !prev)}
@@ -827,6 +921,15 @@ export default function App() {
                         Наступний випадковий
                       </button>
                     )}
+                    <label className="flex items-center gap-2 rounded-xl bg-rose-100 px-3 py-2 text-sm font-semibold text-rose-700 dark:bg-rose-900/40 dark:text-rose-200">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(difficultMap[currentTicket.id])}
+                        onChange={toggleDifficult}
+                        className="h-4 w-4 accent-rose-600"
+                      />
+                      Дуже складний
+                    </label>
                     <button className="rounded-xl bg-emerald-600 px-3 py-2 text-sm font-semibold text-white" onClick={toggleKnown}>
                       {knownMap[currentTicket.id] ? "Позначено: знаю" : "Я знаю цей білет"}
                     </button>
