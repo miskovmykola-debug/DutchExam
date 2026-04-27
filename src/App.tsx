@@ -23,6 +23,7 @@ const FILTERS = [
 const STORAGE_KEYS = {
   known: "a2_known_tickets",
   answers: "a2_answers",
+  drafts: "a2_draft_notes",
   theme: "a2_theme",
   exam: "a2_exam_mode",
   userName: "a2_user_name",
@@ -92,6 +93,49 @@ function getTicketKeywords(ticket: Ticket): string[] {
     if (uniq.length >= 8) break;
   }
   return uniq;
+}
+
+const TASK_TRANSLATION_RULES: Array<[string, string]> = [
+  ["Schrijf een e-mail. Gebruik hele zinnen.", "Напишіть e-mail. Використовуйте повні речення."],
+  ["Schrijf een brief. Gebruik hele zinnen.", "Напишіть лист. Використовуйте повні речення."],
+  ["Schrijf een kort bericht. Gebruik hele zinnen.", "Напишіть коротке повідомлення. Використовуйте повні речення."],
+  ["Schrijf minimaal drie zinnen. Gebruik hele zinnen.", "Напишіть щонайменше 3 речення. Використовуйте повні речення."],
+  ["Sommige gegevens moet u zelf bedenken.", "Деякі дані потрібно придумати самостійно."],
+  ["U schrijft een e-mail aan", "Ви пишете e-mail до"],
+  ["U vult een formulier in", "Ви заповнюєте форму"],
+  ["U schrijft een korte tekst voor de wijkkrant", "Ви пишете короткий текст для районної газети"],
+  ["U schrijft voor de wijkkrant", "Ви пишете для районної газети"],
+  ["Schrijf waarom u schrijft.", "Напишіть, чому ви пишете."],
+  ["Schrijf waarom u mailt.", "Напишіть, чому ви пишете лист."],
+  ["Schrijf wat uw probleem is.", "Напишіть, у чому ваша проблема."],
+  ["Vraag of", "Запитайте, чи"],
+  ["Schrijf wanneer", "Напишіть, коли"],
+  ["Schrijf waar", "Напишіть, де"],
+  ["Schrijf wat", "Напишіть, що"],
+  ["Schrijf wie", "Напишіть, хто"],
+  ["Schrijf hoe", "Напишіть, як"],
+  ["Waarom", "Чому"],
+  ["Wanneer", "Коли"],
+  ["Waar", "Де"],
+  ["Wat", "Що"],
+  ["Voor- en achternaam", "Ім'я та прізвище"],
+  ["Voornaam", "Ім'я"],
+  ["Achternaam", "Прізвище"],
+  ["Adres", "Адреса"],
+  ["Postcode en woonplaats", "Поштовий індекс і місто"],
+  ["Postcode", "Поштовий індекс"],
+  ["Woonplaats", "Місто"],
+  ["Telefoonnummer", "Номер телефону"],
+  ["E-mail", "E-mail"],
+];
+
+function translateTicketTaskToUkrainian(input: string): string {
+  let translated = input;
+  for (const [from, to] of TASK_TRANSLATION_RULES.sort((a, b) => b[0].length - a[0].length)) {
+    const regex = new RegExp(escapeRegExp(from), "gi");
+    translated = translated.replace(regex, to);
+  }
+  return translated;
 }
 
 function evaluateAnswer(answer: string, ticket: Ticket, userName: string): CheckResult {
@@ -181,6 +225,7 @@ export default function App() {
   const [search, setSearch] = useState("");
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [draftNotes, setDraftNotes] = useState<Record<number, string>>({});
   const [knownMap, setKnownMap] = useState<Record<number, boolean>>({});
   const [hideSimpleAnswer, setHideSimpleAnswer] = useState(true);
   const [hideTemplate, setHideTemplate] = useState(false);
@@ -197,6 +242,7 @@ export default function App() {
   const [isFilterAreaCollapsed, setIsFilterAreaCollapsed] = useState(false);
   const [isMobileTopMenuOpen, setIsMobileTopMenuOpen] = useState(false);
   const [hideFullTask, setHideFullTask] = useState(false);
+  const [showTaskTranslation, setShowTaskTranslation] = useState(false);
   const [quickReason, setQuickReason] = useState(QUICK_REASONS[0]);
   const [quickRequest, setQuickRequest] = useState(QUICK_REQUESTS[0]);
   const [quickPlace, setQuickPlace] = useState(QUICK_PLACES[0]);
@@ -216,12 +262,14 @@ export default function App() {
   useEffect(() => {
     const known = localStorage.getItem(STORAGE_KEYS.known);
     const savedAnswers = localStorage.getItem(STORAGE_KEYS.answers);
+    const savedDrafts = localStorage.getItem(STORAGE_KEYS.drafts);
     const savedTheme = localStorage.getItem(STORAGE_KEYS.theme);
     const savedExam = localStorage.getItem(STORAGE_KEYS.exam);
     const savedUserName = localStorage.getItem(STORAGE_KEYS.userName);
 
     if (known) setKnownMap(JSON.parse(known) as Record<number, boolean>);
     if (savedAnswers) setAnswers(JSON.parse(savedAnswers) as Record<number, string>);
+    if (savedDrafts) setDraftNotes(JSON.parse(savedDrafts) as Record<number, string>);
     if (savedTheme === "dark") setIsDark(true);
     if (savedUserName && savedUserName.trim()) setUserName(savedUserName);
     if (savedExam) {
@@ -239,6 +287,10 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.answers, JSON.stringify(answers));
   }, [answers]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.drafts, JSON.stringify(draftNotes));
+  }, [draftNotes]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.theme, isDark ? "dark" : "light");
@@ -273,6 +325,11 @@ export default function App() {
 
   const currentTicket = examMode && examTicket ? examTicket : selectedTicket;
   const currentAnswer = currentTicket ? answers[currentTicket.id] ?? "" : "";
+  const currentDraftNote = currentTicket ? draftNotes[currentTicket.id] ?? "" : "";
+  const translatedTask = useMemo(() => {
+    if (!currentTicket) return "";
+    return translateTicketTaskToUkrainian(currentTicket.fullTask);
+  }, [currentTicket]);
   const progressDone = Object.values(knownMap).filter(Boolean).length;
   const displayName = userName.trim() || "Mykola";
   const personalizeText = (text: string) => text.replace(/\bMykola\b/g, displayName);
@@ -284,6 +341,11 @@ export default function App() {
     if (!currentTicket) return;
     setAnswers((prev) => ({ ...prev, [currentTicket.id]: value }));
     setCheckResult(null);
+  };
+
+  const updateDraftNote = (value: string) => {
+    if (!currentTicket) return;
+    setDraftNotes((prev) => ({ ...prev, [currentTicket.id]: value }));
   };
 
   const toggleKnown = () => {
@@ -793,11 +855,17 @@ export default function App() {
                     >
                       Скопіювати білет
                     </button>
+                    <button
+                      className="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold dark:bg-slate-700"
+                      onClick={() => setShowTaskTranslation((prev) => !prev)}
+                    >
+                      {showTaskTranslation ? "Показати NL" : "Показати укр"}
+                    </button>
                   </div>
                 </div>
                 {!hideFullTask && (
                   <pre className="whitespace-pre-wrap rounded-lg border border-slate-200 bg-slate-50 p-4 text-base leading-relaxed dark:border-slate-700 dark:bg-slate-800">
-                    {currentTicket.fullTask}
+                    {showTaskTranslation ? translatedTask : currentTicket.fullTask}
                   </pre>
                 )}
               </article>
@@ -810,6 +878,16 @@ export default function App() {
                   onChange={(e) => updateAnswer(e.target.value)}
                   className="h-56 w-full rounded-xl border border-slate-300 p-3 text-sm dark:border-slate-700 dark:bg-slate-800"
                   placeholder="Пиши коротко, просто, рівень A2..."
+                  disabled={!currentTicket}
+                />
+                <label className="mb-2 mt-3 block text-sm font-semibold text-slate-700 dark:text-slate-200">
+                  Чернетка (невідомі слова / нотатки)
+                </label>
+                <textarea
+                  value={currentDraftNote}
+                  onChange={(e) => updateDraftNote(e.target.value)}
+                  className="h-24 w-full rounded-xl border border-slate-300 p-3 text-sm dark:border-slate-700 dark:bg-slate-800"
+                  placeholder="Напр.: afspraak = зустріч, verzetten = перенести..."
                   disabled={!currentTicket}
                 />
                 <div className="mt-3 flex flex-wrap gap-2">
